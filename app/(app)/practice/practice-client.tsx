@@ -18,13 +18,15 @@ interface PracticePosition {
 }
 
 interface PracticeClientProps {
-  mode: "stack" | "opening";
+  mode: "stack" | "opening" | "custom-opening";
   stackId?: string;
   stackName?: string;
   openingId?: string;
   openingName?: string;
   variationId?: string;
   variationName?: string;
+  customOpeningId?: string;
+  customOpeningName?: string;
   userId: string;
 }
 
@@ -36,6 +38,8 @@ export function PracticeClient({
   openingName,
   variationId,
   variationName,
+  customOpeningId,
+  customOpeningName,
   userId,
 }: PracticeClientProps) {
   const [position, setPosition] = useState<PracticePosition | null>(null);
@@ -57,10 +61,15 @@ export function PracticeClient({
     setShowAnswer(false);
 
     try {
-      const endpoint =
-        mode === "stack"
-          ? `/api/practice/stack/${stackId}`
-          : `/api/practice/opening/${openingId}${variationId ? `?variationId=${variationId}` : ""}`;
+      let endpoint = "";
+      
+      if (mode === "stack") {
+        endpoint = `/api/practice/stack/${stackId}`;
+      } else if (mode === "opening") {
+        endpoint = `/api/practice/opening/${openingId}${variationId ? `?variationId=${variationId}` : ""}`;
+      } else if (mode === "custom-opening") {
+        endpoint = `/api/practice/custom-opening/${customOpeningId}`;
+      }
 
       const response = await fetch(endpoint);
       const data = await response.json();
@@ -79,7 +88,7 @@ export function PracticeClient({
     } finally {
       setLoading(false);
     }
-  }, [mode, stackId, openingId, variationId]);
+  }, [mode, stackId, openingId, variationId, customOpeningId]);
 
   useEffect(() => {
     fetchPosition();
@@ -161,6 +170,8 @@ export function PracticeClient({
   const title =
     mode === "stack"
       ? `Practice: ${stackName}`
+      : mode === "custom-opening"
+      ? `Practice: ${customOpeningName}`
       : `Practice: ${openingName}${variationName ? ` - ${variationName}` : ""}`;
 
   return (
@@ -168,15 +179,24 @@ export function PracticeClient({
       {/* Header */}
       <div>
         <div className="text-sm text-default-500 mb-2">
-          <Link href={mode === "stack" ? "/stacks" : "/openings"} className="hover:text-default-700">
-            {mode === "stack" ? "Learning Stacks" : "Openings"}
+          <Link 
+            href={mode === "stack" ? "/stacks" : mode === "custom-opening" ? "/custom-openings" : "/openings"} 
+            className="hover:text-default-700"
+          >
+            {mode === "stack" ? "Learning Stacks" : mode === "custom-opening" ? "Custom Openings" : "Openings"}
           </Link>
           {" / "}
           <Link
-            href={mode === "stack" ? `/stacks/${stackId}` : `/openings/${openingId}`}
+            href={
+              mode === "stack" 
+                ? `/stacks/${stackId}` 
+                : mode === "custom-opening"
+                ? `/custom-openings/${customOpeningId}`
+                : `/openings/${openingId}`
+            }
             className="hover:text-default-700"
           >
-            {mode === "stack" ? stackName : openingName}
+            {mode === "stack" ? stackName : mode === "custom-opening" ? customOpeningName : openingName}
           </Link>
           {" / "}
           <span className="text-default-900">Practice</span>
