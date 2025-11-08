@@ -11,10 +11,6 @@ export const siteConfig = {
       href: "/",
     },
     {
-      label: "Browse Openings",
-      href: "/openings",
-    },
-    {
       label: "About",
       href: "/about",
     },
@@ -26,6 +22,11 @@ export const siteConfig = {
       label: "Dashboard",
       href: "/dashboard",
       icon: "📊",
+    },
+    {
+      label: "Browse Openings",
+      href: "/openings",
+      icon: "📚",
     },
     {
       label: "Practice",
@@ -54,6 +55,10 @@ export const siteConfig = {
     {
       label: "Dashboard",
       href: "/dashboard",
+    },
+    {
+      label: "Browse Openings",
+      href: "/openings",
     },
     {
       label: "Practice",
