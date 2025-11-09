@@ -59,7 +59,7 @@ export default async function DashboardPage() {
   }
 
   const data = await getDashboardData(user.id);
-  const username = user.email?.split('@')[0] || 'Chess Master';
+  const username = user.user_metadata?.display_name || user.email?.split('@')[0] || 'Chess Master';
 
   return <DashboardClient data={data} username={username} />;
 }

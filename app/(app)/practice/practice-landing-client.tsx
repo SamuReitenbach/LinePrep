@@ -17,14 +17,24 @@ interface Opening {
   category: string;
 }
 
+interface CustomOpening {
+  id: string;
+  name: string;
+  description: string | null;
+  color: 'white' | 'black';
+  moves: string[];
+}
+
 interface PracticeLandingClientProps {
   stacks: Stack[];
   recentOpenings: Opening[];
+  customOpenings: CustomOpening[];
 }
 
 export function PracticeLandingClient({
   stacks,
   recentOpenings,
+  customOpenings,
 }: PracticeLandingClientProps) {
   return (
     <div className="space-y-6">
@@ -37,7 +47,7 @@ export function PracticeLandingClient({
       </div>
 
       {/* Quick Practice Options */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20">
           <CardBody className="text-center py-8">
             <div className="text-4xl mb-3">📦</div>
@@ -58,6 +68,24 @@ export function PracticeLandingClient({
 
         <Card className="bg-gradient-to-br from-secondary-50 to-secondary-100 dark:from-secondary-900/20 dark:to-secondary-800/20">
           <CardBody className="text-center py-8">
+            <div className="text-4xl mb-3">♟️</div>
+            <h3 className="text-xl font-bold mb-2">Custom Openings</h3>
+            <p className="text-sm text-default-600 mb-4">
+              Practice your own repertoire
+            </p>
+            <Button
+              as={Link}
+              href="#custom"
+              color="secondary"
+              variant="shadow"
+            >
+              Choose Opening
+            </Button>
+          </CardBody>
+        </Card>
+
+        <Card className="bg-gradient-to-br from-warning-50 to-warning-100 dark:from-warning-900/20 dark:to-warning-800/20">
+          <CardBody className="text-center py-8">
             <div className="text-4xl mb-3">📚</div>
             <h3 className="text-xl font-bold mb-2">Browse Openings</h3>
             <p className="text-sm text-default-600 mb-4">
@@ -66,7 +94,7 @@ export function PracticeLandingClient({
             <Button
               as={Link}
               href="/openings"
-              color="secondary"
+              color="warning"
               variant="shadow"
             >
               Browse
@@ -136,6 +164,63 @@ export function PracticeLandingClient({
               </p>
               <Button as={Link} href="/stacks/new" color="primary">
                 Create Your First Stack
+              </Button>
+            </CardBody>
+          </Card>
+        )}
+      </div>
+
+      {/* Custom Openings */}
+      <div id="custom">
+        <h2 className="text-2xl font-bold mb-4">Your Custom Openings</h2>
+        {customOpenings.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {customOpenings.map((opening) => (
+              <Card key={opening.id} className="hover:shadow-lg transition-shadow">
+                <CardHeader className="flex flex-col items-start gap-2">
+                  <div className="flex justify-between items-start w-full">
+                    <h3 className="text-lg font-bold">{opening.name}</h3>
+                    <Chip
+                      size="sm"
+                      variant="flat"
+                      color={opening.color === 'white' ? 'default' : 'primary'}
+                    >
+                      {opening.color === 'white' ? '⚪' : '⚫'} {opening.color}
+                    </Chip>
+                  </div>
+                </CardHeader>
+                <CardBody className="gap-3">
+                  {opening.description && (
+                    <p className="text-sm text-default-600 line-clamp-2">
+                      {opening.description}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <Chip size="sm" variant="flat">
+                      {opening.moves.length} move{opening.moves.length !== 1 ? 's' : ''}
+                    </Chip>
+                  </div>
+                  <Button
+                    as={Link}
+                    href={`/practice/custom-opening/${opening.id}`}
+                    color="primary"
+                    size="sm"
+                    className="w-full"
+                  >
+                    Start Practice
+                  </Button>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <Card>
+            <CardBody className="text-center py-8">
+              <p className="text-default-500 mb-4">
+                You don't have any custom openings yet
+              </p>
+              <Button as={Link} href="/custom-openings/new" color="primary">
+                Create Your First Custom Opening
               </Button>
             </CardBody>
           </Card>

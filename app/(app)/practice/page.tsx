@@ -26,23 +26,41 @@ export default async function PracticePage() {
     .eq('user_id', user.id)
     .order('updated_at', { ascending: false });
 
-  // Fetch recent openings (most practiced)
-  const { data: recentOpenings } = await supabase
+  // Fetch custom openings
+  const { data: customOpenings } = await supabase
+    .from('custom_openings')
+    .select('id, name, description, color, moves')
+    .eq('user_id', user.id)
+    .order('updated_at', { ascending: false });
+
+  // Fetch recent practice sessions with proper joins
+  const { data: progressData } = await supabase
     .from('user_progress')
     .select(`
-      opening_id,
-      openings:opening_id(id, name, eco, category)
+      *,
+      opening:openings(id, name, eco, category),
+      custom_opening:custom_openings(id, name)
     `)
     .eq('user_id', user.id)
     .order('last_practiced', { ascending: false })
-    .limit(5);
+    .limit(20);
 
-  // Get unique openings
-  const uniqueOpenings = recentOpenings
-    ?.map((r: any) => r.openings)
-    .filter((o: any, index: number, self: any[]) => 
-      o && self.findIndex((s: any) => s?.id === o.id) === index
-    ) || [];
+  // Group by opening and get unique recent openings
+  const recentOpeningsMap = new Map();
+
+  progressData?.forEach((progress: any) => {
+    if (progress.opening_id && progress.opening && !recentOpeningsMap.has(progress.opening_id)) {
+      recentOpeningsMap.set(progress.opening_id, {
+        id: progress.opening.id,
+        name: progress.opening.name,
+        eco: progress.opening.eco,
+        category: progress.opening.category,
+        type: 'opening' as const,
+      });
+    }
+  });
+
+  const uniqueOpenings = Array.from(recentOpeningsMap.values()).slice(0, 6);
 
   const stacksWithCount = (stacks || []).map((stack: any) => ({
     id: stack.id,
@@ -55,6 +73,7 @@ export default async function PracticePage() {
     <PracticeLandingClient
       stacks={stacksWithCount}
       recentOpenings={uniqueOpenings}
+      customOpenings={customOpenings || []}
     />
   );
 }

@@ -47,24 +47,25 @@ export function CustomOpeningDetailClient({
   userId,
 }: CustomOpeningDetailClientProps) {
   const [deleting, setDeleting] = useState(false);
+  const [currentMoveIndex, setCurrentMoveIndex] = useState(opening.moves.length);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const supabase = createClient();
 
-  // Calculate FEN position from moves
-  const getFinalPosition = () => {
+  // Calculate FEN position at a given move index
+  const getPositionAtMove = (moveIndex: number) => {
     const game = new Chess();
-    opening.moves.forEach((move) => {
+    for (let i = 0; i < moveIndex; i++) {
       try {
-        game.move(move);
+        game.move(opening.moves[i]);
       } catch (e) {
-        console.error("Invalid move:", move);
+        console.error("Invalid move:", opening.moves[i]);
       }
-    });
+    }
     return game.fen();
   };
 
-  const finalPosition = getFinalPosition();
+  const currentPosition = getPositionAtMove(currentMoveIndex);
 
   // Calculate statistics
   const totalAttempts = userProgress.reduce(
@@ -202,15 +203,16 @@ export function CustomOpeningDetailClient({
       )}
 
       {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Board */}
-        <Card>
+        <Card className="lg:max-w-fit">
           <CardHeader>
-            <h2 className="text-xl font-bold">{opening.name}</h2>
+            <h2 className="text-xl font-bold">Position</h2>
           </CardHeader>
           <CardBody>
             <ChessBoard
-              initialFen={finalPosition}
+              key={currentMoveIndex}
+              initialFen={currentPosition}
               showMoveHistory={false}
               allowUndo={false}
               boardOrientation={opening.color}
@@ -223,16 +225,100 @@ export function CustomOpeningDetailClient({
           <CardHeader>
             <h2 className="text-xl font-bold">Moves</h2>
           </CardHeader>
-          <CardBody>
-            <div className="font-mono text-sm bg-default-100 p-4 rounded-lg">
-              {opening.moves.map((move, index) => (
-                <span key={index} className="mr-2">
-                  {index % 2 === 0 && (
-                    <span className="text-default-500">{Math.floor(index / 2) + 1}. </span>
-                  )}
-                  <span className="font-semibold">{move}</span>
-                </span>
-              ))}
+          <CardBody className="flex flex-col h-[600px]">
+            {/* Move Table */}
+            <div className="overflow-auto flex-1 mb-4 scrollbar-hide">
+              <table className="table-fixed">
+                <thead className="sticky top-0 bg-default-100 z-10">
+                  <tr className="border-b border-divider">
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-24">#</th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-48">White</th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-48">Black</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.from({ length: Math.ceil(opening.moves.length / 2) }).map((_, pairIndex) => {
+                    const whiteIndex = pairIndex * 2;
+                    const blackIndex = pairIndex * 2 + 1;
+                    const whiteMove = opening.moves[whiteIndex];
+                    const blackMove = opening.moves[blackIndex];
+
+                    return (
+                      <tr key={pairIndex} className="border-b border-divider hover:bg-default-50">
+                        <td className="p-2 text-sm text-default-500">{pairIndex + 1}</td>
+                        <td
+                          className={`p-2 text-sm font-mono cursor-pointer hover:bg-primary-50 rounded ${
+                            currentMoveIndex === whiteIndex + 1
+                              ? "bg-primary text-primary-foreground font-bold"
+                              : ""
+                          }`}
+                          onClick={() => setCurrentMoveIndex(whiteIndex + 1)}
+                        >
+                          {whiteMove}
+                        </td>
+                        <td
+                          className={`p-2 text-sm font-mono ${
+                            blackMove
+                              ? `cursor-pointer hover:bg-primary-50 rounded ${
+                                  currentMoveIndex === blackIndex + 1
+                                    ? "bg-primary text-primary-foreground font-bold"
+                                    : ""
+                                }`
+                              : "text-default-300"
+                          }`}
+                          onClick={() => blackMove && setCurrentMoveIndex(blackIndex + 1)}
+                        >
+                          {blackMove || "—"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Navigation Controls - 20% height */}
+            <div className="flex gap-3 justify-center pt-4 border-t border-divider">
+              <Button
+                size="lg"
+                variant="flat"
+                isIconOnly
+                onPress={() => setCurrentMoveIndex(0)}
+                isDisabled={currentMoveIndex === 0}
+                title="First move"
+              >
+                ⏮
+              </Button>
+              <Button
+                size="lg"
+                variant="flat"
+                isIconOnly
+                onPress={() => setCurrentMoveIndex(Math.max(0, currentMoveIndex - 1))}
+                isDisabled={currentMoveIndex === 0}
+                title="Previous move"
+              >
+                ◀
+              </Button>
+              <Button
+                size="lg"
+                variant="flat"
+                isIconOnly
+                onPress={() => setCurrentMoveIndex(Math.min(opening.moves.length, currentMoveIndex + 1))}
+                isDisabled={currentMoveIndex === opening.moves.length}
+                title="Next move"
+              >
+                ▶
+              </Button>
+              <Button
+                size="lg"
+                variant="flat"
+                isIconOnly
+                onPress={() => setCurrentMoveIndex(opening.moves.length)}
+                isDisabled={currentMoveIndex === opening.moves.length}
+                title="Last move"
+              >
+                ⏭
+              </Button>
             </div>
           </CardBody>
         </Card>

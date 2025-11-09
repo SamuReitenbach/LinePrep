@@ -30,35 +30,6 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
         </p>
       </div>
 
-      {/* Quick Actions */}
-      <div className="flex gap-3 flex-wrap">
-        <Button
-          as={Link}
-          href="/practice"
-          color="primary"
-          size="lg"
-          className="font-semibold"
-        >
-          Start Practicing
-        </Button>
-        <Button
-          as={Link}
-          href="/openings"
-          variant="bordered"
-          size="lg"
-        >
-          Browse Openings
-        </Button>
-        <Button
-          as={Link}
-          href="/stacks/new"
-          variant="flat"
-          size="lg"
-        >
-          Create New Stack
-        </Button>
-      </div>
-
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>

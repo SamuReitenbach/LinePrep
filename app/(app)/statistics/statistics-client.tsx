@@ -34,13 +34,24 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const diffTime = now.getTime() - date.getTime();
+    const diffMinutes = Math.floor(diffTime / (1000 * 60));
+    const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
 
+    // Reset times to midnight for accurate day comparison
+    const today = new Date(now);
+    today.setHours(0, 0, 0, 0);
+    const practiceDate = new Date(date);
+    practiceDate.setHours(0, 0, 0, 0);
+    const diffDays = Math.floor((today.getTime() - practiceDate.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (diffMinutes < 1) return 'Just now';
+    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''} ago`;
+    if (diffHours < 24 && diffDays === 0) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
     if (diffDays === 0) return 'Today';
     if (diffDays === 1) return 'Yesterday';
-    if (diffDays < 7) return `${diffDays} days ago`;
-    
+    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
