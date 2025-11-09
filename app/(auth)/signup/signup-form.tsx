@@ -166,7 +166,7 @@ export function SignupForm() {
         <Button
           variant="bordered"
           size="lg"
-          onClick={handleGoogleSignup}
+          onPress={handleGoogleSignup}
           isDisabled={loading}
           className="w-full"
         >

@@ -110,7 +110,7 @@ export function LoginForm() {
         <Button
           variant="bordered"
           size="lg"
-          onClick={handleGoogleLogin}
+          onPress={handleGoogleLogin}
           isDisabled={loading}
           className="w-full"
         >

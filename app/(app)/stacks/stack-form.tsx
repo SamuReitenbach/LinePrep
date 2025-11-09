@@ -120,7 +120,7 @@ export function StackForm({ mode, initialData }: StackFormProps) {
             <Button
               type="button"
               variant="flat"
-              onClick={() => router.back()}
+              onPress={() => router.back()}
               isDisabled={loading}
             >
               Cancel

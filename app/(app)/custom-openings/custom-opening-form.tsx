@@ -142,6 +142,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
             onMove={handleMove}
             showMoveHistory={false}
             allowUndo={false}
+            boardOrientation={color}
           />
           <div className="mt-4 space-y-3">
             <div>
@@ -167,7 +168,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
               <Button
                 color="warning"
                 variant="flat"
-                onClick={handleUndo}
+                onPress={handleUndo}
                 isDisabled={moves.length === 0}
                 className="flex-1"
               >
@@ -176,7 +177,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
               <Button
                 color="danger"
                 variant="flat"
-                onClick={handleReset}
+                onPress={handleReset}
                 isDisabled={moves.length === 0}
                 className="flex-1"
               >
@@ -255,7 +256,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
               <Button
                 type="button"
                 variant="flat"
-                onClick={() => router.back()}
+                onPress={() => router.back()}
                 isDisabled={loading}
               >
                 Cancel

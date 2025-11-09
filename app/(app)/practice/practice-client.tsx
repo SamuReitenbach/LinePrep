@@ -266,6 +266,7 @@ export function PracticeClient({
                   onMove={handleMove}
                   showMoveHistory={false}
                   allowUndo={false}
+                  boardOrientation={position.fen.split(' ')[1] === 'w' ? 'white' : 'black'}
                 />
               ) : (
                 <div className="text-center py-12">
@@ -330,7 +331,7 @@ export function PracticeClient({
             <Button
               color="primary"
               className="w-full"
-              onClick={fetchPosition}
+              onPress={fetchPosition}
               isDisabled={loading}
             >
               Skip / Next Position
@@ -338,7 +339,7 @@ export function PracticeClient({
             <Button
               variant="flat"
               className="w-full"
-              onClick={handleShowAnswer}
+              onPress={handleShowAnswer}
               isDisabled={loading || showAnswer}
             >
               Show Answer

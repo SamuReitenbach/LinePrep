@@ -2,12 +2,13 @@
 
 import { Link } from "@heroui/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Button, Divider, User } from "@heroui/react";
+import { Button, Divider, User, Tooltip } from "@heroui/react";
 import { createClient } from "@/lib/supabase/client";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { title } from "@/components/primitives";
+import { SettingsIcon } from "@/components/icons";
 
 interface AppSidebarProps {
   user: any;
@@ -63,22 +64,38 @@ export function AppSidebar({ user }: AppSidebarProps) {
       {/* User section */}
       <div className="p-4 space-y-3">
         <div className="flex items-center justify-between px-2">
-          <User
-            name={user.email?.split('@')[0] || 'User'}
-            description={user.email}
-            classNames={{
-              name: "text-sm font-medium",
-              description: "text-xs text-default-400",
-            }}
-          />
-          <ThemeSwitch />
+          <Link
+            href="/profile"
+            className="flex-1 min-w-0"
+          >
+            <User
+              name={user.email?.split('@')[0] || 'User'}
+              classNames={{
+                name: "text-sm font-medium"
+              }}
+            />
+          </Link>
+          <div className="flex items-center gap-2">
+            <Tooltip content="Settings">
+              <Button
+                as={Link}
+                href="/settings"
+                isIconOnly
+                variant="light"
+                size="sm"
+                aria-label="Settings"
+              >
+                <SettingsIcon size={20} />
+              </Button>
+            </Tooltip>
+          </div>
         </div>
-        
+
         <Button
           color="default"
           variant="flat"
           className="w-full"
-          onClick={handleSignOut}
+          onPress={handleSignOut}
         >
           Sign Out
         </Button>

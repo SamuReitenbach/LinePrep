@@ -132,7 +132,7 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
               size="sm"
               variant={sortBy === 'attempts' ? 'solid' : 'flat'}
               color={sortBy === 'attempts' ? 'primary' : 'default'}
-              onClick={() => setSortBy('attempts')}
+              onPress={() => setSortBy('attempts')}
             >
               Most Practiced
             </Button>
@@ -140,7 +140,7 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
               size="sm"
               variant={sortBy === 'accuracy' ? 'solid' : 'flat'}
               color={sortBy === 'accuracy' ? 'primary' : 'default'}
-              onClick={() => setSortBy('accuracy')}
+              onPress={() => setSortBy('accuracy')}
             >
               Best Accuracy
             </Button>
@@ -148,7 +148,7 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
               size="sm"
               variant={sortBy === 'recent' ? 'solid' : 'flat'}
               color={sortBy === 'recent' ? 'primary' : 'default'}
-              onClick={() => setSortBy('recent')}
+              onPress={() => setSortBy('recent')}
             >
               Most Recent
             </Button>

@@ -146,7 +146,7 @@ export function StackDetailClient({
             color="danger"
             variant="flat"
             size="lg"
-            onClick={onOpen}
+            onPress={onOpen}
           >
             Delete
           </Button>
@@ -241,7 +241,7 @@ export function StackDetailClient({
                           size="sm"
                           color="danger"
                           variant="light"
-                          onClick={() => handleRemoveOpening(so.id)}
+                          onPress={() => handleRemoveOpening(so.id)}
                           isLoading={deletingId === so.id}
                         >
                           Remove

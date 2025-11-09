@@ -7,7 +7,7 @@ import type { Opening, CustomOpening, Variation } from '@/lib/supabase/types';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { stackId: string } }
+  { params }: { params: Promise<{ stackId: string }> }
 ) {
   try {
     const supabase = await createServerSupabaseClient();
@@ -22,7 +22,7 @@ export async function GET(
       );
     }
 
-    const { stackId } = params;
+    const { stackId } = await params;
 
     // Fetch the learning stack with all openings
     const { data: stackOpenings, error: stackError } = await supabase

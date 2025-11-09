@@ -6,11 +6,11 @@ import { getRandomCustomOpeningPosition } from '@/lib/opening-utils';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }>; }
 ) {
   try {
     const supabase = await createServerSupabaseClient();
-    const { id } = params;
+    const { id } = await params;
 
     // Fetch the custom opening
     const { data: customOpening, error: openingError } = await supabase

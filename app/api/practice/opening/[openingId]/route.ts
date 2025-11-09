@@ -6,11 +6,11 @@ import { getRandomPosition } from '@/lib/opening-utils';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { openingId: string } }
+  { params }: { params: Promise<{ openingId: string }>; }
 ) {
   try {
     const supabase = await createServerSupabaseClient();
-    const { openingId } = params;
+    const { openingId } = await params;
     const { searchParams } = new URL(request.url);
     const variationId = searchParams.get('variationId');
 

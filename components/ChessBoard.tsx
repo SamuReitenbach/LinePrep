@@ -11,6 +11,7 @@ interface ChessBoardProps {
   boardWidth?: number;
   showMoveHistory?: boolean;
   allowUndo?: boolean;
+  boardOrientation?: 'white' | 'black';
 }
 
 export const ChessBoard: React.FC<ChessBoardProps> = ({
@@ -20,6 +21,7 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({
   boardWidth = 600,
   showMoveHistory = true,
   allowUndo = true,
+  boardOrientation = 'white',
 }) => {
   const gameRef = useRef(new Chess(initialFen));
   const game = gameRef.current;
@@ -215,61 +217,10 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({
                 onSquareClick,
                 squareStyles: optionSquares,
                 id: 'training-board',
+                boardOrientation,
               }}
             />
           </div>
-        </CardBody>
-      </Card>
-
-      {/* Game Info Panel */}
-      <Card className="flex-1 min-w-[250px]">
-        <CardHeader className="flex flex-col items-start gap-2 pb-2">
-          <div className="flex items-center justify-between w-full">
-            <h3 className="text-xl font-bold">Game Info</h3>
-            <Chip color={game.isGameOver() ? 'danger' : 'success'} variant="flat">
-              {getTurnColor()} to move
-            </Chip>
-          </div>
-          {gameStatus && (
-            <Chip color="warning" variant="solid" className="mt-2">
-              {gameStatus}
-            </Chip>
-          )}
-        </CardHeader>
-        
-        <CardBody className="gap-4">
-          {/* Controls */}
-          <div className="flex gap-2 flex-wrap">
-            <Button color="primary" onClick={resetGame} size="sm">
-              Reset Game
-            </Button>
-            {allowUndo && moveHistory.length > 0 && (
-              <Button color="default" onClick={undoMove} size="sm">
-                Undo Move
-              </Button>
-            )}
-          </div>
-
-          {/* Move History */}
-          {showMoveHistory && (
-            <div className="flex flex-col gap-2">
-              <h4 className="font-semibold text-sm">Move History</h4>
-              <div className="bg-default-100 rounded-lg p-3 max-h-[300px] overflow-y-auto">
-                {moveHistory.length === 0 ? (
-                  <p className="text-sm text-default-400">No moves yet</p>
-                ) : (
-                  <div className="grid grid-cols-2 gap-2">
-                    {moveHistory.map((move, index) => (
-                      <div key={index} className="text-sm">
-                        <span className="text-default-400">{Math.floor(index / 2) + 1}.</span>{' '}
-                        <span className="font-mono">{move}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
         </CardBody>
       </Card>
     </div>

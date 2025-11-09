@@ -185,7 +185,7 @@ export function OpeningDetailClient({
           >
             Practice This Opening
           </Button>
-          <Button variant="bordered" size="lg" onClick={onOpen}>
+          <Button variant="bordered" size="lg" onPress={onOpen}>
             Add to Learning Stack
           </Button>
         </div>
@@ -237,6 +237,7 @@ export function OpeningDetailClient({
                 initialFen={finalPosition}
                 showMoveHistory={false}
                 allowUndo={false}
+                boardOrientation={finalPosition.split(' ')[1] === 'w' ? 'white' : 'black'}
               />
             </CardBody>
           </Card>
@@ -286,7 +287,7 @@ export function OpeningDetailClient({
                         <Button
                           size="sm"
                           color={selectedVariation?.id === variation.id ? "primary" : "default"}
-                          onClick={() => setSelectedVariation(variation)}
+                          onPress={() => setSelectedVariation(variation)}
                         >
                           {selectedVariation?.id === variation.id ? "Selected" : "View on Board"}
                         </Button>
@@ -307,7 +308,7 @@ export function OpeningDetailClient({
                     size="sm"
                     variant="light"
                     className="mt-3"
-                    onClick={() => setSelectedVariation(null)}
+                    onPress={() => setSelectedVariation(null)}
                   >
                     Show Main Line
                   </Button>

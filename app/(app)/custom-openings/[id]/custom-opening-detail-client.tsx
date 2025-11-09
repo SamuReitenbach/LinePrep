@@ -163,7 +163,7 @@ export function CustomOpeningDetailClient({
             color="danger"
             variant="flat"
             size="lg"
-            onClick={onOpen}
+            onPress={onOpen}
           >
             Delete
           </Button>
@@ -213,6 +213,7 @@ export function CustomOpeningDetailClient({
               initialFen={finalPosition}
               showMoveHistory={false}
               allowUndo={false}
+              boardOrientation={opening.color}
             />
           </CardBody>
         </Card>
