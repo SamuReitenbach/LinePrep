@@ -13,6 +13,8 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Select,
+  SelectItem,
   useDisclosure,
 } from "@heroui/react";
 import { Link } from "@heroui/link";
@@ -35,20 +37,31 @@ interface UserProgress {
   incorrect_count: number;
 }
 
+interface UserStack {
+  id: string;
+  name: string;
+  description: string | null;
+}
+
 interface CustomOpeningDetailClientProps {
   opening: CustomOpening;
   userProgress: UserProgress[];
+  userStacks: UserStack[];
   userId: string;
 }
 
 export function CustomOpeningDetailClient({
   opening,
   userProgress,
+  userStacks,
   userId,
 }: CustomOpeningDetailClientProps) {
   const [deleting, setDeleting] = useState(false);
   const [currentMoveIndex, setCurrentMoveIndex] = useState(opening.moves.length);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedStack, setSelectedStack] = useState<string>("");
+  const [addingToStack, setAddingToStack] = useState(false);
+  const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
+  const { isOpen: isAddStackOpen, onOpen: onAddStackOpen, onClose: onAddStackClose } = useDisclosure();
   const router = useRouter();
   const supabase = createClient();
 
@@ -92,6 +105,30 @@ export function CustomOpeningDetailClient({
       console.error("Error deleting opening:", error);
       alert("Failed to delete opening");
       setDeleting(false);
+    }
+  };
+
+  const handleAddToStack = async () => {
+    if (!selectedStack) return;
+
+    setAddingToStack(true);
+    try {
+      const { error } = await supabase.from("stack_openings").insert({
+        stack_id: selectedStack,
+        custom_opening_id: opening.id,
+        practice_move_numbers: [], // Default: practice all moves
+      });
+
+      if (error) throw error;
+
+      alert("Custom opening added to stack!");
+      onAddStackClose();
+      router.refresh();
+    } catch (error: any) {
+      console.error("Error adding to stack:", error);
+      alert(error.message || "Failed to add opening to stack");
+    } finally {
+      setAddingToStack(false);
     }
   };
 
@@ -153,6 +190,13 @@ export function CustomOpeningDetailClient({
             Practice This Opening
           </Button>
           <Button
+            variant="bordered"
+            size="lg"
+            onPress={onAddStackOpen}
+          >
+            Add to Learning Stack
+          </Button>
+          <Button
             as={Link}
             href={`/custom-openings/${opening.id}/edit`}
             variant="bordered"
@@ -164,7 +208,7 @@ export function CustomOpeningDetailClient({
             color="danger"
             variant="flat"
             size="lg"
-            onPress={onOpen}
+            onPress={onDeleteOpen}
           >
             Delete
           </Button>
@@ -324,8 +368,61 @@ export function CustomOpeningDetailClient({
         </Card>
       </div>
 
+      {/* Add to Stack Modal */}
+      <Modal isOpen={isAddStackOpen} onClose={onAddStackClose}>
+        <ModalContent>
+          <ModalHeader>Add to Learning Stack</ModalHeader>
+          <ModalBody>
+            {userStacks.length > 0 ? (
+              <>
+                <p className="text-sm text-default-500 mb-4">
+                  Select a stack to add this custom opening to:
+                </p>
+                <Select
+                  label="Learning Stack"
+                  placeholder="Select a stack"
+                  selectedKeys={selectedStack ? [selectedStack] : []}
+                  onSelectionChange={(keys) => {
+                    const value = Array.from(keys)[0] as string;
+                    setSelectedStack(value || "");
+                  }}
+                >
+                  {userStacks.map((stack) => (
+                    <SelectItem key={stack.id}>
+                      {stack.name}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </>
+            ) : (
+              <div className="text-center py-4">
+                <p className="text-default-500 mb-4">
+                  You don't have any learning stacks yet.
+                </p>
+                <Button as={Link} href="/stacks/new" color="primary">
+                  Create Your First Stack
+                </Button>
+              </div>
+            )}
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="light" onPress={onAddStackClose}>
+              Cancel
+            </Button>
+            <Button
+              color="primary"
+              onPress={handleAddToStack}
+              isDisabled={!selectedStack || addingToStack}
+              isLoading={addingToStack}
+            >
+              Add to Stack
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       {/* Delete Confirmation Modal */}
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
         <ModalContent>
           <ModalHeader>Delete Custom Opening</ModalHeader>
           <ModalBody>
@@ -334,7 +431,7 @@ export function CustomOpeningDetailClient({
             </p>
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={onClose} isDisabled={deleting}>
+            <Button variant="light" onPress={onDeleteClose} isDisabled={deleting}>
               Cancel
             </Button>
             <Button

@@ -39,10 +39,18 @@ export default async function CustomOpeningDetailPage({
     .eq('user_id', user.id)
     .eq('custom_opening_id', id);
 
+  // Fetch user's learning stacks
+  const { data: userStacks } = await supabase
+    .from('learning_stacks')
+    .select('id, name, description')
+    .eq('user_id', user.id)
+    .order('name');
+
   return (
     <CustomOpeningDetailClient
       opening={opening}
       userProgress={progressData || []}
+      userStacks={userStacks || []}
       userId={user.id}
     />
   );
