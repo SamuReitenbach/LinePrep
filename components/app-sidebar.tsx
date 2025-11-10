@@ -36,7 +36,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
         duration: 0.2,
         ease: "easeInOut",
       }}
-      className="border-r border-divider bg-content1 flex flex-col min-h-screen relative"
+      className="border-r border-divider bg-content1/80 backdrop-blur-xl flex flex-col min-h-screen relative"
     >
       {/* Logo */}
       <div className={`flex justify-center ${isCollapsed ? "p-2 py-4" : "p-4"}`}>

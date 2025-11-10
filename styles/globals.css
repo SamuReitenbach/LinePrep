@@ -1,3 +1,74 @@
 @import "tailwindcss";
 
-@config "../tailwind.config.js"
+@config "../tailwind.config.js";
+
+:root {
+  --gradient-from: #faf5ff;
+  --gradient-via: #fef3f2;
+  --gradient-to: #f0f9ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gradient-from: #1a0b2e;
+    --gradient-via: #16162a;
+    --gradient-to: #0f1419;
+  }
+}
+
+.dark {
+  --gradient-from: #1a0b2e;
+  --gradient-via: #16162a;
+  --gradient-to: #0f1419;
+}
+
+html {
+  background: linear-gradient(
+    135deg,
+    var(--gradient-from) 0%,
+    var(--gradient-via) 50%,
+    var(--gradient-to) 100%
+  );
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+body {
+  background: transparent;
+  min-height: 100vh;
+}
+
+/* Enhanced glass morphism support */
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+}
+
+/* Glass effect for navbar - override HeroUI defaults */
+nav[class*="navbar"] {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark nav[class*="navbar"] {
+  background: rgba(10, 10, 10, 0.7) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Glass effect for sidebar */
+aside {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+}
+
+.dark aside {
+  background: rgba(10, 10, 10, 0.8) !important;
+}
+
+/* Add subtle gradient border to cards */
+[data-slot="base"] {
+  border-color: rgba(255, 255, 255, 0.1);
+}
