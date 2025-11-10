@@ -6,7 +6,6 @@ import { Button, Divider, User, Tooltip } from "@heroui/react";
 import { createClient } from "@/lib/supabase/client";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
-import { ThemeSwitch } from "@/components/theme-switch";
 import { title } from "@/components/primitives";
 import { SettingsIcon } from "@/components/icons";
 

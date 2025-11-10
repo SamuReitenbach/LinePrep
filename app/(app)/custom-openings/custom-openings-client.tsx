@@ -2,6 +2,8 @@
 
 import { Card, CardBody, CardHeader, Button, Chip } from "@heroui/react";
 import { Link } from "@heroui/link";
+import { PreviewChessBoard } from "@/components/PreviewChessBoard";
+import { Chess } from "chess.js";
 
 interface CustomOpening {
   id: string;
@@ -24,6 +26,18 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
       month: 'short',
       day: 'numeric',
     });
+  };
+
+  const getFinalPosition = (moves: string[]): string => {
+    const game = new Chess();
+    for (const move of moves) {
+      try {
+        game.move(move);
+      } catch (e) {
+        console.error("Invalid move:", move);
+      }
+    }
+    return game.fen();
   };
 
   return (
@@ -70,17 +84,21 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
                   </p>
                 )}
 
+                <div className="flex justify-center">
+                  <PreviewChessBoard
+                    fen={getFinalPosition(opening.moves)}
+                    boardOrientation={opening.color}
+                    boardWidth={250}
+                  />
+                </div>
+
                 <div className="text-sm">
-                  <p className="text-default-500 mb-1">
-                    {opening.moves.length} moves
-                  </p>
-                  <p className="font-mono text-xs bg-default-100 p-2 rounded line-clamp-2">
-                    {opening.moves.slice(0, 8).join(' ')}
-                    {opening.moves.length > 8 ? '...' : ''}
+                  <p className="text-default-500 text-center">
+                    {Math.ceil(opening.moves.length / 2)} moves
                   </p>
                 </div>
 
-                <div className="text-xs text-default-400">
+                <div className="text-xs text-default-400 text-center">
                   Updated {formatDate(opening.updated_at)}
                 </div>
 

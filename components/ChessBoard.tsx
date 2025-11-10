@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { Chessboard } from 'react-chessboard';
 import type { PieceDropHandlerArgs, SquareHandlerArgs } from 'react-chessboard';
 import { Chess, Square } from 'chess.js';
-import { Card, CardBody, CardHeader, Button, Chip } from '@heroui/react';
+import { Card, CardBody } from '@heroui/react';
 
 interface ChessBoardProps {
   initialFen?: string;
@@ -18,7 +18,7 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({
   initialFen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
   onMove,
   onGameOver,
-  boardWidth = 600,
+  boardWidth = 550,
   showMoveHistory = true,
   allowUndo = true,
   boardOrientation = 'white',
@@ -208,7 +208,7 @@ export const ChessBoard: React.FC<ChessBoardProps> = ({
     <div className="flex flex-col lg:flex-row gap-4 w-full">
       {/* ChessBoard */}
       <Card className="flex-shrink-0">
-        <CardBody className="p-4">
+        <CardBody>
           <div style={{ width: boardWidth, maxWidth: '100%' }}>
             <Chessboard
               options={{

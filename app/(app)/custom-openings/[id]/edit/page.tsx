@@ -34,7 +34,7 @@ export default async function EditCustomOpeningPage({
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="max-w-full space-y-6">
       {/* Breadcrumb */}
       <div className="text-sm text-default-500">
         <Link href="/custom-openings" className="hover:text-default-700">

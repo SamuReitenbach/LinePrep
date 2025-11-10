@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardBody, CardHeader, Button, Progress, Chip } from "@heroui/react";
+import { Card, CardBody, Button, Progress, Chip } from "@heroui/react";
 import { Link } from "@heroui/link";
 
 interface OverallStats {

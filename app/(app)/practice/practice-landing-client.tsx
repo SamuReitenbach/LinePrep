@@ -197,7 +197,7 @@ export function PracticeLandingClient({
                   )}
                   <div className="flex items-center gap-2">
                     <Chip size="sm" variant="flat">
-                      {opening.moves.length} move{opening.moves.length !== 1 ? 's' : ''}
+                      {Math.ceil(opening.moves.length / 2)} move{Math.ceil(opening.moves.length / 2) !== 1 ? 's' : ''}
                     </Chip>
                   </div>
                   <Button

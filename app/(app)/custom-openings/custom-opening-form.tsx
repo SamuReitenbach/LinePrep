@@ -132,7 +132,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="flex flex-col lg:flex-row gap-6">
       {/* Board */}
       <Card>
         <CardBody>
@@ -145,25 +145,6 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
             boardOrientation={color}
           />
           <div className="mt-4 space-y-3">
-            <div>
-              <p className="text-sm font-semibold mb-2">Moves ({moves.length}):</p>
-              <div className="font-mono text-sm bg-default-100 p-3 rounded-lg min-h-[60px] max-h-[120px] overflow-y-auto">
-                {moves.length === 0 ? (
-                  <span className="text-default-400">Start making moves...</span>
-                ) : (
-                  moves.map((move, index) => (
-                    <span key={index} className="mr-2">
-                      {index % 2 === 0 && (
-                        <span className="text-default-500">
-                          {Math.floor(index / 2) + 1}.{" "}
-                        </span>
-                      )}
-                      <span className="font-semibold">{move}</span>
-                    </span>
-                  ))
-                )}
-              </div>
-            </div>
             <div className="flex gap-2">
               <Button
                 color="warning"
@@ -207,6 +188,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               minRows={3}
+              maxRows={3}
               maxLength={500}
             />
 
@@ -223,20 +205,45 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
               <SelectItem key="black">Black</SelectItem>
             </Select>
 
-            <div className="bg-default-100 p-4 rounded-lg">
-              <p className="text-sm text-default-600">
-                <strong>Instructions:</strong>
-                <br />
-                1. Make moves on the board to build your opening
-                <br />
-                2. Use "Undo" to correct mistakes
-                <br />
-                3. Select which color you're learning
-                <br />
-                4. Save when you're done
-              </p>
-            </div>
+            {/* Move Table */}
+            <div className="overflow-auto flex-1 mb-4 scrollbar-hide max-h-80">
+              <table className="table-fixed">
+                <thead className="sticky top-0 bg-default-100 z-10">
+                  <tr>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-18">#</th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">White</th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">Black</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Array.from({ length: Math.ceil(moves.length / 2) }).map((_, pairIndex) => {
+                    const whiteIndex = pairIndex * 2;
+                    const blackIndex = pairIndex * 2 + 1;
+                    const whiteMove = moves[whiteIndex];
+                    const blackMove = moves[blackIndex];
 
+                    return (
+                      <tr key={pairIndex} className="border-b border-divider">
+                        <td className="p-2 text-sm text-default-500">{pairIndex + 1}</td>
+                        <td
+                          className="p-2 text-sm font-mono cursor-pointer hover:bg-default-100 rounded"
+                        >
+                          {whiteMove}
+                        </td>
+                        <td
+                          className={`p-2 text-sm font-mono ${blackMove
+                              ? `cursor-pointer hover:bg-default-100 rounded `
+                              : "text-default-300"
+                            }`}
+                        >
+                          {blackMove || "—"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
             {error && (
               <div className="text-danger text-sm bg-danger-50 p-3 rounded-lg">
                 {error}

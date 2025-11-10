@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   Card,
@@ -21,6 +21,14 @@ import { Link } from "@heroui/link";
 import { ChessBoard } from "@/components/ChessBoard";
 import { Chess } from "chess.js";
 import { createClient } from "@/lib/supabase/client";
+import {
+  SkipBack,
+  ChevronLeft,
+  Play,
+  Pause,
+  ChevronRight,
+  SkipForward,
+} from "lucide-react";
 
 interface CustomOpening {
   id: string;
@@ -60,10 +68,39 @@ export function CustomOpeningDetailClient({
   const [currentMoveIndex, setCurrentMoveIndex] = useState(opening.moves.length);
   const [selectedStack, setSelectedStack] = useState<string>("");
   const [addingToStack, setAddingToStack] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
   const { isOpen: isAddStackOpen, onOpen: onAddStackOpen, onClose: onAddStackClose } = useDisclosure();
   const router = useRouter();
   const supabase = createClient();
+  const playIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-play effect
+  useEffect(() => {
+    if (isPlaying) {
+      playIntervalRef.current = setInterval(() => {
+        setCurrentMoveIndex((prev) => {
+          if (prev >= opening.moves.length) {
+            setIsPlaying(false);
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 1000);
+    } else {
+      if (playIntervalRef.current) {
+        clearInterval(playIntervalRef.current);
+        playIntervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (playIntervalRef.current) {
+        clearInterval(playIntervalRef.current);
+        playIntervalRef.current = null;
+      }
+    };
+  }, [isPlaying, opening.moves.length]);
 
   // Calculate FEN position at a given move index
   const getPositionAtMove = (moveIndex: number) => {
@@ -79,6 +116,18 @@ export function CustomOpeningDetailClient({
   };
 
   const currentPosition = getPositionAtMove(currentMoveIndex);
+
+  const toggleAutoPlay = () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+    } else {
+      // If at the end, restart from beginning
+      if (currentMoveIndex >= opening.moves.length) {
+        setCurrentMoveIndex(0);
+      }
+      setIsPlaying(true);
+    }
+  };
 
   // Calculate statistics
   const totalAttempts = userProgress.reduce(
@@ -141,7 +190,7 @@ export function CustomOpeningDetailClient({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-full space-y-6">
       {/* Breadcrumb */}
       <div className="text-sm text-default-500">
         <Link href="/custom-openings" className="hover:text-default-700">
@@ -274,10 +323,10 @@ export function CustomOpeningDetailClient({
             <div className="overflow-auto flex-1 mb-4 scrollbar-hide">
               <table className="table-fixed">
                 <thead className="sticky top-0 bg-default-100 z-10">
-                  <tr className="border-b border-divider">
-                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-24">#</th>
-                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-48">White</th>
-                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-48">Black</th>
+                  <tr>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-18">#</th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">White</th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">Black</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -288,12 +337,12 @@ export function CustomOpeningDetailClient({
                     const blackMove = opening.moves[blackIndex];
 
                     return (
-                      <tr key={pairIndex} className="border-b border-divider hover:bg-default-50">
+                      <tr key={pairIndex} className="border-b border-divider">
                         <td className="p-2 text-sm text-default-500">{pairIndex + 1}</td>
                         <td
-                          className={`p-2 text-sm font-mono cursor-pointer hover:bg-primary-50 rounded ${
+                          className={`p-2 text-sm font-mono cursor-pointer hover:bg-default-100 rounded ${
                             currentMoveIndex === whiteIndex + 1
-                              ? "bg-primary text-primary-foreground font-bold"
+                              ? "bg-default text-primary-foreground font-bold"
                               : ""
                           }`}
                           onClick={() => setCurrentMoveIndex(whiteIndex + 1)}
@@ -303,9 +352,9 @@ export function CustomOpeningDetailClient({
                         <td
                           className={`p-2 text-sm font-mono ${
                             blackMove
-                              ? `cursor-pointer hover:bg-primary-50 rounded ${
+                              ? `cursor-pointer hover:bg-default-100 rounded ${
                                   currentMoveIndex === blackIndex + 1
-                                    ? "bg-primary text-primary-foreground font-bold"
+                                    ? "bg-default text-primary-foreground font-bold"
                                     : ""
                                 }`
                               : "text-default-300"
@@ -321,47 +370,69 @@ export function CustomOpeningDetailClient({
               </table>
             </div>
 
-            {/* Navigation Controls - 20% height */}
-            <div className="flex gap-3 justify-center pt-4 border-t border-divider">
+            {/* Navigation Controls */}
+            <div className="flex gap-3 justify-center items-center">
               <Button
                 size="lg"
                 variant="flat"
                 isIconOnly
-                onPress={() => setCurrentMoveIndex(0)}
+                onPress={() => {
+                  setIsPlaying(false);
+                  setCurrentMoveIndex(0);
+                }}
                 isDisabled={currentMoveIndex === 0}
                 title="First move"
               >
-                ⏮
+                <SkipBack size={20} />
               </Button>
               <Button
                 size="lg"
                 variant="flat"
                 isIconOnly
-                onPress={() => setCurrentMoveIndex(Math.max(0, currentMoveIndex - 1))}
+                onPress={() => {
+                  setIsPlaying(false);
+                  setCurrentMoveIndex(Math.max(0, currentMoveIndex - 1));
+                }}
                 isDisabled={currentMoveIndex === 0}
                 title="Previous move"
               >
-                ◀
+                <ChevronLeft size={20} />
               </Button>
               <Button
                 size="lg"
                 variant="flat"
                 isIconOnly
-                onPress={() => setCurrentMoveIndex(Math.min(opening.moves.length, currentMoveIndex + 1))}
+                onPress={toggleAutoPlay}
+                title={isPlaying ? "Pause" : "Auto-play moves"}
+                className={isPlaying ? "bg-default-200" : ""}
+              >
+                {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+              </Button>
+              <Button
+                size="lg"
+                variant="flat"
+                isIconOnly
+                onPress={() => {
+                  setIsPlaying(false);
+                  setCurrentMoveIndex(Math.min(opening.moves.length, currentMoveIndex + 1));
+                }}
                 isDisabled={currentMoveIndex === opening.moves.length}
                 title="Next move"
               >
-                ▶
+                <ChevronRight size={20} />
               </Button>
               <Button
                 size="lg"
                 variant="flat"
                 isIconOnly
-                onPress={() => setCurrentMoveIndex(opening.moves.length)}
+                onPress={() => {
+                  setIsPlaying(false);
+                  setCurrentMoveIndex(opening.moves.length);
+                }}
                 isDisabled={currentMoveIndex === opening.moves.length}
                 title="Last move"
               >
-                ⏭
+                <SkipForward size={20} />
               </Button>
             </div>
           </CardBody>
