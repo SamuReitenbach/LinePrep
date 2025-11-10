@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarProvider } from "@/lib/sidebar-context";
 
 export default async function AppLayout({
   children,
@@ -8,7 +9,7 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createServerSupabaseClient();
-  
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -19,16 +20,18 @@ export default async function AppLayout({
   }
 
   return (
-    <div className="flex h-screen overflow-hidden">
-      {/* Sidebar */}
-      <AppSidebar user={user} />
+    <SidebarProvider>
+      <div className="flex h-screen overflow-hidden">
+        {/* Sidebar */}
+        <AppSidebar user={user} />
 
-      {/* Main content area */}
-      <main className="flex-1 overflow-y-auto p-6 bg-background">
-        <div className="max-w-7xl mx-auto">
-          {children}
-        </div>
-      </main>
-    </div>
+        {/* Main content area */}
+        <main className="flex-1 overflow-y-auto p-6 bg-background">
+          <div className="max-w-7xl mx-auto">
+            {children}
+          </div>
+        </main>
+      </div>
+    </SidebarProvider>
   );
 }

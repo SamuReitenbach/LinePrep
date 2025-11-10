@@ -1,9 +1,19 @@
+import {
+  BarChart3,
+  BookOpen,
+  Play,
+  Boxes,
+  Sparkles,
+  TrendingUp,
+  type LucideIcon
+} from "lucide-react";
+
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "LinePrep",
   description: "Master your lines.",
-  
+
   // Public navigation items (shown in navbar)
   navItems: [
     {
@@ -15,40 +25,44 @@ export const siteConfig = {
       href: "/about",
     },
   ],
-  
+
   // App navigation items (for authenticated users)
   appNavItems: [
     {
       label: "Dashboard",
       href: "/dashboard",
-      icon: "📊",
+      icon: BarChart3,
     },
     {
       label: "Browse Openings",
       href: "/openings",
-      icon: "📚",
+      icon: BookOpen,
     },
     {
       label: "Practice",
       href: "/practice",
-      icon: "♟️",
+      icon: Play,
     },
     {
       label: "Learning Stacks",
       href: "/stacks",
-      icon: "📦",
+      icon: Boxes,
     },
     {
       label: "Custom Openings",
       href: "/custom-openings",
-      icon: "✨",
+      icon: Sparkles,
     },
     {
       label: "Statistics",
       href: "/statistics",
-      icon: "📈",
+      icon: TrendingUp,
     },
-  ],
+  ] as Array<{
+    label: string;
+    href: string;
+    icon: LucideIcon;
+  }>,
   
   // Mobile menu items
   navMenuItems: [
