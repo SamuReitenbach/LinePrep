@@ -84,7 +84,7 @@ export function PracticeLandingClient({
           </CardBody>
         </Card>
 
-        <Card className="bg-gradient-to-br from-warning-50 to-warning-100 dark:from-warning-900/20 dark:to-warning-800/20">
+        <Card className="bg-gradient-to-br from-tertiary-50 to-tertiary-100 dark:from-tertiary-900/20 dark:to-tertiary-800/20">
           <CardBody className="text-center py-8">
             <div className="text-4xl mb-3">📚</div>
             <h3 className="text-xl font-bold mb-2">Browse Openings</h3>
@@ -94,7 +94,7 @@ export function PracticeLandingClient({
             <Button
               as={Link}
               href="/openings"
-              color="warning"
+              className="bg-tertiary"
               variant="shadow"
             >
               Browse
@@ -102,7 +102,7 @@ export function PracticeLandingClient({
           </CardBody>
         </Card>
 
-        <Card className="bg-gradient-to-br from-success-50 to-success-100 dark:from-success-900/20 dark:to-success-800/20">
+        <Card className="bg-gradient-to-br from-quaternary-50 to-quaternary-100 dark:from-quaternary-900/20 dark:to-quaternary-800/20">
           <CardBody className="text-center py-8">
             <div className="text-4xl mb-3">🔄</div>
             <h3 className="text-xl font-bold mb-2">Continue Recent</h3>
@@ -112,7 +112,7 @@ export function PracticeLandingClient({
             <Button
               as={Link}
               href="#recent"
-              color="success"
+              className="bg-quaternary dark:text-black"
               variant="shadow"
             >
               View Recent
