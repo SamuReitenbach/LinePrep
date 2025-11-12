@@ -1,0 +1,129 @@
+{
+  "common": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "signIn": "Sign In",
+    "email": "Email",
+    "password": "Password",
+    "or": "OR",
+    "backToHome": "Back to home"
+  },
+  "navbar": {
+    "features": "Features",
+    "pricing": "Pricing",
+    "about": "About",
+    "github": "GitHub"
+  },
+  "home": {
+    "hero": {
+      "title": "Master your chess opening repertoire with spaced repetition!",
+      "subtitle": "LinePrep helps you learn and memorize chess openings through interactive practice sessions. Build your repertoire, track your progress, and never forget your lines again.",
+      "getStarted": "Get Started Free"
+    },
+    "features": {
+      "title": "Why LinePrep?",
+      "spacedRepetition": {
+        "title": "Spaced Repetition",
+        "description": "Practice positions you struggle with more often. Our smart algorithm helps you retain openings in long-term memory."
+      },
+      "database": {
+        "title": "Comprehensive Database",
+        "description": "Access a complete database of chess openings or create your own custom lines to practice your personal repertoire."
+      },
+      "stacks": {
+        "title": "Learning Stacks",
+        "description": "Organize openings into themed collections. Group by playing style, opponent strength, or tournament preparation."
+      },
+      "progress": {
+        "title": "Track Your Progress",
+        "description": "Detailed statistics show your accuracy, practice streaks, and areas that need more work. Watch yourself improve over time."
+      },
+      "interactive": {
+        "title": "Interactive Practice",
+        "description": "Practice with a real chessboard interface. Get instant feedback on your moves and learn from your mistakes."
+      },
+      "custom": {
+        "title": "Custom Openings",
+        "description": "Build and practice your own opening variations. Perfect for preparing against specific opponents or trying new ideas."
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Choose Your Openings",
+        "description": "Browse our opening database or create custom lines. Select the openings you want to learn and add them to your practice queue."
+      },
+      "step2": {
+        "title": "Practice Interactively",
+        "description": "Play through positions on an interactive chessboard. LinePrep presents you with positions and tests your knowledge of the correct moves."
+      },
+      "step3": {
+        "title": "Track & Improve",
+        "description": "Monitor your accuracy and progress over time. Review statistics to identify weak spots and focus your practice where it matters most."
+      }
+    },
+    "cta": {
+      "title": "Ready to Master Your Openings?",
+      "subtitle": "Join chess players who are improving their opening knowledge with LinePrep",
+      "button": "Start Learning Today"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account",
+      "emailPlaceholder": "your@email.com",
+      "passwordPlaceholder": "Enter your password",
+      "signInButton": "Sign In",
+      "googleButton": "Continue with Google",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up",
+      "errorSignIn": "Failed to sign in",
+      "errorGoogle": "Failed to sign in with Google"
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Start mastering chess openings today",
+      "emailPlaceholder": "your@email.com",
+      "passwordPlaceholder": "Choose a password",
+      "passwordHint": "At least 6 characters",
+      "signUpButton": "Sign Up",
+      "googleButton": "Continue with Google",
+      "hasAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "errorSignUp": "Failed to sign up",
+      "errorGoogle": "Failed to sign up with Google"
+    },
+    "forgotPassword": {
+      "title": "Reset your password",
+      "subtitle": "Enter your email to receive a password reset link",
+      "emailPlaceholder": "your@email.com",
+      "sendButton": "Send Reset Link",
+      "successMessage": "Check your email for a password reset link",
+      "errorMessage": "Failed to send reset link",
+      "backToLogin": "Back to login"
+    },
+    "tagline": "Master your chess openings"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": {
+      "title": "Language",
+      "description": "Select your preferred language",
+      "english": "English",
+      "german": "German"
+    },
+    "theme": {
+      "title": "Theme",
+      "description": "Select your preferred theme"
+    },
+    "profile": {
+      "title": "Profile",
+      "changePassword": "Change Password"
+    }
+  },
+  "footer": {
+    "copyright": "©2025 LinePrep"
+  }
+}

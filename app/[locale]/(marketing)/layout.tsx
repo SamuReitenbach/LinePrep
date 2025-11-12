@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { Navbar } from "@/components/navbar";
 
 export default function MarketingLayout({
@@ -5,6 +6,8 @@ export default function MarketingLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const t = useTranslations("footer");
+
   return (
     <div className="relative flex flex-col h-screen">
       <Navbar />
@@ -12,7 +15,7 @@ export default function MarketingLayout({
         {children}
       </main>
       <footer className="w-full flex items-center justify-center py-3">
-        <p>©2025 LinePrep</p>
+        <p>{t("copyright")}</p>
       </footer>
     </div>
   );

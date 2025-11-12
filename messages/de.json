@@ -1,0 +1,129 @@
+{
+  "common": {
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "signIn": "Anmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "or": "ODER",
+    "backToHome": "Zurück zur Startseite"
+  },
+  "navbar": {
+    "features": "Funktionen",
+    "pricing": "Preise",
+    "about": "Über uns",
+    "github": "GitHub"
+  },
+  "home": {
+    "hero": {
+      "title": "Meistere dein Schacheröffnungsrepertoire mit Spaced Repetition!",
+      "subtitle": "LinePrep hilft dir, Schacheröffnungen durch interaktive Übungseinheiten zu lernen und zu verinnerlichen. Baue dein Repertoire auf, verfolge deinen Fortschritt und vergiss deine Züge nie wieder.",
+      "getStarted": "Kostenlos loslegen"
+    },
+    "features": {
+      "title": "Warum LinePrep?",
+      "spacedRepetition": {
+        "title": "Spaced Repetition",
+        "description": "Übe Positionen, mit denen du Schwierigkeiten hast, häufiger. Unser intelligenter Algorithmus hilft dir, Eröffnungen im Langzeitgedächtnis zu behalten."
+      },
+      "database": {
+        "title": "Umfassende Datenbank",
+        "description": "Zugriff auf eine vollständige Datenbank von Schacheröffnungen oder erstelle deine eigenen Varianten, um dein persönliches Repertoire zu üben."
+      },
+      "stacks": {
+        "title": "Lernstapel",
+        "description": "Organisiere Eröffnungen in thematischen Sammlungen. Gruppiere nach Spielstil, Gegnerstärke oder Turniervorbereitung."
+      },
+      "progress": {
+        "title": "Verfolge deinen Fortschritt",
+        "description": "Detaillierte Statistiken zeigen deine Genauigkeit, Übungsserien und Bereiche, die mehr Arbeit benötigen. Beobachte, wie du dich im Laufe der Zeit verbesserst."
+      },
+      "interactive": {
+        "title": "Interaktives Training",
+        "description": "Übe mit einer echten Schachbrett-Oberfläche. Erhalte sofortiges Feedback zu deinen Zügen und lerne aus deinen Fehlern."
+      },
+      "custom": {
+        "title": "Eigene Eröffnungen",
+        "description": "Erstelle und übe deine eigenen Eröffnungsvarianten. Perfekt zur Vorbereitung auf bestimmte Gegner oder zum Ausprobieren neuer Ideen."
+      }
+    },
+    "howItWorks": {
+      "title": "So funktioniert es",
+      "step1": {
+        "title": "Wähle deine Eröffnungen",
+        "description": "Durchsuche unsere Eröffnungsdatenbank oder erstelle eigene Varianten. Wähle die Eröffnungen aus, die du lernen möchtest, und füge sie deiner Übungswarteschlange hinzu."
+      },
+      "step2": {
+        "title": "Interaktiv üben",
+        "description": "Spiele Positionen auf einem interaktiven Schachbrett durch. LinePrep präsentiert dir Positionen und testet dein Wissen über die richtigen Züge."
+      },
+      "step3": {
+        "title": "Verfolgen & Verbessern",
+        "description": "Überwache deine Genauigkeit und deinen Fortschritt im Laufe der Zeit. Überprüfe Statistiken, um Schwachstellen zu identifizieren und dein Training dort zu fokussieren, wo es am wichtigsten ist."
+      }
+    },
+    "cta": {
+      "title": "Bereit, deine Eröffnungen zu meistern?",
+      "subtitle": "Werde Teil der Schachspieler, die ihr Eröffnungswissen mit LinePrep verbessern",
+      "button": "Heute mit dem Lernen beginnen"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Willkommen zurück",
+      "subtitle": "Melde dich bei deinem Konto an",
+      "emailPlaceholder": "deine@email.de",
+      "passwordPlaceholder": "Gib dein Passwort ein",
+      "signInButton": "Anmelden",
+      "googleButton": "Mit Google fortfahren",
+      "forgotPassword": "Passwort vergessen?",
+      "noAccount": "Noch kein Konto?",
+      "signUpLink": "Registrieren",
+      "errorSignIn": "Anmeldung fehlgeschlagen",
+      "errorGoogle": "Anmeldung mit Google fehlgeschlagen"
+    },
+    "signup": {
+      "title": "Erstelle dein Konto",
+      "subtitle": "Beginne noch heute mit dem Meistern von Schacheröffnungen",
+      "emailPlaceholder": "deine@email.de",
+      "passwordPlaceholder": "Wähle ein Passwort",
+      "passwordHint": "Mindestens 6 Zeichen",
+      "signUpButton": "Registrieren",
+      "googleButton": "Mit Google fortfahren",
+      "hasAccount": "Bereits ein Konto?",
+      "signInLink": "Anmelden",
+      "errorSignUp": "Registrierung fehlgeschlagen",
+      "errorGoogle": "Registrierung mit Google fehlgeschlagen"
+    },
+    "forgotPassword": {
+      "title": "Passwort zurücksetzen",
+      "subtitle": "Gib deine E-Mail ein, um einen Link zum Zurücksetzen des Passworts zu erhalten",
+      "emailPlaceholder": "deine@email.de",
+      "sendButton": "Zurücksetzungslink senden",
+      "successMessage": "Überprüfe deine E-Mails für einen Link zum Zurücksetzen des Passworts",
+      "errorMessage": "Fehler beim Senden des Zurücksetzungslinks",
+      "backToLogin": "Zurück zur Anmeldung"
+    },
+    "tagline": "Meistere deine Schacheröffnungen"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "language": {
+      "title": "Sprache",
+      "description": "Wähle deine bevorzugte Sprache",
+      "english": "Englisch",
+      "german": "Deutsch"
+    },
+    "theme": {
+      "title": "Design",
+      "description": "Wähle dein bevorzugtes Design"
+    },
+    "profile": {
+      "title": "Profil",
+      "changePassword": "Passwort ändern"
+    }
+  },
+  "footer": {
+    "copyright": "©2025 LinePrep"
+  }
+}

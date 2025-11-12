@@ -1,9 +1,11 @@
 "use client";
 
-import { Card, CardBody, CardHeader, Divider, Switch } from "@heroui/react";
+import { Card, CardBody, CardHeader, Divider, Switch, Select, SelectItem } from "@heroui/react";
 import { User } from "@supabase/supabase-js";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { useRouter, usePathname } from "next/navigation";
 
 interface SettingsClientProps {
   user: User;
@@ -12,11 +14,22 @@ interface SettingsClientProps {
 export function SettingsClient({ user }: SettingsClientProps) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const locale = useLocale();
+  const t = useTranslations("settings");
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Avoid hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleLanguageChange = (newLocale: string) => {
+    // Remove current locale from pathname
+    const pathWithoutLocale = pathname.replace(`/${locale}`, "");
+    // Navigate to the new locale
+    router.push(`/${newLocale}${pathWithoutLocale}`);
+  };
 
   if (!mounted) {
     return null;
@@ -25,12 +38,38 @@ export function SettingsClient({ user }: SettingsClientProps) {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Settings</h1>
+        <h1 className="text-3xl font-bold">{t("title")}</h1>
       </div>
 
       <Card>
         <CardHeader className="p-6">
-          <h2 className="text-xl font-semibold">Appearance</h2>
+          <h2 className="text-xl font-semibold">{t("language.title")}</h2>
+        </CardHeader>
+
+        <Divider />
+
+        <CardBody className="p-6 space-y-6">
+          <div className="flex flex-col gap-3">
+            <h3 className="text-sm font-semibold">{t("language.description")}</h3>
+            <Select
+              selectedKeys={[locale]}
+              onChange={(e) => handleLanguageChange(e.target.value)}
+              className="max-w-xs"
+            >
+              <SelectItem key="en" value="en">
+                {t("language.english")}
+              </SelectItem>
+              <SelectItem key="de" value="de">
+                {t("language.german")}
+              </SelectItem>
+            </Select>
+          </div>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardHeader className="p-6">
+          <h2 className="text-xl font-semibold">{t("theme.title")}</h2>
         </CardHeader>
 
         <Divider />
@@ -40,7 +79,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
             <div className="flex flex-col gap-1">
               <h3 className="text-sm font-semibold">Dark Mode</h3>
               <p className="text-sm text-default-500">
-                Toggle between light and dark theme
+                {t("theme.description")}
               </p>
             </div>
             <Switch

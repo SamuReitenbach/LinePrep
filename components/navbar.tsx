@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -13,12 +15,16 @@ import { link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon } from "@/components/icons";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export const Navbar = () => {
+  const t = useTranslations("common");
+
   return (
     <HeroUINavbar maxWidth="xl" position="sticky" className="bg-background/70 backdrop-blur-xl border-b border-divider">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -59,6 +65,7 @@ export const Navbar = () => {
           <Link isExternal aria-label="Github" href={siteConfig.links.github}>
             <GithubIcon className="text-default-500" />
           </Link>
+          <LanguageSwitcher />
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden md:flex gap-2">
@@ -68,7 +75,7 @@ export const Navbar = () => {
             variant="flat"
             size="sm"
           >
-            Login
+            {t("login")}
           </Button>
           <Button
             as={Link}
@@ -77,7 +84,7 @@ export const Navbar = () => {
             variant="solid"
             size="sm"
           >
-            Sign Up
+            {t("signup")}
           </Button>
         </NavbarItem>
       </NavbarContent>
@@ -86,6 +93,7 @@ export const Navbar = () => {
         <Link isExternal aria-label="Github" href={siteConfig.links.github}>
           <GithubIcon className="text-default-500" />
         </Link>
+        <LanguageSwitcher />
         <ThemeSwitch />
         <NavbarMenuToggle />
       </NavbarContent>
@@ -110,7 +118,7 @@ export const Navbar = () => {
               variant="flat"
               className="w-full"
             >
-              Login
+              {t("login")}
             </Button>
           </NavbarMenuItem>
           <NavbarMenuItem>
@@ -120,7 +128,7 @@ export const Navbar = () => {
               color="primary"
               className="w-full"
             >
-              Sign Up
+              {t("signup")}
             </Button>
           </NavbarMenuItem>
         </div>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardBody, CardHeader, Input, Button, Divider } from "@heroui/react";
 import { Link } from "@heroui/link";
+import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
 
 export function LoginForm() {
@@ -13,6 +14,8 @@ export function LoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations("auth.login");
+  const tCommon = useTranslations("common");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,7 +35,7 @@ export function LoginForm() {
         router.refresh();
       }
     } catch (error: any) {
-      setError(error.message || "Failed to sign in");
+      setError(error.message || t("errorSignIn"));
     } finally {
       setLoading(false);
     }
@@ -52,7 +55,7 @@ export function LoginForm() {
 
       if (error) throw error;
     } catch (error: any) {
-      setError(error.message || "Failed to sign in with Google");
+      setError(error.message || t("errorGoogle"));
       setLoading(false);
     }
   };
@@ -60,24 +63,24 @@ export function LoginForm() {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-col gap-1 items-center pb-4 pt-6">
-        <h1 className="text-2xl font-bold">Welcome back</h1>
-        <p className="text-sm text-default-500">Sign in to your account</p>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
+        <p className="text-sm text-default-500">{t("subtitle")}</p>
       </CardHeader>
       <CardBody className="gap-4">
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <Input
-            label="Email"
+            label={tCommon("email")}
             type="email"
-            placeholder="your@email.com"
+            placeholder={t("emailPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             isRequired
             autoComplete="email"
           />
           <Input
-            label="Password"
+            label={tCommon("password")}
             type="password"
-            placeholder="Enter your password"
+            placeholder={t("passwordPlaceholder")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             isRequired
@@ -97,13 +100,13 @@ export function LoginForm() {
             isLoading={loading}
             className="w-full"
           >
-            Sign In
+            {t("signInButton")}
           </Button>
         </form>
 
         <div className="flex items-center gap-2">
           <Divider className="flex-1" />
-          <span className="text-sm text-default-400">OR</span>
+          <span className="text-sm text-default-400">{tCommon("or")}</span>
           <Divider className="flex-1" />
         </div>
 
@@ -132,21 +135,21 @@ export function LoginForm() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          Continue with Google
+          {t("googleButton")}
         </Button>
 
         <div className="text-center text-sm">
           <Link href="/forgot-password" className="text-primary">
-            Forgot password?
+            {t("forgotPassword")}
           </Link>
         </div>
 
         <Divider />
 
         <div className="text-center text-sm">
-          Don't have an account?{" "}
+          {t("noAccount")}{" "}
           <Link href="/signup" className="text-primary font-semibold">
-            Sign up
+            {t("signUpLink")}
           </Link>
         </div>
       </CardBody>
