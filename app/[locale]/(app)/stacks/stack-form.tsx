@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/navigation";
 import { Card, CardBody, Input, Textarea, Button } from "@heroui/react";
 import { createClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 
 interface StackFormProps {
   mode: "create" | "edit";
@@ -21,13 +22,15 @@ export function StackForm({ mode, initialData }: StackFormProps) {
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const tStacks = useTranslations("stacks");
+  const tCommon = useTranslations("common");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     if (!name.trim()) {
-      setError("Stack name is required");
+      setError(tStacks("errors.nameRequired"));
       return;
     }
 
@@ -39,7 +42,7 @@ export function StackForm({ mode, initialData }: StackFormProps) {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        throw new Error("You must be logged in");
+        throw new Error(tStacks("errors.loginRequired"));
       }
 
       if (mode === "create") {
@@ -74,7 +77,7 @@ export function StackForm({ mode, initialData }: StackFormProps) {
       router.refresh();
     } catch (error: any) {
       console.error("Error saving stack:", error);
-      setError(error.message || "Failed to save stack");
+      setError(error.message || tStacks("errors.saveFailed"));
     } finally {
       setLoading(false);
     }
@@ -84,23 +87,23 @@ export function StackForm({ mode, initialData }: StackFormProps) {
     <Card>
       <CardBody>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            label="Stack Name"
-            placeholder="e.g., Aggressive Openings, King's Pawn Games"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            isRequired
-            maxLength={100}
-          />
+            <Input
+              label={tStacks("name")}
+              placeholder={tStacks("namePlaceholder")}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              isRequired
+              maxLength={100}
+            />
 
-          <Textarea
-            label="Description"
-            placeholder="Describe the theme or purpose of this stack (optional)"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            minRows={3}
-            maxLength={500}
-          />
+            <Textarea
+              label={tStacks("description")}
+              placeholder={tStacks("descriptionPlaceholder")}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              minRows={3}
+              maxLength={500}
+            />
 
           {error && (
             <div className="text-danger text-sm bg-danger-50 p-3 rounded-lg">
@@ -115,16 +118,16 @@ export function StackForm({ mode, initialData }: StackFormProps) {
               isLoading={loading}
               className="flex-1"
             >
-              {mode === "create" ? "Create Stack" : "Save Changes"}
-            </Button>
-            <Button
-              type="button"
-              variant="flat"
-              onPress={() => router.back()}
-              isDisabled={loading}
-            >
-              Cancel
-            </Button>
+                {mode === "create" ? tStacks("create") : tStacks("save")}
+              </Button>
+              <Button
+                type="button"
+                variant="flat"
+                onPress={() => router.back()}
+                isDisabled={loading}
+              >
+                {tCommon("cancel")}
+              </Button>
           </div>
         </form>
       </CardBody>

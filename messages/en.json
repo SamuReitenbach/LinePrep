@@ -6,13 +6,44 @@
     "email": "Email",
     "password": "Password",
     "or": "OR",
-    "backToHome": "Back to home"
+    "backToHome": "Back to home",
+    "confirmPassword": "Confirm Password",
+    "viewAll": "View All",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "view": "View",
+    "updatedAt": "Updated {date}",
+    "createdAt": "Created {date}",
+    "movesCount": "{count, plural, one {# move} other {# moves}}",
+    "openingsCount": "{count, plural, one {# opening} other {# openings}}",
+    "loginRequired": "Please log in"
   },
   "navbar": {
     "features": "Features",
     "pricing": "Pricing",
     "about": "About",
     "github": "GitHub"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "practice": "Practice",
+    "openings": "Openings",
+    "customOpenings": "Custom Openings",
+    "stacks": "Stacks",
+    "statistics": "Statistics",
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar"
   },
   "home": {
     "hero": {
@@ -83,28 +114,438 @@
       "errorGoogle": "Failed to sign in with Google"
     },
     "signup": {
-      "title": "Create your account",
-      "subtitle": "Start mastering chess openings today",
+      "title": "Create an account",
+      "subtitle": "Start mastering chess openings",
       "emailPlaceholder": "your@email.com",
-      "passwordPlaceholder": "Choose a password",
-      "passwordHint": "At least 6 characters",
-      "signUpButton": "Sign Up",
+      "passwordPlaceholder": "At least 6 characters",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "createAccountButton": "Create Account",
       "googleButton": "Continue with Google",
       "hasAccount": "Already have an account?",
       "signInLink": "Sign in",
+      "termsText": "By signing up, you agree to our Terms of Service and Privacy Policy",
+      "checkEmail": "Check your email",
+      "confirmationSent": "We've sent you a confirmation link to",
+      "clickLink": "Click the link in the email to verify your account and get started.",
+      "backToLogin": "Back to Login",
+      "errorPasswordMatch": "Passwords do not match",
+      "errorPasswordLength": "Password must be at least 6 characters",
       "errorSignUp": "Failed to sign up",
       "errorGoogle": "Failed to sign up with Google"
     },
     "forgotPassword": {
       "title": "Reset your password",
-      "subtitle": "Enter your email to receive a password reset link",
+      "subtitle": "Enter your email and we'll send you a reset link",
       "emailPlaceholder": "your@email.com",
       "sendButton": "Send Reset Link",
-      "successMessage": "Check your email for a password reset link",
-      "errorMessage": "Failed to send reset link",
-      "backToLogin": "Back to login"
+      "checkEmail": "Check your email",
+      "resetLinkSent": "We've sent a password reset link to",
+      "clickLink": "Click the link in the email to reset your password.",
+      "backToLogin": "Back to Login",
+      "rememberPassword": "Remember your password?",
+      "errorSend": "Failed to send reset email"
     },
     "tagline": "Master your chess openings"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {name}!",
+    "subtitle": "Ready to improve your opening repertoire?",
+    "stats": {
+      "learningStacks": "Learning Stacks",
+      "customOpenings": "Custom Openings",
+      "totalAttempts": "Total Attempts",
+      "accuracy": "Accuracy"
+    },
+    "yourStacks": "Your Learning Stacks",
+    "yourCustomOpenings": "Your Custom Openings",
+    "noStacks": "No stacks yet. Create your first learning stack!",
+    "noCustomOpenings": "No custom openings yet. Create your first opening!",
+    "createStack": "Create Stack",
+    "createOpening": "Create Opening",
+    "quickActions": "Quick Actions",
+    "startPractice": "Start Practice",
+    "browseOpenings": "Browse Openings",
+    "viewStatistics": "View Statistics"
+  },
+  "practice": {
+    "title": "Practice",
+    "choosePractice": "Choose what to practice",
+    "stacks": "Learning Stacks",
+    "standardOpenings": "Standard Openings",
+    "customOpenings": "Custom Openings",
+    "noStacks": "No learning stacks available",
+    "noOpenings": "No openings available",
+    "noCustomOpenings": "No custom openings available",
+    "startSession": "Start Practice Session",
+    "yourTurn": "Your turn",
+    "correct": "Correct!",
+    "incorrect": "Incorrect",
+    "expectedMove": "Expected move",
+    "tryAgain": "Try again",
+    "nextPosition": "Next Position",
+    "finishSession": "Finish Session",
+    "sessionComplete": "Practice Session Complete!",
+    "resultsCorrect": "Correct",
+    "resultsIncorrect": "Incorrect",
+    "backToPractice": "Back to Practice",
+    "landing": {
+      "subtitle": "Choose how you want to practice your openings",
+      "cards": {
+        "stacks": {
+          "title": "Practice Stacks",
+          "description": "Practice from your organized collections",
+          "action": "Choose Stack"
+        },
+        "custom": {
+          "title": "Custom Openings",
+          "description": "Practice your own repertoire",
+          "action": "Choose Opening"
+        },
+        "openings": {
+          "title": "Browse Openings",
+          "description": "Practice any specific opening",
+          "action": "Browse"
+        },
+        "recent": {
+          "title": "Continue Recent",
+          "description": "Pick up where you left off",
+          "action": "View Recent"
+        }
+      },
+      "sections": {
+        "stacks": {
+          "title": "Your Learning Stacks",
+          "emptyDescription": "You don't have any learning stacks yet",
+          "emptyCta": "Create Your First Stack",
+          "buttonEmpty": "No Openings",
+          "buttonStart": "Start Practice"
+        },
+        "custom": {
+          "title": "Your Custom Openings",
+          "emptyDescription": "You don't have any custom openings yet",
+          "emptyCta": "Create Your First Custom Opening"
+        },
+        "recent": {
+          "title": "Recently Practiced",
+          "emptyDescription": "You haven't practiced any openings yet",
+          "emptyCta": "Start Practicing"
+        }
+      }
+    },
+    "client": {
+      "breadcrumb": "Practice",
+      "stats": {
+        "correct": "Correct",
+        "incorrect": "Incorrect",
+        "total": "Total",
+        "accuracy": "Accuracy"
+      },
+      "board": {
+        "move": "Move {move}",
+        "noPositions": "No positions available"
+      },
+      "instructions": {
+        "title": "Instructions",
+        "items": {
+          "makeMove": "Make the correct move for this position",
+          "drag": "Click or drag pieces to move",
+          "feedback": "Get instant feedback",
+          "track": "Track your progress"
+        }
+      },
+      "previousMoves": "Previous Moves",
+      "actions": {
+        "skip": "Skip / Next Position",
+        "showAnswer": "Show Answer"
+      },
+      "feedback": {
+        "correct": "Correct! {move}",
+        "incorrect": "Incorrect. The correct move was {move}",
+        "answer": "The correct move is: {move}",
+        "invalidMove": "Invalid move",
+        "loadError": "Failed to load practice position"
+      }
+    }
+  },
+  "openings": {
+    "title": "Openings",
+    "searchPlaceholder": "Search openings...",
+    "ecoCode": "ECO",
+    "variation": "Variation",
+    "moves": "Moves",
+    "practice": "Practice",
+    "addToStack": "Add to Stack",
+    "details": "Opening Details",
+    "variations": "Variations",
+    "noVariations": "No variations for this opening",
+    "mainLine": "Main Line"
+  },
+  "customOpenings": {
+    "title": "Custom Openings",
+    "create": "Create Custom Opening",
+    "edit": "Edit Custom Opening",
+    "name": "Opening Name",
+    "namePlaceholder": "e.g., My Sicilian Defense",
+    "color": "Playing As",
+    "white": "White",
+    "black": "Black",
+    "moves": "Moves (SAN notation)",
+    "movesPlaceholder": "e.g., e4 c5 Nf3 d6",
+    "description": "Description",
+    "descriptionPlaceholder": "Optional notes about this opening",
+    "save": "Save Opening",
+    "delete": "Delete Opening",
+    "confirmDelete": "Are you sure you want to delete this opening?",
+    "noOpenings": "No custom openings yet",
+    "createFirst": "Create your first custom opening to get started!",
+    "list": {
+      "subtitle": "Create and manage your own opening lines",
+      "createButton": "Create New Opening",
+      "viewDetails": "View Details",
+      "edit": "Edit",
+      "empty": {
+        "title": "No custom openings yet",
+        "description": "Create your first custom opening to start practicing your own lines",
+        "cta": "Create Your First Opening"
+      }
+    },
+    "detail": {
+      "chip": {
+        "playingAs": "Playing as {color}",
+        "custom": "Custom"
+      },
+      "buttons": {
+        "practice": "Practice This Opening",
+        "addToStack": "Add to Learning Stack",
+        "edit": "Edit Opening",
+        "delete": "Delete"
+      },
+      "statistics": {
+        "title": "Your Statistics",
+        "totalAttempts": "Total Attempts",
+        "correct": "Correct",
+        "incorrect": "Incorrect",
+        "accuracy": "Accuracy"
+      },
+      "position": "Position",
+      "moves": "Moves",
+      "table": {
+        "number": "#",
+        "white": "White",
+        "black": "Black"
+      },
+      "controls": {
+        "first": "First move",
+        "previous": "Previous move",
+        "autoplay": "Auto-play moves",
+        "pause": "Pause",
+        "next": "Next move",
+        "last": "Last move"
+      },
+      "addToStackModal": {
+        "title": "Add to Learning Stack",
+        "description": "Select a stack to add this custom opening to:",
+        "selectLabel": "Learning Stack",
+        "selectPlaceholder": "Select a stack",
+        "empty": "You don't have any learning stacks yet.",
+        "emptyCta": "Create Your First Stack",
+        "cancel": "Cancel",
+        "confirm": "Add to Stack",
+        "success": "Custom opening added to stack!"
+      },
+      "deleteModal": {
+        "title": "Delete Custom Opening",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "warning": "This will permanently remove the opening and its statistics.",
+        "cancel": "Cancel",
+        "confirm": "Delete Opening"
+      },
+      "alerts": {
+        "addToStackFailed": "Failed to add opening to stack",
+        "deleteFailed": "Failed to delete opening"
+      }
+    },
+    "form": {
+      "learningAs": "Learning as",
+      "selectColor": "Select color",
+      "board": {
+        "undo": "Undo Last Move",
+        "reset": "Reset Board"
+      }
+    },
+    "errors": {
+      "nameRequired": "Opening name is required",
+      "movesRequired": "Please add at least one move",
+      "loginRequired": "You must be logged in",
+      "saveFailed": "Failed to save custom opening",
+      "loginToView": "Please log in to view your custom openings",
+      "fetchFailed": "Error loading custom openings"
+    }
+  },
+  "stacks": {
+    "title": "Learning Stacks",
+    "create": "Create Stack",
+    "edit": "Edit Stack",
+    "name": "Stack Name",
+    "namePlaceholder": "e.g., Tournament Preparation",
+    "description": "Description",
+    "descriptionPlaceholder": "Optional description",
+    "openings": "Openings in this stack",
+    "addOpening": "Add Opening",
+    "removeOpening": "Remove",
+    "practice": "Practice Stack",
+    "save": "Save Stack",
+    "delete": "Delete Stack",
+    "confirmDelete": "Are you sure you want to delete this stack?",
+    "noStacks": "No learning stacks yet",
+    "createFirst": "Create your first stack to organize your openings!",
+    "noOpeningsInStack": "No openings in this stack yet",
+    "addFirst": "Add some openings to start practicing!",
+    "list": {
+      "subtitle": "Organize your openings into themed collections",
+      "createButton": "Create New Stack",
+      "viewDetails": "View Details",
+      "practice": "Practice",
+      "empty": {
+        "title": "No learning stacks yet",
+        "description": "Create your first stack to organize openings and start practicing",
+        "cta": "Create Your First Stack"
+      }
+    },
+    "detail": {
+      "stats": {
+        "totalOpenings": "Total Openings"
+      },
+      "openings": {
+        "title": "Openings in this Stack",
+        "addMore": "Add More Openings",
+        "practicingSpecific": "Practicing {count, plural, one {# specific position} other {# specific positions}}",
+        "practicingAll": "Practicing all positions",
+        "view": "View",
+        "remove": "Remove",
+        "custom": "Custom",
+        "unknown": "Unknown Opening"
+      },
+      "empty": {
+        "title": "No openings yet",
+        "description": "Add openings to this stack to start practicing",
+        "cta": "Browse Openings"
+      },
+      "deleteModal": {
+        "title": "Delete Stack",
+        "description": "Are you sure you want to delete \"{name}\"? This action cannot be undone.",
+        "warning": "This will remove the stack and all its associated openings from your collection.",
+        "cancel": "Cancel",
+        "confirm": "Delete Stack"
+      },
+      "alerts": {
+        "removeConfirm": "Remove this opening from the stack?",
+        "removeFailed": "Failed to remove opening",
+        "deleteFailed": "Failed to delete stack"
+      },
+      "buttons": {
+        "practice": "Start Practice",
+        "edit": "Edit Stack",
+        "delete": "Delete"
+      }
+    },
+    "errors": {
+      "nameRequired": "Stack name is required",
+      "loginRequired": "You must be logged in",
+      "saveFailed": "Failed to save stack",
+      "fetchFailed": "Error loading stacks"
+    }
+  },
+  "statistics": {
+    "title": "Statistics",
+    "overview": "Overview",
+    "totalAttempts": "Total Attempts",
+    "accuracy": "Overall Accuracy",
+    "practiceStreak": "Practice Streak",
+    "days": "days",
+    "byOpening": "Statistics by Opening",
+    "opening": "Opening",
+    "attempts": "Attempts",
+    "successRate": "Success Rate",
+    "lastPracticed": "Last Practiced",
+    "never": "Never",
+    "noData": "No practice data yet. Start practicing to see your statistics!",
+    "subtitle": "Track your progress and performance across all openings",
+    "filters": {
+      "mostPracticed": "Most Practiced",
+      "bestAccuracy": "Best Accuracy",
+      "mostRecent": "Most Recent"
+    },
+    "lastPracticedLabels": {
+      "justNow": "Just now",
+      "minutesAgo": "{count, plural, one {# minute ago} other {# minutes ago}}",
+      "hoursAgo": "{count, plural, one {# hour ago} other {# hours ago}}",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo": "{count, plural, one {# day ago} other {# days ago}}"
+    },
+    "totalOpeningsPracticed": "Openings Practiced",
+    "practiceStreakLabel": "Day Streak 🔥",
+    "empty": {
+      "title": "No statistics yet",
+      "description": "Start practicing openings to see your progress here",
+      "cta": "Start Practicing"
+    },
+    "motivations": {
+      "excellent": {
+        "title": "Excellent work!",
+        "description": "You're mastering your openings with {accuracy}% accuracy. Keep it up!"
+      },
+      "great": {
+        "title": "Great progress!",
+        "description": "You're doing well with {accuracy}% accuracy. Keep practicing to improve further!"
+      },
+      "keepGoing": {
+        "title": "Keep going!",
+        "description": "Every master was once a beginner. Practice makes perfect!"
+      }
+    },
+    "attemptsCount": "{count, plural, one {# attempt} other {# attempts}}",
+    "correctCount": "{count, plural, one {# correct answer} other {# correct answers}}",
+    "incorrectCount": "{count, plural, one {# incorrect answer} other {# incorrect answers}}",
+    "correct": "Correct",
+    "incorrect": "Incorrect"
+  },
+  "profile": {
+    "title": "Profile",
+    "personalInfo": "Personal Information",
+    "username": "Username",
+    "email": "Email",
+    "memberSince": "Member since",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "updatePassword": "Update Password",
+    "passwordUpdated": "Password updated successfully",
+    "errorPassword": "Failed to update password",
+    "edit": "Edit Profile",
+    "save": "Save Changes",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Enter your display name",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us about yourself (optional)",
+    "bioEmpty": "No bio added yet.",
+    "updated": "Profile updated successfully!",
+    "updateError": "Failed to update profile",
+    "startPasswordChange": "Change Password",
+    "cancel": "Cancel",
+    "password": {
+      "allFieldsRequired": "All password fields are required",
+      "tooShort": "New password must be at least 6 characters",
+      "mismatch": "New passwords do not match",
+      "sameAsCurrent": "New password must be different from current password",
+      "incorrectCurrent": "Current password is incorrect",
+      "changeFailed": "Failed to change password"
+    },
+    "defaultName": "User",
+    "changePasswordDescription": "Update your password to keep your account secure."
   },
   "settings": {
     "title": "Settings",
@@ -116,14 +557,160 @@
     },
     "theme": {
       "title": "Theme",
-      "description": "Select your preferred theme"
+      "description": "Select your preferred theme",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "darkMode": "Dark Mode"
     },
-    "profile": {
-      "title": "Profile",
-      "changePassword": "Change Password"
+    "notifications": {
+      "title": "Notifications",
+      "description": "Manage your notification preferences",
+      "email": "Email notifications",
+      "practice": "Practice reminders"
+    },
+    "practice": {
+      "title": "Practice Settings",
+      "autoAdvance": {
+        "title": "Auto-advance",
+        "description": "Automatically move to the next position after a correct answer"
+      },
+      "moveHints": {
+        "title": "Show Move Hints",
+        "description": "Highlight the piece to move after an incorrect attempt"
+      },
+      "soundEffects": {
+        "title": "Sound Effects",
+        "description": "Play sounds for moves and feedback"
+      }
+    },
+    "board": {
+      "title": "Board Settings",
+      "showCoordinates": {
+        "title": "Show Coordinates",
+        "description": "Display rank and file labels on the board"
+      },
+      "highlightMoves": {
+        "title": "Highlight Legal Moves",
+        "description": "Show available moves when selecting a piece"
+      },
+      "animationSpeed": {
+        "title": "Animation Speed",
+        "description": "Speed of piece movement animations"
+      }
+    },
+    "spacedRepetition": {
+      "title": "Spaced Repetition",
+      "reminders": {
+        "title": "Practice Reminders",
+        "description": "Get notified when openings are due for review"
+      },
+      "prioritizeWeak": {
+        "title": "Prioritize Weak Positions",
+        "description": "Show positions with lower success rates more frequently"
+      },
+      "dailyGoal": {
+        "title": "Daily Goal",
+        "description": "Set a daily practice target (positions per day)"
+      }
     }
   },
   "footer": {
     "copyright": "©2025 LinePrep"
+  },
+  "marketing": {
+    "about": {
+      "hero": {
+        "title": "About LinePrep",
+        "subtitle": "Master chess openings through interactive practice and spaced repetition"
+      },
+      "mission": {
+        "title": "Our Mission",
+        "paragraph1": "LinePrep was created to help chess players of all levels build a solid opening repertoire through effective practice.",
+        "paragraph2": "By combining interactive practice with spaced repetition algorithms, we make learning chess openings engaging, efficient, and fun."
+      },
+      "features": {
+        "title": "Key Features",
+        "database": {
+          "title": "Comprehensive Opening Database",
+          "description": "Access a curated collection of popular chess openings with detailed variations and explanations."
+        },
+        "practice": {
+          "title": "Interactive Practice",
+          "description": "Learn by doing. Practice positions from your chosen openings with instant feedback on every move."
+        },
+        "stacks": {
+          "title": "Learning Stacks",
+          "description": "Organize openings into themed collections tailored to your playing style."
+        },
+        "progress": {
+          "title": "Progress Tracking",
+          "description": "Monitor your performance with detailed statistics and identify openings that need more work."
+        },
+        "custom": {
+          "title": "Custom Openings",
+          "description": "Create and practice your own opening lines for specific variations or opponents."
+        },
+        "spaced": {
+          "title": "Spaced Repetition",
+          "description": "Smart scheduling ensures you review positions at optimal intervals for maximum retention."
+        }
+      },
+      "howItWorks": {
+        "title": "How It Works",
+        "steps": {
+          "choose": {
+            "title": "Choose Your Openings",
+            "description": "Browse our database or create your own lines, then add them to themed learning stacks."
+          },
+          "practice": {
+            "title": "Practice Positions",
+            "description": "Work through interactive positions and get instant move-by-move feedback."
+          },
+          "track": {
+            "title": "Track Your Progress",
+            "description": "Review detailed stats so the system can prioritize the positions you struggle with."
+          },
+          "master": {
+            "title": "Master Your Repertoire",
+            "description": "Consistent practice builds deep confidence in the openings you rely on over the board."
+          }
+        }
+      },
+      "technology": {
+        "title": "Built With Modern Technology",
+        "description": "LinePrep uses cutting-edge web tech to deliver a fast, reliable, and beautiful training experience.",
+        "stack": {
+          "next": {
+            "title": "Next.js",
+            "description": "React Framework"
+          },
+          "supabase": {
+            "title": "Supabase",
+            "description": "Database & Auth"
+          },
+          "heroui": {
+            "title": "HeroUI",
+            "description": "UI Components"
+          },
+          "chess": {
+            "title": "Chess.js",
+            "description": "Chess Logic"
+          }
+        }
+      },
+      "cta": {
+        "title": "Ready to Master Your Openings?",
+        "description": "Join LinePrep today and start building a solid opening repertoire that elevates your play.",
+        "primary": "Get Started Free",
+        "secondary": "Browse Openings"
+      },
+      "contact": {
+        "title": "Get In Touch",
+        "description": "Have questions or feedback? We'd love to hear from you!",
+        "creator": "Created by {name}",
+        "cta": "View on GitHub"
+      }
+    }
   }
 }

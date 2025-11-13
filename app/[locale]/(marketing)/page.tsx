@@ -1,9 +1,10 @@
 "use client";
 
-import { Link } from "@heroui/link";
+import { Link as HeroUILink } from "@heroui/link";
 import { button as buttonStyles } from "@heroui/theme";
 import { Card, CardBody } from "@heroui/react";
 import { useTranslations } from "next-intl";
+import { Link } from "@/lib/navigation";
 
 import { siteConfig } from "@/config/site";
 import { title, subtitle } from "@/components/primitives";
@@ -39,14 +40,14 @@ export default function Home() {
           >
             {t("hero.getStarted")}
           </Link>
-          <Link
+          <HeroUILink
             isExternal
             className={buttonStyles({ variant: "bordered", radius: "full", size: "lg" })}
             href={siteConfig.links.github}
           >
             <GithubIcon size={20} />
             GitHub
-          </Link>
+          </HeroUILink>
         </div>
       </section>
 

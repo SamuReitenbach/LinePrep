@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/navigation";
 import {
   Card,
   CardBody,
@@ -15,8 +15,9 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useLocale, useTranslations } from "next-intl";
 
 interface Stack {
   id: string;
@@ -51,9 +52,12 @@ export function StackDetailClient({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const supabase = createClient();
+  const locale = useLocale();
+  const tStacks = useTranslations("stacks");
+  const tCommon = useTranslations("common");
 
   const handleRemoveOpening = async (stackOpeningId: string) => {
-    if (!confirm("Remove this opening from the stack?")) return;
+    if (!confirm(tStacks("detail.alerts.removeConfirm"))) return;
 
     setDeletingId(stackOpeningId);
     try {
@@ -68,7 +72,7 @@ export function StackDetailClient({
       router.refresh();
     } catch (error: any) {
       console.error("Error removing opening:", error);
-      alert("Failed to remove opening");
+      alert(tStacks("detail.alerts.removeFailed"));
     } finally {
       setDeletingId(null);
     }
@@ -89,13 +93,13 @@ export function StackDetailClient({
       router.refresh();
     } catch (error: any) {
       console.error("Error deleting stack:", error);
-      alert("Failed to delete stack");
+      alert(tStacks("detail.alerts.deleteFailed"));
       setDeletingStack(false);
     }
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString(locale, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -107,7 +111,7 @@ export function StackDetailClient({
       {/* Breadcrumb */}
       <div className="text-sm text-default-500">
         <Link href="/stacks" className="hover:text-default-700">
-          Learning Stacks
+          {tStacks("title")}
         </Link>
         {" / "}
         <span className="text-default-900">{stack.name}</span>
@@ -121,7 +125,8 @@ export function StackDetailClient({
             <p className="text-default-600 mb-2">{stack.description}</p>
           )}
           <p className="text-sm text-default-400">
-            Created {formatDate(stack.created_at)} • Updated {formatDate(stack.updated_at)}
+            {tCommon("createdAt", { date: formatDate(stack.created_at) })} •{" "}
+            {tCommon("updatedAt", { date: formatDate(stack.updated_at) })}
           </p>
         </div>
         <div className="flex gap-2">
@@ -132,7 +137,7 @@ export function StackDetailClient({
             size="lg"
             isDisabled={stackOpenings.length === 0}
           >
-            Start Practice
+            {tStacks("detail.buttons.practice")}
           </Button>
           <Button
             as={Link}
@@ -140,7 +145,7 @@ export function StackDetailClient({
             variant="bordered"
             size="lg"
           >
-            Edit Stack
+            {tStacks("detail.buttons.edit")}
           </Button>
           <Button
             color="danger"
@@ -148,7 +153,7 @@ export function StackDetailClient({
             size="lg"
             onPress={onOpen}
           >
-            Delete
+            {tStacks("detail.buttons.delete")}
           </Button>
         </div>
       </div>
@@ -159,7 +164,9 @@ export function StackDetailClient({
           <div className="flex gap-8">
             <div>
               <p className="text-2xl font-bold text-primary">{stackOpenings.length}</p>
-              <p className="text-sm text-default-500">Total Openings</p>
+              <p className="text-sm text-default-500">
+                {tStacks("detail.stats.totalOpenings")}
+              </p>
             </div>
           </div>
         </CardBody>
@@ -168,14 +175,16 @@ export function StackDetailClient({
       {/* Openings List */}
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Openings in this Stack</h2>
+          <h2 className="text-xl font-bold">
+            {tStacks("detail.openings.title")}
+          </h2>
           <Button
             as={Link}
             href="/openings"
             color="primary"
             variant="flat"
           >
-            Add More Openings
+            {tStacks("detail.openings.addMore")}
           </Button>
         </div>
 
@@ -192,11 +201,11 @@ export function StackDetailClient({
                       <div className="flex-1">
                         <div className="flex items-start gap-2 mb-2">
                           <h3 className="text-lg font-semibold">
-                            {opening?.name || "Unknown Opening"}
+                            {opening?.name || tStacks("detail.openings.unknown")}
                           </h3>
                           {isCustom && (
                             <Chip size="sm" color="secondary" variant="flat">
-                              Custom
+                              {tStacks("detail.openings.custom")}
                             </Chip>
                           )}
                           {so.variation && (
@@ -219,8 +228,10 @@ export function StackDetailClient({
 
                         <p className="text-sm text-default-500">
                           {so.practice_move_numbers.length > 0
-                            ? `Practicing ${so.practice_move_numbers.length} specific positions`
-                            : "Practicing all positions"}
+                            ? tStacks("detail.openings.practicingSpecific", {
+                                count: so.practice_move_numbers.length,
+                              })
+                            : tStacks("detail.openings.practicingAll")}
                         </p>
                       </div>
 
@@ -235,7 +246,7 @@ export function StackDetailClient({
                           size="sm"
                           variant="flat"
                         >
-                          View
+                          {tStacks("detail.openings.view")}
                         </Button>
                         <Button
                           size="sm"
@@ -244,7 +255,7 @@ export function StackDetailClient({
                           onPress={() => handleRemoveOpening(so.id)}
                           isLoading={deletingId === so.id}
                         >
-                          Remove
+                          {tStacks("detail.openings.remove")}
                         </Button>
                       </div>
                     </div>
@@ -257,16 +268,18 @@ export function StackDetailClient({
           <Card>
             <CardBody className="text-center py-12">
               <div className="text-4xl mb-4">📚</div>
-              <h3 className="text-xl font-bold mb-2">No openings yet</h3>
+              <h3 className="text-xl font-bold mb-2">
+                {tStacks("detail.empty.title")}
+              </h3>
               <p className="text-default-500 mb-6">
-                Add openings to this stack to start practicing
+                {tStacks("detail.empty.description")}
               </p>
               <Button
                 as={Link}
                 href="/openings"
                 color="primary"
               >
-                Browse Openings
+                {tStacks("detail.empty.cta")}
               </Button>
             </CardBody>
           </Card>
@@ -276,25 +289,25 @@ export function StackDetailClient({
       {/* Delete Confirmation Modal */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalContent>
-          <ModalHeader>Delete Stack</ModalHeader>
+          <ModalHeader>{tStacks("detail.deleteModal.title")}</ModalHeader>
           <ModalBody>
             <p>
-              Are you sure you want to delete "{stack.name}"? This action cannot be undone.
+              {tStacks("detail.deleteModal.description", { name: stack.name })}
             </p>
             <p className="text-sm text-default-500 mt-2">
-              This will remove the stack and all its associated openings from your collection.
+              {tStacks("detail.deleteModal.warning")}
             </p>
           </ModalBody>
           <ModalFooter>
             <Button variant="light" onPress={onClose} isDisabled={deletingStack}>
-              Cancel
+              {tStacks("detail.deleteModal.cancel")}
             </Button>
             <Button
               color="danger"
               onPress={handleDeleteStack}
               isLoading={deletingStack}
             >
-              Delete Stack
+              {tStacks("detail.deleteModal.confirm")}
             </Button>
           </ModalFooter>
         </ModalContent>

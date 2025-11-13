@@ -1,9 +1,10 @@
 "use client";
 
 import { Card, CardBody, CardHeader, Button, Chip } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link } from "@/lib/navigation";
 import { PreviewChessBoard } from "@/components/PreviewChessBoard";
 import { Chess } from "chess.js";
+import { useLocale, useTranslations } from "next-intl";
 
 interface CustomOpening {
   id: string;
@@ -20,8 +21,12 @@ interface CustomOpeningsClientProps {
 }
 
 export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
+  const locale = useLocale();
+  const tCustom = useTranslations("customOpenings");
+  const tCommon = useTranslations("common");
+
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString(locale, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -45,9 +50,9 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Custom Openings</h1>
+          <h1 className="text-3xl font-bold mb-2">{tCustom("title")}</h1>
           <p className="text-default-500">
-            Create and manage your own opening lines
+            {tCustom("list.subtitle")}
           </p>
         </div>
         <Button
@@ -56,7 +61,7 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
           color="primary"
           size="lg"
         >
-          Create New Opening
+          {tCustom("list.createButton")}
         </Button>
       </div>
 
@@ -73,7 +78,7 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
                     variant="flat" 
                     color={opening.color === 'white' ? 'default' : 'primary'}
                   >
-                    {opening.color === 'white' ? '⚪' : '⚫'} {opening.color}
+                    {opening.color === 'white' ? '⚪' : '⚫'} {tCustom(opening.color)}
                   </Chip>
                 </div>
               </CardHeader>
@@ -94,12 +99,14 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
 
                 <div className="text-sm">
                   <p className="text-default-500 text-center">
-                    {Math.ceil(opening.moves.length / 2)} moves
+                    {tCommon("movesCount", {
+                      count: Math.ceil(opening.moves.length / 2),
+                    })}
                   </p>
                 </div>
 
                 <div className="text-xs text-default-400 text-center">
-                  Updated {formatDate(opening.updated_at)}
+                  {tCommon("updatedAt", { date: formatDate(opening.updated_at) })}
                 </div>
 
                 <div className="flex gap-2 mt-2">
@@ -110,7 +117,7 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
                     size="sm"
                     className="flex-1"
                   >
-                    View Details
+                    {tCustom("list.viewDetails")}
                   </Button>
                   <Button
                     as={Link}
@@ -119,7 +126,7 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
                     size="sm"
                     className="flex-1"
                   >
-                    Edit
+                    {tCustom("list.edit")}
                   </Button>
                 </div>
               </CardBody>
@@ -130,9 +137,11 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
         <Card>
           <CardBody className="text-center py-12">
             <div className="text-4xl mb-4">✨</div>
-            <h2 className="text-xl font-bold mb-2">No custom openings yet</h2>
+            <h2 className="text-xl font-bold mb-2">
+              {tCustom("list.empty.title")}
+            </h2>
             <p className="text-default-500 mb-6">
-              Create your first custom opening to start practicing your own lines
+              {tCustom("list.empty.description")}
             </p>
             <Button
               as={Link}
@@ -140,7 +149,7 @@ export function CustomOpeningsClient({ openings }: CustomOpeningsClientProps) {
               color="primary"
               size="lg"
             >
-              Create Your First Opening
+              {tCustom("list.empty.cta")}
             </Button>
           </CardBody>
         </Card>

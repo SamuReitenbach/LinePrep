@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Card, CardBody, CardHeader, Button, Chip, Progress } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link } from "@/lib/navigation";
 import { ChessBoard } from "@/components/ChessBoard";
 import { Chess } from "chess.js";
+import { useTranslations } from "next-intl";
 
 interface PracticePosition {
   moveNumber: number;
@@ -54,6 +55,11 @@ export function PracticeClient({
     incorrect: 0,
     total: 0,
   });
+  const tPractice = useTranslations("practice");
+  const tCommon = useTranslations("common");
+  const tStacks = useTranslations("stacks");
+  const tCustomOpenings = useTranslations("customOpenings");
+  const tOpenings = useTranslations("openings");
 
   const fetchPosition = useCallback(async () => {
     setLoading(true);
@@ -83,7 +89,7 @@ export function PracticeClient({
       console.error("Error fetching position:", error);
       setFeedback({
         type: "error",
-        message: error.message || "Failed to load practice position",
+        message: error.message || tPractice("client.feedback.loadError"),
       });
     } finally {
       setLoading(false);
@@ -107,7 +113,7 @@ export function PracticeClient({
     if (!madeMove) {
       setFeedback({
         type: "error",
-        message: "Invalid move",
+        message: tPractice("client.feedback.invalidMove"),
       });
       return;
     }
@@ -143,7 +149,9 @@ export function PracticeClient({
     if (isCorrect) {
       setFeedback({
         type: "success",
-        message: `Correct! ${position.correctMove}`,
+        message: tPractice("client.feedback.correct", {
+          move: position.correctMove,
+        }),
       });
       // Auto-advance after 1.5 seconds
       setTimeout(() => {
@@ -152,7 +160,9 @@ export function PracticeClient({
     } else {
       setFeedback({
         type: "error",
-        message: `Incorrect. The correct move was ${position.correctMove}`,
+        message: tPractice("client.feedback.incorrect", {
+          move: position.correctMove,
+        }),
       });
     }
   };
@@ -161,29 +171,36 @@ export function PracticeClient({
     setShowAnswer(true);
     setFeedback({
       type: null,
-      message: `The correct move is: ${position?.correctMove}`,
+      message: tPractice("client.feedback.answer", {
+        move: position?.correctMove ?? "",
+      }),
     });
   };
 
   const accuracy = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
 
+  const baseTitle = tPractice("title");
   const title =
     mode === "stack"
-      ? `Practice: ${stackName}`
+      ? `${baseTitle}: ${stackName}`
       : mode === "custom-opening"
-      ? `Practice: ${customOpeningName}`
-      : `Practice: ${openingName}${variationName ? ` - ${variationName}` : ""}`;
+      ? `${baseTitle}: ${customOpeningName}`
+      : `${baseTitle}: ${openingName}${variationName ? ` - ${variationName}` : ""}`;
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
         <div className="text-sm text-default-500 mb-2">
-          <Link 
-            href={mode === "stack" ? "/stacks" : mode === "custom-opening" ? "/custom-openings" : "/openings"} 
+          <Link
+            href={mode === "stack" ? "/stacks" : mode === "custom-opening" ? "/custom-openings" : "/openings"}
             className="hover:text-default-700"
           >
-            {mode === "stack" ? "Learning Stacks" : mode === "custom-opening" ? "Custom Openings" : "Openings"}
+            {mode === "stack"
+              ? tStacks("title")
+              : mode === "custom-opening"
+              ? tCustomOpenings("title")
+              : tOpenings("title")}
           </Link>
           {" / "}
           <Link
@@ -199,7 +216,7 @@ export function PracticeClient({
             {mode === "stack" ? stackName : mode === "custom-opening" ? customOpeningName : openingName}
           </Link>
           {" / "}
-          <span className="text-default-900">Practice</span>
+          <span className="text-default-900">{tPractice("client.breadcrumb")}</span>
         </div>
         <h1 className="text-3xl font-bold">{title}</h1>
       </div>
@@ -209,25 +226,33 @@ export function PracticeClient({
         <Card>
           <CardBody className="text-center py-4">
             <p className="text-2xl font-bold text-success">{stats.correct}</p>
-            <p className="text-sm text-default-500">Correct</p>
+            <p className="text-sm text-default-500">
+              {tPractice("client.stats.correct")}
+            </p>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center py-4">
             <p className="text-2xl font-bold text-danger">{stats.incorrect}</p>
-            <p className="text-sm text-default-500">Incorrect</p>
+            <p className="text-sm text-default-500">
+              {tPractice("client.stats.incorrect")}
+            </p>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center py-4">
             <p className="text-2xl font-bold text-primary">{stats.total}</p>
-            <p className="text-sm text-default-500">Total</p>
+            <p className="text-sm text-default-500">
+              {tPractice("client.stats.total")}
+            </p>
           </CardBody>
         </Card>
         <Card>
           <CardBody className="text-center py-4">
             <p className="text-2xl font-bold text-warning">{accuracy}%</p>
-            <p className="text-sm text-default-500">Accuracy</p>
+            <p className="text-sm text-default-500">
+              {tPractice("client.stats.accuracy")}
+            </p>
           </CardBody>
         </Card>
       </div>
@@ -240,11 +265,13 @@ export function PracticeClient({
             <CardHeader>
               <div className="flex justify-between items-center w-full">
                 <h2 className="text-xl font-bold">
-                  {position ? position.openingName : "Loading..."}
+                  {position ? position.openingName : tCommon("loading")}
                 </h2>
                 {position && (
                   <Chip color="primary" variant="flat">
-                    Move {Math.floor(position.moveNumber / 2) + 1}
+                    {tPractice("client.board.move", {
+                      move: Math.floor(position.moveNumber / 2) + 1,
+                    })}
                   </Chip>
                 )}
               </div>
@@ -255,7 +282,7 @@ export function PracticeClient({
                   <Progress
                     size="sm"
                     isIndeterminate
-                    aria-label="Loading..."
+                    aria-label={tCommon("loading")}
                     className="max-w-md"
                   />
                 </div>
@@ -270,7 +297,9 @@ export function PracticeClient({
                 />
               ) : (
                 <div className="text-center py-12">
-                  <p className="text-default-500">No positions available</p>
+                  <p className="text-default-500">
+                    {tPractice("client.board.noPositions")}
+                  </p>
                 </div>
               )}
             </CardBody>
@@ -282,13 +311,15 @@ export function PracticeClient({
           {/* Instructions */}
           <Card>
             <CardHeader>
-              <h3 className="font-bold">Instructions</h3>
+              <h3 className="font-bold">
+                {tPractice("client.instructions.title")}
+              </h3>
             </CardHeader>
             <CardBody className="text-sm space-y-2">
-              <p>• Make the correct move for this position</p>
-              <p>• Click or drag pieces to move</p>
-              <p>• Get instant feedback</p>
-              <p>• Track your progress</p>
+              <p>• {tPractice("client.instructions.items.makeMove")}</p>
+              <p>• {tPractice("client.instructions.items.drag")}</p>
+              <p>• {tPractice("client.instructions.items.feedback")}</p>
+              <p>• {tPractice("client.instructions.items.track")}</p>
             </CardBody>
           </Card>
 
@@ -307,7 +338,9 @@ export function PracticeClient({
           {position && position.previousMoves.length > 0 && (
             <Card>
               <CardHeader>
-                <h3 className="font-bold">Previous Moves</h3>
+                <h3 className="font-bold">
+                  {tPractice("client.previousMoves")}
+                </h3>
               </CardHeader>
               <CardBody>
                 <div className="font-mono text-sm">
@@ -334,7 +367,7 @@ export function PracticeClient({
               onPress={fetchPosition}
               isDisabled={loading}
             >
-              Skip / Next Position
+              {tPractice("client.actions.skip")}
             </Button>
             <Button
               variant="flat"
@@ -342,7 +375,7 @@ export function PracticeClient({
               onPress={handleShowAnswer}
               isDisabled={loading || showAnswer}
             >
-              Show Answer
+              {tPractice("client.actions.showAnswer")}
             </Button>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { StacksClient } from "./stacks-client";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = 'force-dynamic';
 
@@ -13,13 +14,14 @@ interface LearningStack {
 
 export default async function StacksPage() {
   const supabase = await createServerSupabaseClient();
+  const tStacks = await getTranslations("stacks");
   
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <div>Please log in to view your stacks</div>;
+    return <div>{tStacks("errors.loginRequired")}</div>;
   }
 
   // Fetch user's learning stacks with opening counts
@@ -38,7 +40,7 @@ export default async function StacksPage() {
 
   if (error) {
     console.error('Error fetching stacks:', error);
-    return <div>Error loading stacks</div>;
+    return <div>{tStacks("errors.fetchFailed")}</div>;
   }
 
   // Transform the data to include opening count

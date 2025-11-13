@@ -1,8 +1,8 @@
 "use client";
 
-import { Link } from "@heroui/link";
-import { usePathname, useRouter } from "next/navigation";
+import { Link as HeroUILink } from "@heroui/link";
 import { Button, Divider, Tooltip } from "@heroui/react";
+import { Link, usePathname, useRouter } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
@@ -10,6 +10,7 @@ import { title } from "@/components/primitives";
 import { Settings, LogOut, User as UserIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { useSidebar } from "@/lib/sidebar-context";
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 interface AppSidebarProps {
   user: any;
@@ -20,10 +21,21 @@ export function AppSidebar({ user }: AppSidebarProps) {
   const router = useRouter();
   const supabase = createClient();
   const { isCollapsed, toggleSidebar } = useSidebar();
+  const t = useTranslations("sidebar");
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     router.push("/");
+  };
+
+  // Map of route paths to translation keys
+  const navLabelMap: Record<string, string> = {
+    "/dashboard": "dashboard",
+    "/openings": "openings",
+    "/practice": "practice",
+    "/stacks": "stacks",
+    "/custom-openings": "customOpenings",
+    "/statistics": "statistics",
   };
 
   return (
@@ -59,9 +71,11 @@ export function AppSidebar({ user }: AppSidebarProps) {
           const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
           const Icon = item.icon;
 
+          const translatedLabel = t(navLabelMap[item.href] as any);
+
           if (isCollapsed) {
             return (
-              <Tooltip key={item.href} content={item.label} placement="right">
+              <Tooltip key={item.href} content={translatedLabel} placement="right">
                 <div>
                   <Link
                     href={item.href}
@@ -89,7 +103,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
               }`}
             >
               <Icon size={20} strokeWidth={2} />
-              <span className="font-medium">{item.label}</span>
+              <span className="font-medium">{translatedLabel}</span>
             </Link>
           );
         })}
@@ -102,37 +116,37 @@ export function AppSidebar({ user }: AppSidebarProps) {
         {isCollapsed ? (
           <>
             {/* Collapsed user section */}
-            <Tooltip content="Profile" placement="right">
+            <Tooltip content={t("profile")} placement="right">
               <Button
                 as={Link}
                 href="/profile"
                 isIconOnly
                 variant="light"
                 size="sm"
-                aria-label="Profile"
+                aria-label={t("profile")}
               >
                 <UserIcon size={20} />
               </Button>
             </Tooltip>
-            <Tooltip content="Settings" placement="right">
+            <Tooltip content={t("settings")} placement="right">
               <Button
                 as={Link}
                 href="/settings"
                 isIconOnly
                 variant="light"
                 size="sm"
-                aria-label="Settings"
+                aria-label={t("settings")}
               >
                 <Settings size={20} />
               </Button>
             </Tooltip>
-            <Tooltip content="Sign Out" placement="right">
+            <Tooltip content={t("signOut")} placement="right">
               <Button
                 isIconOnly
                 variant="light"
                 size="sm"
                 onPress={handleSignOut}
-                aria-label="Sign Out"
+                aria-label={t("signOut")}
               >
                 <LogOut size={20} />
               </Button>
@@ -151,14 +165,14 @@ export function AppSidebar({ user }: AppSidebarProps) {
                 </div>
               </Link>
               <div className="flex items-center gap-2">
-                <Tooltip content="Settings">
+                <Tooltip content={t("settings")}>
                   <Button
                     as={Link}
                     href="/settings"
                     isIconOnly
                     variant="light"
                     size="sm"
-                    aria-label="Settings"
+                    aria-label={t("settings")}
                   >
                     <Settings size={20} />
                   </Button>
@@ -173,7 +187,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
               onPress={handleSignOut}
               startContent={<LogOut size={16} />}
             >
-              Sign Out
+              {t("signOut")}
             </Button>
           </>
         )}
@@ -183,13 +197,13 @@ export function AppSidebar({ user }: AppSidebarProps) {
 
       {/* Toggle button */}
       <div className={`p-2 ${isCollapsed ? "flex justify-center" : "flex justify-end"}`}>
-        <Tooltip content={isCollapsed ? "Expand sidebar" : "Collapse sidebar"} placement="right">
+        <Tooltip content={isCollapsed ? t("expandSidebar") : t("collapseSidebar")} placement="right">
           <Button
             isIconOnly
             variant="light"
             size="sm"
             onPress={toggleSidebar}
-            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-label={isCollapsed ? t("expandSidebar") : t("collapseSidebar")}
           >
             {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
           </Button>

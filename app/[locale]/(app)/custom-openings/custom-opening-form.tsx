@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/navigation";
 import { Card, CardBody, Input, Textarea, Button, Select, SelectItem } from "@heroui/react";
 import { ChessBoard } from "@/components/ChessBoard";
 import { createClient } from "@/lib/supabase/client";
 import { Chess } from "chess.js";
+import { useTranslations } from "next-intl";
 
 interface CustomOpeningFormProps {
   mode: "create" | "edit";
@@ -27,6 +28,9 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
   const [error, setError] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const tCustom = useTranslations("customOpenings");
+  const tCustomDetail = useTranslations("customOpenings.detail");
+  const tCommon = useTranslations("common");
 
   // Create a FEN from the moves for the board
   const getFenFromMoves = () => {
@@ -69,12 +73,12 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
     setError("");
 
     if (!name.trim()) {
-      setError("Opening name is required");
+      setError(tCustom("errors.nameRequired"));
       return;
     }
 
     if (moves.length === 0) {
-      setError("Please add at least one move");
+      setError(tCustom("errors.movesRequired"));
       return;
     }
 
@@ -86,7 +90,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
       } = await supabase.auth.getUser();
 
       if (!user) {
-        throw new Error("You must be logged in");
+        throw new Error(tCustom("errors.loginRequired"));
       }
 
       if (mode === "create") {
@@ -125,7 +129,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
       router.refresh();
     } catch (error: any) {
       console.error("Error saving custom opening:", error);
-      setError(error.message || "Failed to save custom opening");
+      setError(error.message || tCustom("errors.saveFailed"));
     } finally {
       setLoading(false);
     }
@@ -153,7 +157,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
                 isDisabled={moves.length === 0}
                 className="flex-1"
               >
-                Undo Last Move
+                {tCustom("form.board.undo")}
               </Button>
               <Button
                 color="danger"
@@ -162,7 +166,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
                 isDisabled={moves.length === 0}
                 className="flex-1"
               >
-                Reset Board
+                {tCustom("form.board.reset")}
               </Button>
             </div>
           </div>
@@ -174,8 +178,8 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
         <CardBody>
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              label="Opening Name"
-              placeholder="e.g., My Sicilian Variation"
+              label={tCustom("name")}
+              placeholder={tCustom("namePlaceholder")}
               value={name}
               onChange={(e) => setName(e.target.value)}
               isRequired
@@ -183,8 +187,8 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
             />
 
             <Textarea
-              label="Description"
-              placeholder="Describe your opening (optional)"
+              label={tCustom("description")}
+              placeholder={tCustom("descriptionPlaceholder")}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               minRows={3}
@@ -193,16 +197,16 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
             />
 
             <Select
-              label="Learning as"
-              placeholder="Select color"
+              label={tCustom("form.learningAs")}
+              placeholder={tCustom("form.selectColor")}
               selectedKeys={[color]}
               onSelectionChange={(keys) => {
                 const value = Array.from(keys)[0] as 'white' | 'black';
                 setColor(value);
               }}
             >
-              <SelectItem key="white">White</SelectItem>
-              <SelectItem key="black">Black</SelectItem>
+              <SelectItem key="white">{tCustom("white")}</SelectItem>
+              <SelectItem key="black">{tCustom("black")}</SelectItem>
             </Select>
 
             {/* Move Table */}
@@ -210,9 +214,15 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
               <table className="table-fixed">
                 <thead className="sticky top-0 bg-default-100 z-10">
                   <tr>
-                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-18">#</th>
-                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">White</th>
-                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">Black</th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-18">
+                      {tCustomDetail("table.number")}
+                    </th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">
+                      {tCustomDetail("table.white")}
+                    </th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">
+                      {tCustomDetail("table.black")}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -258,7 +268,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
                 isDisabled={moves.length === 0}
                 className="flex-1"
               >
-                {mode === "create" ? "Create Opening" : "Save Changes"}
+                {mode === "create" ? tCustom("create") : tCustom("save")}
               </Button>
               <Button
                 type="button"
@@ -266,7 +276,7 @@ export function CustomOpeningForm({ mode, initialData }: CustomOpeningFormProps)
                 onPress={() => router.back()}
                 isDisabled={loading}
               >
-                Cancel
+                {tCommon("cancel")}
               </Button>
             </div>
           </form>

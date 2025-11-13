@@ -1,9 +1,11 @@
-import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
+import { redirect } from "@/lib/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { LoginForm } from "./login-form";
 
 export default async function LoginPage() {
   const supabase = await createServerSupabaseClient();
+  const locale = await getLocale();
 
   const {
     data: { user },
@@ -11,7 +13,7 @@ export default async function LoginPage() {
 
   // Redirect to dashboard if already authenticated
   if (user) {
-    redirect("/dashboard");
+    redirect({ href: "/dashboard", locale });
   }
 
   return <LoginForm />;

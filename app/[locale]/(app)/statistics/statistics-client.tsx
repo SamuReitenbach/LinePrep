@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Card, CardBody, Button, Progress, Chip } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link } from "@/lib/navigation";
+import { useLocale, useTranslations } from "next-intl";
 
 interface OverallStats {
   totalAttempts: number;
@@ -30,6 +31,10 @@ interface StatisticsClientProps {
 
 export function StatisticsClient({ overallStats, openingStats }: StatisticsClientProps) {
   const [sortBy, setSortBy] = useState<'attempts' | 'accuracy' | 'recent'>('attempts');
+  const locale = useLocale();
+  const t = useTranslations("statistics");
+  const tCustomDetail = useTranslations("customOpenings.detail");
+  const tOpenings = useTranslations("openings");
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -37,26 +42,26 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
     const diffTime = now.getTime() - date.getTime();
     const diffMinutes = Math.floor(diffTime / (1000 * 60));
     const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-    // Reset times to midnight for accurate day comparison
-    const today = new Date(now);
-    today.setHours(0, 0, 0, 0);
-    const practiceDate = new Date(date);
-    practiceDate.setHours(0, 0, 0, 0);
-    const diffDays = Math.floor((today.getTime() - practiceDate.getTime()) / (1000 * 60 * 60 * 24));
+    if (diffMinutes < 1) return t("lastPracticedLabels.justNow");
+    if (diffMinutes < 60) {
+      return t("lastPracticedLabels.minutesAgo", { count: diffMinutes });
+    }
+    if (diffHours < 24) {
+      return t("lastPracticedLabels.hoursAgo", { count: diffHours });
+    }
+    if (diffDays === 0) return t("lastPracticedLabels.today");
+    if (diffDays === 1) return t("lastPracticedLabels.yesterday");
+    if (diffDays < 7) {
+      return t("lastPracticedLabels.daysAgo", { count: diffDays });
+    }
 
-    if (diffMinutes < 1) return 'Just now';
-    if (diffMinutes < 60) return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''} ago`;
-    if (diffHours < 24 && diffDays === 0) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
-    if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
-
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
+    return new Intl.DateTimeFormat(locale, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }).format(date);
   };
 
   // Sort openings based on selected criteria
@@ -80,55 +85,55 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold mb-2">Statistics</h1>
+        <h1 className="text-3xl font-bold mb-2">{t("title")}</h1>
         <p className="text-default-500">
-          Track your progress and performance across all openings
+          {t("subtitle")}
         </p>
       </div>
 
       {/* Overall Statistics */}
       <div>
-        <h2 className="text-xl font-bold mb-4">Overall Performance</h2>
+        <h2 className="text-xl font-bold mb-4">{t("overview")}</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <Card>
             <CardBody className="text-center py-6">
               <p className="text-3xl font-bold text-primary">{overallStats.totalAttempts}</p>
-              <p className="text-sm text-default-500">Total Attempts</p>
+              <p className="text-sm text-default-500">{t("totalAttempts")}</p>
             </CardBody>
           </Card>
 
           <Card>
             <CardBody className="text-center py-6">
               <p className="text-3xl font-bold text-success">{overallStats.correctAttempts}</p>
-              <p className="text-sm text-default-500">Correct</p>
+              <p className="text-sm text-default-500">{t("correct")}</p>
             </CardBody>
           </Card>
 
           <Card>
             <CardBody className="text-center py-6">
               <p className="text-3xl font-bold text-danger">{overallStats.incorrectAttempts}</p>
-              <p className="text-sm text-default-500">Incorrect</p>
+              <p className="text-sm text-default-500">{t("incorrect")}</p>
             </CardBody>
           </Card>
 
           <Card>
             <CardBody className="text-center py-6">
               <p className="text-3xl font-bold text-warning">{overallStats.overallAccuracy}%</p>
-              <p className="text-sm text-default-500">Accuracy</p>
+              <p className="text-sm text-default-500">{t("accuracy")}</p>
             </CardBody>
           </Card>
 
           <Card>
             <CardBody className="text-center py-6">
               <p className="text-3xl font-bold text-secondary">{overallStats.currentStreak}</p>
-              <p className="text-sm text-default-500">Day Streak 🔥</p>
+              <p className="text-sm text-default-500">{t("practiceStreakLabel")}</p>
             </CardBody>
           </Card>
 
           <Card>
             <CardBody className="text-center py-6">
               <p className="text-3xl font-bold">{overallStats.totalOpeningsPracticed}</p>
-              <p className="text-sm text-default-500">Openings</p>
+              <p className="text-sm text-default-500">{t("totalOpeningsPracticed")}</p>
             </CardBody>
           </Card>
         </div>
@@ -137,7 +142,7 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
       {/* Opening Statistics */}
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Performance by Opening</h2>
+          <h2 className="text-xl font-bold">{t("byOpening")}</h2>
           <div className="flex gap-2">
             <Button
               size="sm"
@@ -145,7 +150,7 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
               color={sortBy === 'attempts' ? 'primary' : 'default'}
               onPress={() => setSortBy('attempts')}
             >
-              Most Practiced
+              {t("filters.mostPracticed")}
             </Button>
             <Button
               size="sm"
@@ -153,7 +158,7 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
               color={sortBy === 'accuracy' ? 'primary' : 'default'}
               onPress={() => setSortBy('accuracy')}
             >
-              Best Accuracy
+              {t("filters.bestAccuracy")}
             </Button>
             <Button
               size="sm"
@@ -161,7 +166,7 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
               color={sortBy === 'recent' ? 'primary' : 'default'}
               onPress={() => setSortBy('recent')}
             >
-              Most Recent
+              {t("filters.mostRecent")}
             </Button>
           </div>
         </div>
@@ -179,21 +184,17 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
                         </h3>
                         {opening.custom_opening_id && (
                           <Chip size="sm" color="secondary" variant="flat">
-                            Custom
+                            {tCustomDetail("chip.custom")}
                           </Chip>
                         )}
                       </div>
                       <div className="flex flex-wrap gap-4 text-sm text-default-600">
-                        <span>
-                          <strong>{opening.total_attempts}</strong> attempts
+                        <span>{t("attemptsCount", { count: opening.total_attempts })}</span>
+                        <span className="text-success font-semibold">
+                          {t("correctCount", { count: opening.correct_attempts })}
                         </span>
-                        <span>
-                          <strong className="text-success">{opening.correct_attempts}</strong> correct
-                        </span>
-                        <span>
-                          <strong className="text-danger">
-                            {opening.total_attempts - opening.correct_attempts}
-                          </strong> incorrect
+                        <span className="text-danger font-semibold">
+                          {t("incorrectCount", { count: opening.total_attempts - opening.correct_attempts })}
                         </span>
                         <span className="text-default-500">
                           • {formatDate(opening.last_practiced)}
@@ -226,7 +227,7 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
                         color="primary"
                         size="sm"
                       >
-                        Practice
+                        {tOpenings("practice")}
                       </Button>
                     </div>
                   </div>
@@ -238,12 +239,12 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
           <Card>
             <CardBody className="text-center py-12">
               <div className="text-4xl mb-4">📊</div>
-              <h3 className="text-xl font-bold mb-2">No statistics yet</h3>
+              <h3 className="text-xl font-bold mb-2">{t("empty.title")}</h3>
               <p className="text-default-500 mb-6">
-                Start practicing openings to see your progress here
+                {t("empty.description")}
               </p>
               <Button as={Link} href="/practice" color="primary">
-                Start Practicing
+                {t("empty.cta")}
               </Button>
             </CardBody>
           </Card>
@@ -257,25 +258,25 @@ export function StatisticsClient({ overallStats, openingStats }: StatisticsClien
             {overallStats.overallAccuracy >= 80 ? (
               <>
                 <div className="text-4xl mb-2">🎉</div>
-                <p className="text-lg font-semibold mb-2">Excellent work!</p>
+                <p className="text-lg font-semibold mb-2">{t("motivations.excellent.title")}</p>
                 <p className="text-default-600">
-                  You're mastering your openings with {overallStats.overallAccuracy}% accuracy. Keep it up!
+                  {t("motivations.excellent.description", { accuracy: overallStats.overallAccuracy })}
                 </p>
               </>
             ) : overallStats.overallAccuracy >= 60 ? (
               <>
                 <div className="text-4xl mb-2">💪</div>
-                <p className="text-lg font-semibold mb-2">Great progress!</p>
+                <p className="text-lg font-semibold mb-2">{t("motivations.great.title")}</p>
                 <p className="text-default-600">
-                  You're doing well with {overallStats.overallAccuracy}% accuracy. Keep practicing to improve further!
+                  {t("motivations.great.description", { accuracy: overallStats.overallAccuracy })}
                 </p>
               </>
             ) : (
               <>
                 <div className="text-4xl mb-2">🚀</div>
-                <p className="text-lg font-semibold mb-2">Keep going!</p>
+                <p className="text-lg font-semibold mb-2">{t("motivations.keepGoing.title")}</p>
                 <p className="text-default-600">
-                  Every master was once a beginner. Practice makes perfect!
+                  {t("motivations.keepGoing.description")}
                 </p>
               </>
             )}

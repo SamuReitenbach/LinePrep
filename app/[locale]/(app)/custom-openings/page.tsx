@@ -1,17 +1,19 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { CustomOpeningsClient } from "./custom-openings-client";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = 'force-dynamic';
 
 export default async function CustomOpeningsPage() {
   const supabase = await createServerSupabaseClient();
+  const tCustom = await getTranslations("customOpenings");
   
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <div>Please log in to view your custom openings</div>;
+    return <div>{tCustom("errors.loginToView")}</div>;
   }
 
   // Fetch user's custom openings
@@ -23,7 +25,7 @@ export default async function CustomOpeningsPage() {
 
   if (error) {
     console.error('Error fetching custom openings:', error);
-    return <div>Error loading custom openings</div>;
+    return <div>{tCustom("errors.fetchFailed")}</div>;
   }
 
   return <CustomOpeningsClient openings={customOpenings || []} />;

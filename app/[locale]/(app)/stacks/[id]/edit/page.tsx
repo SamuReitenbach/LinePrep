@@ -1,7 +1,8 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { StackForm } from "../../stack-form";
-import { Link } from "@heroui/link";
+import { Link } from "@/lib/navigation";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = 'force-dynamic';
 
@@ -12,13 +13,15 @@ export default async function EditStackPage({
 }) {
   const { id } = await params;
   const supabase = await createServerSupabaseClient();
+  const tStacks = await getTranslations("stacks");
+  const tCommon = await getTranslations("common");
   
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <div>Please log in</div>;
+    return <div>{tCommon("loginRequired")}</div>;
   }
 
   // Fetch the stack
@@ -38,21 +41,19 @@ export default async function EditStackPage({
       {/* Breadcrumb */}
       <div className="text-sm text-default-500">
         <Link href="/stacks" className="hover:text-default-700">
-          Learning Stacks
+          {tStacks("title")}
         </Link>
         {" / "}
         <Link href={`/stacks/${stack.id}`} className="hover:text-default-700">
           {stack.name}
         </Link>
         {" / "}
-        <span className="text-default-900">Edit</span>
+        <span className="text-default-900">{tStacks("edit")}</span>
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold mb-2">Edit Stack</h1>
-        <p className="text-default-500">
-          Update your learning stack details
-        </p>
+        <h1 className="text-3xl font-bold mb-2">{tStacks("edit")}</h1>
+        <p className="text-default-500">{tStacks("list.subtitle")}</p>
       </div>
 
       <StackForm

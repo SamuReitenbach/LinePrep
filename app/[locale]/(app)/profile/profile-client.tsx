@@ -4,24 +4,33 @@ import { useState } from "react";
 import { Card, CardBody, CardHeader, Avatar, Divider, Button, Input, Textarea } from "@heroui/react";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/navigation";
 import { Eye, EyeOff, Lock } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 interface ProfileClientProps {
   user: User;
 }
 
 export function ProfileClient({ user }: ProfileClientProps) {
+  const supabase = createClient();
+  const router = useRouter();
+  const locale = useLocale();
+  const tProfile = useTranslations("profile");
+  const tCommon = useTranslations("common");
+
+  const defaultDisplayName =
+    user.user_metadata?.display_name ||
+    user.email?.split("@")[0] ||
+    tProfile("defaultName");
+
   const [isEditing, setIsEditing] = useState(false);
-  const [displayName, setDisplayName] = useState(
-    user.user_metadata?.display_name || user.email?.split("@")[0] || ""
-  );
+  const [displayName, setDisplayName] = useState(defaultDisplayName);
   const [bio, setBio] = useState(user.user_metadata?.bio || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Password change state
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -32,9 +41,6 @@ export function ProfileClient({ user }: ProfileClientProps) {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  const supabase = createClient();
-  const router = useRouter();
 
   const handleSave = async () => {
     setError("");
@@ -51,19 +57,19 @@ export function ProfileClient({ user }: ProfileClientProps) {
 
       if (updateError) throw updateError;
 
-      setSuccess("Profile updated successfully!");
+      setSuccess(tProfile("updated"));
       setIsEditing(false);
       router.refresh();
     } catch (err: any) {
       console.error("Error updating profile:", err);
-      setError(err.message || "Failed to update profile");
+      setError(err.message || tProfile("updateError"));
     } finally {
       setLoading(false);
     }
   };
 
   const handleCancel = () => {
-    setDisplayName(user.user_metadata?.display_name || user.email?.split("@")[0] || "");
+    setDisplayName(defaultDisplayName);
     setBio(user.user_metadata?.bio || "");
     setError("");
     setSuccess("");
@@ -71,7 +77,7 @@ export function ProfileClient({ user }: ProfileClientProps) {
   };
 
   const getInitials = () => {
-    const name = user.user_metadata?.display_name || user.email?.split("@")[0] || "U";
+    const name = defaultDisplayName;
     return name
       .split(" ")
       .map((n: string) => n[0])
@@ -84,61 +90,54 @@ export function ProfileClient({ user }: ProfileClientProps) {
     setPasswordError("");
     setPasswordSuccess("");
 
-    // Validation
     if (!currentPassword || !newPassword || !confirmPassword) {
-      setPasswordError("All password fields are required");
+      setPasswordError(tProfile("password.allFieldsRequired"));
       return;
     }
 
     if (newPassword.length < 6) {
-      setPasswordError("New password must be at least 6 characters");
+      setPasswordError(tProfile("password.tooShort"));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setPasswordError("New passwords do not match");
+      setPasswordError(tProfile("password.mismatch"));
       return;
     }
 
     if (currentPassword === newPassword) {
-      setPasswordError("New password must be different from current password");
+      setPasswordError(tProfile("password.sameAsCurrent"));
       return;
     }
 
     setPasswordLoading(true);
 
     try {
-      // First, verify the current password by attempting to sign in with it
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: user.email!,
         password: currentPassword,
       });
 
       if (signInError) {
-        setPasswordError("Current password is incorrect");
+        setPasswordError(tProfile("password.incorrectCurrent"));
         setPasswordLoading(false);
         return;
       }
 
-      // If sign in successful, update the password
       const { error: updateError } = await supabase.auth.updateUser({
         password: newPassword,
       });
 
       if (updateError) throw updateError;
 
-      setPasswordSuccess("Password changed successfully!");
+      setPasswordSuccess(tProfile("passwordUpdated"));
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
       setIsChangingPassword(false);
-
-      // Optional: Sign out and redirect to login
-      // await supabase.auth.signOut();
-      // router.push("/login");
     } catch (err: any) {
       console.error("Error changing password:", err);
-      setPasswordError(err.message || "Failed to change password");
+      setPasswordError(err.message || tProfile("password.changeFailed"));
     } finally {
       setPasswordLoading(false);
     }
@@ -156,10 +155,10 @@ export function ProfileClient({ user }: ProfileClientProps) {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Profile</h1>
+        <h1 className="text-3xl font-bold">{tProfile("title")}</h1>
         {!isEditing && (
           <Button color="primary" onPress={() => setIsEditing(true)}>
-            Edit Profile
+            {tProfile("edit")}
           </Button>
         )}
       </div>
@@ -174,7 +173,7 @@ export function ProfileClient({ user }: ProfileClientProps) {
           />
           <div className="flex flex-col">
             <h2 className="text-xl font-semibold">
-              {user.user_metadata?.display_name || user.email?.split("@")[0]}
+              {defaultDisplayName}
             </h2>
             <p className="text-sm text-default-500">{user.email}</p>
           </div>
@@ -198,16 +197,16 @@ export function ProfileClient({ user }: ProfileClientProps) {
           {isEditing ? (
             <div className="space-y-4">
               <Input
-                label="Display Name"
-                placeholder="Enter your display name"
+                label={tProfile("displayName")}
+                placeholder={tProfile("displayNamePlaceholder")}
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 maxLength={50}
               />
 
               <Textarea
-                label="Bio"
-                placeholder="Tell us about yourself (optional)"
+                label={tProfile("bio")}
+                placeholder={tProfile("bioPlaceholder")}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 minRows={4}
@@ -221,46 +220,46 @@ export function ProfileClient({ user }: ProfileClientProps) {
                   isLoading={loading}
                   className="flex-1"
                 >
-                  Save Changes
+                  {tProfile("save")}
                 </Button>
                 <Button
                   variant="flat"
                   onPress={handleCancel}
                   isDisabled={loading}
                 >
-                  Cancel
+                  {tCommon("cancel")}
                 </Button>
               </div>
             </div>
           ) : (
             <div className="space-y-4">
               <div>
-                <h3 className="text-sm font-semibold text-default-600 mb-2">Display Name</h3>
+                <h3 className="text-sm font-semibold text-default-600 mb-2">{tProfile("displayName")}</h3>
                 <p className="text-foreground">
-                  {user.user_metadata?.display_name || user.email?.split("@")[0]}
+                  {defaultDisplayName}
                 </p>
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-default-600 mb-2">Email</h3>
+                <h3 className="text-sm font-semibold text-default-600 mb-2">{tProfile("email")}</h3>
                 <p className="text-foreground">{user.email}</p>
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-default-600 mb-2">Bio</h3>
+                <h3 className="text-sm font-semibold text-default-600 mb-2">{tProfile("bio")}</h3>
                 <p className="text-foreground whitespace-pre-wrap">
-                  {user.user_metadata?.bio || "No bio added yet."}
+                  {user.user_metadata?.bio || tProfile("bioEmpty")}
                 </p>
               </div>
 
               <div>
-                <h3 className="text-sm font-semibold text-default-600 mb-2">Member Since</h3>
+                <h3 className="text-sm font-semibold text-default-600 mb-2">{tProfile("memberSince")}</h3>
                 <p className="text-foreground">
-                  {new Date(user.created_at).toLocaleDateString("en-US", {
+                  {new Intl.DateTimeFormat(locale, {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
-                  })}
+                  }).format(new Date(user.created_at))}
                 </p>
               </div>
             </div>
@@ -268,18 +267,15 @@ export function ProfileClient({ user }: ProfileClientProps) {
         </CardBody>
       </Card>
 
-      {/* Password Change Section */}
       <Card>
-        <CardHeader className="p-6">
-          <div className="flex items-center gap-2">
-            <Lock size={20} />
-            <h2 className="text-xl font-semibold">Change Password</h2>
-          </div>
+        <CardHeader className="p-6 flex items-center gap-3">
+          <Lock size={20} />
+          <h2 className="text-lg font-semibold">{tProfile("changePassword")}</h2>
         </CardHeader>
 
         <Divider />
 
-        <CardBody className="p-6 space-y-6">
+        <CardBody className="p-6 space-y-4">
           {passwordError && (
             <div className="text-danger text-sm bg-danger-50 p-3 rounded-lg">
               {passwordError}
@@ -293,68 +289,55 @@ export function ProfileClient({ user }: ProfileClientProps) {
           )}
 
           {isChangingPassword ? (
-            <div className="space-y-4">
+            <>
               <Input
+                label={tProfile("currentPassword")}
                 type={showCurrentPassword ? "text" : "password"}
-                label="Current Password"
-                placeholder="Enter your current password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 endContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  <Button
+                    isIconOnly
+                    variant="light"
+                    size="sm"
+                    onPress={() => setShowCurrentPassword((prev) => !prev)}
                   >
-                    {showCurrentPassword ? (
-                      <EyeOff size={20} className="text-default-400" />
-                    ) : (
-                      <Eye size={20} className="text-default-400" />
-                    )}
-                  </button>
+                    {showCurrentPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </Button>
                 }
               />
 
               <Input
+                label={tProfile("newPassword")}
                 type={showNewPassword ? "text" : "password"}
-                label="New Password"
-                placeholder="Enter your new password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                description="Must be at least 6 characters"
                 endContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={() => setShowNewPassword(!showNewPassword)}
+                  <Button
+                    isIconOnly
+                    variant="light"
+                    size="sm"
+                    onPress={() => setShowNewPassword((prev) => !prev)}
                   >
-                    {showNewPassword ? (
-                      <EyeOff size={20} className="text-default-400" />
-                    ) : (
-                      <Eye size={20} className="text-default-400" />
-                    )}
-                  </button>
+                    {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </Button>
                 }
               />
 
               <Input
+                label={tProfile("confirmPassword")}
                 type={showConfirmPassword ? "text" : "password"}
-                label="Confirm New Password"
-                placeholder="Confirm your new password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 endContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  <Button
+                    isIconOnly
+                    variant="light"
+                    size="sm"
+                    onPress={() => setShowConfirmPassword((prev) => !prev)}
                   >
-                    {showConfirmPassword ? (
-                      <EyeOff size={20} className="text-default-400" />
-                    ) : (
-                      <Eye size={20} className="text-default-400" />
-                    )}
-                  </button>
+                    {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </Button>
                 }
               />
 
@@ -365,21 +348,22 @@ export function ProfileClient({ user }: ProfileClientProps) {
                   isLoading={passwordLoading}
                   className="flex-1"
                 >
-                  Change Password
+                  {tProfile("updatePassword")}
                 </Button>
                 <Button
                   variant="flat"
                   onPress={handleCancelPasswordChange}
                   isDisabled={passwordLoading}
+                  className="flex-1"
                 >
-                  Cancel
+                  {tCommon("cancel")}
                 </Button>
               </div>
-            </div>
+            </>
           ) : (
-            <div>
-              <p className="text-sm text-default-600 mb-4">
-                Update your password to keep your account secure.
+            <div className="space-y-4">
+              <p className="text-sm text-default-600">
+                {tProfile("changePasswordDescription")}
               </p>
               <Button
                 color="default"
@@ -387,7 +371,7 @@ export function ProfileClient({ user }: ProfileClientProps) {
                 onPress={() => setIsChangingPassword(true)}
                 startContent={<Lock size={16} />}
               >
-                Change Password
+                {tProfile("startPasswordChange")}
               </Button>
             </div>
           )}

@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { StackDetailClient } from "./stack-detail-client";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = 'force-dynamic';
 
@@ -11,13 +12,14 @@ export default async function StackDetailPage({
 }) {
   const { id } = await params;
   const supabase = await createServerSupabaseClient();
+  const tStacks = await getTranslations("stacks");
   
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <div>Please log in</div>;
+    return <div>{tStacks("errors.loginRequired")}</div>;
   }
 
   // Fetch the stack

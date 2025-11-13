@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/navigation";
 import {
   Card,
   CardBody,
@@ -17,7 +17,7 @@ import {
   SelectItem,
   useDisclosure,
 } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link } from "@/lib/navigation";
 import { ChessBoard } from "@/components/ChessBoard";
 import { Chess } from "chess.js";
 import { createClient } from "@/lib/supabase/client";
@@ -29,6 +29,7 @@ import {
   ChevronRight,
   SkipForward,
 } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 interface CustomOpening {
   id: string;
@@ -74,6 +75,10 @@ export function CustomOpeningDetailClient({
   const router = useRouter();
   const supabase = createClient();
   const playIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const locale = useLocale();
+  const tCustom = useTranslations("customOpenings");
+  const tCustomDetail = useTranslations("customOpenings.detail");
+  const tCommon = useTranslations("common");
 
   // Auto-play effect
   useEffect(() => {
@@ -116,6 +121,7 @@ export function CustomOpeningDetailClient({
   };
 
   const currentPosition = getPositionAtMove(currentMoveIndex);
+  const colorLabel = tCustom(opening.color);
 
   const toggleAutoPlay = () => {
     if (isPlaying) {
@@ -152,7 +158,7 @@ export function CustomOpeningDetailClient({
       router.refresh();
     } catch (error: any) {
       console.error("Error deleting opening:", error);
-      alert("Failed to delete opening");
+      alert(tCustomDetail("alerts.deleteFailed"));
       setDeleting(false);
     }
   };
@@ -170,19 +176,19 @@ export function CustomOpeningDetailClient({
 
       if (error) throw error;
 
-      alert("Custom opening added to stack!");
+      alert(tCustomDetail("addToStackModal.success"));
       onAddStackClose();
       router.refresh();
     } catch (error: any) {
       console.error("Error adding to stack:", error);
-      alert(error.message || "Failed to add opening to stack");
+      alert(error.message || tCustomDetail("alerts.addToStackFailed"));
     } finally {
       setAddingToStack(false);
     }
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString(locale, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -194,7 +200,7 @@ export function CustomOpeningDetailClient({
       {/* Breadcrumb */}
       <div className="text-sm text-default-500">
         <Link href="/custom-openings" className="hover:text-default-700">
-          Custom Openings
+          {tCustom("title")}
         </Link>
         {" / "}
         <span className="text-default-900">{opening.name}</span>
@@ -209,13 +215,13 @@ export function CustomOpeningDetailClient({
               variant="flat" 
               color={opening.color === 'white' ? 'default' : 'primary'}
             >
-              {opening.color === 'white' ? '⚪' : '⚫'} Playing as {opening.color}
+              {opening.color === 'white' ? '⚪' : '⚫'} {tCustomDetail("chip.playingAs", { color: colorLabel })}
             </Chip>
             <Chip variant="flat">
-              {opening.moves.length} moves
+              {tCommon("movesCount", { count: opening.moves.length })}
             </Chip>
             <Chip color="secondary" variant="flat">
-              Custom
+              {tCustomDetail("chip.custom")}
             </Chip>
           </div>
         </div>
@@ -225,7 +231,8 @@ export function CustomOpeningDetailClient({
         )}
 
         <p className="text-sm text-default-400">
-          Created {formatDate(opening.created_at)} • Updated {formatDate(opening.updated_at)}
+          {tCommon("createdAt", { date: formatDate(opening.created_at) })} •{" "}
+          {tCommon("updatedAt", { date: formatDate(opening.updated_at) })}
         </p>
 
         {/* Action Buttons */}
@@ -236,14 +243,14 @@ export function CustomOpeningDetailClient({
             color="primary"
             size="lg"
           >
-            Practice This Opening
+            {tCustomDetail("buttons.practice")}
           </Button>
           <Button
             variant="bordered"
             size="lg"
             onPress={onAddStackOpen}
           >
-            Add to Learning Stack
+            {tCustomDetail("buttons.addToStack")}
           </Button>
           <Button
             as={Link}
@@ -251,7 +258,7 @@ export function CustomOpeningDetailClient({
             variant="bordered"
             size="lg"
           >
-            Edit Opening
+            {tCustomDetail("buttons.edit")}
           </Button>
           <Button
             color="danger"
@@ -259,7 +266,7 @@ export function CustomOpeningDetailClient({
             size="lg"
             onPress={onDeleteOpen}
           >
-            Delete
+            {tCustomDetail("buttons.delete")}
           </Button>
         </div>
       </div>
@@ -268,27 +275,37 @@ export function CustomOpeningDetailClient({
       {userProgress.length > 0 && (
         <Card>
           <CardHeader>
-            <h2 className="text-xl font-bold">Your Statistics</h2>
+            <h2 className="text-xl font-bold">
+              {tCustomDetail("statistics.title")}
+            </h2>
           </CardHeader>
           <CardBody>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
                 <p className="text-2xl font-bold text-primary">{totalAttempts}</p>
-                <p className="text-sm text-default-500">Total Attempts</p>
+                <p className="text-sm text-default-500">
+                  {tCustomDetail("statistics.totalAttempts")}
+                </p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-success">{correctAttempts}</p>
-                <p className="text-sm text-default-500">Correct</p>
+                <p className="text-sm text-default-500">
+                  {tCustomDetail("statistics.correct")}
+                </p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-danger">
                   {totalAttempts - correctAttempts}
                 </p>
-                <p className="text-sm text-default-500">Incorrect</p>
+                <p className="text-sm text-default-500">
+                  {tCustomDetail("statistics.incorrect")}
+                </p>
               </div>
               <div>
                 <p className="text-2xl font-bold text-warning">{accuracy}%</p>
-                <p className="text-sm text-default-500">Accuracy</p>
+                <p className="text-sm text-default-500">
+                  {tCustomDetail("statistics.accuracy")}
+                </p>
               </div>
             </div>
           </CardBody>
@@ -300,7 +317,7 @@ export function CustomOpeningDetailClient({
         {/* Board */}
         <Card className="lg:max-w-fit">
           <CardHeader>
-            <h2 className="text-xl font-bold">Position</h2>
+            <h2 className="text-xl font-bold">{tCustomDetail("position")}</h2>
           </CardHeader>
           <CardBody>
             <ChessBoard
@@ -316,7 +333,7 @@ export function CustomOpeningDetailClient({
         {/* Moves */}
         <Card>
           <CardHeader>
-            <h2 className="text-xl font-bold">Moves</h2>
+            <h2 className="text-xl font-bold">{tCustomDetail("moves")}</h2>
           </CardHeader>
           <CardBody className="flex flex-col h-[600px]">
             {/* Move Table */}
@@ -324,9 +341,15 @@ export function CustomOpeningDetailClient({
               <table className="table-fixed">
                 <thead className="sticky top-0 bg-default-100 z-10">
                   <tr>
-                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-18">#</th>
-                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">White</th>
-                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">Black</th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-18">
+                      {tCustomDetail("table.number")}
+                    </th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">
+                      {tCustomDetail("table.white")}
+                    </th>
+                    <th className="text-left p-2 text-sm font-semibold text-default-600 w-32">
+                      {tCustomDetail("table.black")}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -381,7 +404,7 @@ export function CustomOpeningDetailClient({
                   setCurrentMoveIndex(0);
                 }}
                 isDisabled={currentMoveIndex === 0}
-                title="First move"
+                title={tCustomDetail("controls.first")}
               >
                 <SkipBack size={20} />
               </Button>
@@ -394,7 +417,7 @@ export function CustomOpeningDetailClient({
                   setCurrentMoveIndex(Math.max(0, currentMoveIndex - 1));
                 }}
                 isDisabled={currentMoveIndex === 0}
-                title="Previous move"
+                title={tCustomDetail("controls.previous")}
               >
                 <ChevronLeft size={20} />
               </Button>
@@ -403,7 +426,7 @@ export function CustomOpeningDetailClient({
                 variant="flat"
                 isIconOnly
                 onPress={toggleAutoPlay}
-                title={isPlaying ? "Pause" : "Auto-play moves"}
+                title={isPlaying ? tCustomDetail("controls.pause") : tCustomDetail("controls.autoplay")}
                 className={isPlaying ? "bg-default-200" : ""}
               >
                 {isPlaying ? <Pause size={20} /> : <Play size={20} />}
@@ -417,7 +440,7 @@ export function CustomOpeningDetailClient({
                   setCurrentMoveIndex(Math.min(opening.moves.length, currentMoveIndex + 1));
                 }}
                 isDisabled={currentMoveIndex === opening.moves.length}
-                title="Next move"
+                title={tCustomDetail("controls.next")}
               >
                 <ChevronRight size={20} />
               </Button>
@@ -430,7 +453,7 @@ export function CustomOpeningDetailClient({
                   setCurrentMoveIndex(opening.moves.length);
                 }}
                 isDisabled={currentMoveIndex === opening.moves.length}
-                title="Last move"
+                title={tCustomDetail("controls.last")}
               >
                 <SkipForward size={20} />
               </Button>
@@ -442,16 +465,16 @@ export function CustomOpeningDetailClient({
       {/* Add to Stack Modal */}
       <Modal isOpen={isAddStackOpen} onClose={onAddStackClose}>
         <ModalContent>
-          <ModalHeader>Add to Learning Stack</ModalHeader>
+          <ModalHeader>{tCustomDetail("addToStackModal.title")}</ModalHeader>
           <ModalBody>
             {userStacks.length > 0 ? (
               <>
                 <p className="text-sm text-default-500 mb-4">
-                  Select a stack to add this custom opening to:
+                  {tCustomDetail("addToStackModal.description")}
                 </p>
                 <Select
-                  label="Learning Stack"
-                  placeholder="Select a stack"
+                  label={tCustomDetail("addToStackModal.selectLabel")}
+                  placeholder={tCustomDetail("addToStackModal.selectPlaceholder")}
                   selectedKeys={selectedStack ? [selectedStack] : []}
                   onSelectionChange={(keys) => {
                     const value = Array.from(keys)[0] as string;
@@ -468,17 +491,17 @@ export function CustomOpeningDetailClient({
             ) : (
               <div className="text-center py-4">
                 <p className="text-default-500 mb-4">
-                  You don't have any learning stacks yet.
+                  {tCustomDetail("addToStackModal.empty")}
                 </p>
                 <Button as={Link} href="/stacks/new" color="primary">
-                  Create Your First Stack
+                  {tCustomDetail("addToStackModal.emptyCta")}
                 </Button>
               </div>
             )}
           </ModalBody>
           <ModalFooter>
             <Button variant="light" onPress={onAddStackClose}>
-              Cancel
+              {tCustomDetail("addToStackModal.cancel")}
             </Button>
             <Button
               color="primary"
@@ -486,7 +509,7 @@ export function CustomOpeningDetailClient({
               isDisabled={!selectedStack || addingToStack}
               isLoading={addingToStack}
             >
-              Add to Stack
+              {tCustomDetail("addToStackModal.confirm")}
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -495,22 +518,25 @@ export function CustomOpeningDetailClient({
       {/* Delete Confirmation Modal */}
       <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
         <ModalContent>
-          <ModalHeader>Delete Custom Opening</ModalHeader>
+          <ModalHeader>{tCustomDetail("deleteModal.title")}</ModalHeader>
           <ModalBody>
             <p>
-              Are you sure you want to delete "{opening.name}"? This action cannot be undone.
+              {tCustomDetail("deleteModal.description", { name: opening.name })}
+            </p>
+            <p className="text-sm text-default-500 mt-2">
+              {tCustomDetail("deleteModal.warning")}
             </p>
           </ModalBody>
           <ModalFooter>
             <Button variant="light" onPress={onDeleteClose} isDisabled={deleting}>
-              Cancel
+              {tCustomDetail("deleteModal.cancel")}
             </Button>
             <Button
               color="danger"
               onPress={handleDelete}
               isLoading={deleting}
             >
-              Delete Opening
+              {tCustomDetail("deleteModal.confirm")}
             </Button>
           </ModalFooter>
         </ModalContent>

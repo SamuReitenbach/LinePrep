@@ -6,7 +6,25 @@
     "email": "E-Mail",
     "password": "Passwort",
     "or": "ODER",
-    "backToHome": "Zurück zur Startseite"
+    "backToHome": "Zurück zur Startseite",
+    "confirmPassword": "Passwort bestätigen",
+    "viewAll": "Alle anzeigen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "submit": "Absenden",
+    "loading": "Lädt...",
+    "noData": "Keine Daten verfügbar",
+    "view": "Ansehen",
+    "updatedAt": "Aktualisiert {date}",
+    "createdAt": "Erstellt {date}",
+    "movesCount": "{count, plural, one {# Zug} other {# Züge}}",
+    "openingsCount": "{count, plural, one {# Eröffnung} other {# Eröffnungen}}",
+    "loginRequired": "Bitte melde dich an"
   },
   "navbar": {
     "features": "Funktionen",
@@ -14,11 +32,24 @@
     "about": "Über uns",
     "github": "GitHub"
   },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "practice": "Üben",
+    "openings": "Eröffnungen",
+    "customOpenings": "Eigene Eröffnungen",
+    "stacks": "Stapel",
+    "statistics": "Statistiken",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "signOut": "Abmelden",
+    "collapseSidebar": "Sidebar einklappen",
+    "expandSidebar": "Sidebar ausklappen"
+  },
   "home": {
     "hero": {
       "title": "Meistere dein Schacheröffnungsrepertoire mit Spaced Repetition!",
-      "subtitle": "LinePrep hilft dir, Schacheröffnungen durch interaktive Übungseinheiten zu lernen und zu verinnerlichen. Baue dein Repertoire auf, verfolge deinen Fortschritt und vergiss deine Züge nie wieder.",
-      "getStarted": "Kostenlos loslegen"
+      "subtitle": "LinePrep hilft dir, Schacheröffnungen durch interaktive Übungseinheiten zu lernen und zu merken. Baue dein Repertoire auf, verfolge deinen Fortschritt und vergiss deine Linien nie wieder.",
+      "getStarted": "Kostenlos starten"
     },
     "features": {
       "title": "Warum LinePrep?",
@@ -28,7 +59,7 @@
       },
       "database": {
         "title": "Umfassende Datenbank",
-        "description": "Zugriff auf eine vollständige Datenbank von Schacheröffnungen oder erstelle deine eigenen Varianten, um dein persönliches Repertoire zu üben."
+        "description": "Greife auf eine vollständige Datenbank von Schacheröffnungen zu oder erstelle deine eigenen Linien, um dein persönliches Repertoire zu üben."
       },
       "stacks": {
         "title": "Lernstapel",
@@ -39,19 +70,19 @@
         "description": "Detaillierte Statistiken zeigen deine Genauigkeit, Übungsserien und Bereiche, die mehr Arbeit benötigen. Beobachte, wie du dich im Laufe der Zeit verbesserst."
       },
       "interactive": {
-        "title": "Interaktives Training",
+        "title": "Interaktives Üben",
         "description": "Übe mit einer echten Schachbrett-Oberfläche. Erhalte sofortiges Feedback zu deinen Zügen und lerne aus deinen Fehlern."
       },
       "custom": {
         "title": "Eigene Eröffnungen",
-        "description": "Erstelle und übe deine eigenen Eröffnungsvarianten. Perfekt zur Vorbereitung auf bestimmte Gegner oder zum Ausprobieren neuer Ideen."
+        "description": "Erstelle und übe deine eigenen Eröffnungsvarianten. Perfekt für die Vorbereitung gegen bestimmte Gegner oder zum Ausprobieren neuer Ideen."
       }
     },
     "howItWorks": {
-      "title": "So funktioniert es",
+      "title": "Wie es funktioniert",
       "step1": {
         "title": "Wähle deine Eröffnungen",
-        "description": "Durchsuche unsere Eröffnungsdatenbank oder erstelle eigene Varianten. Wähle die Eröffnungen aus, die du lernen möchtest, und füge sie deiner Übungswarteschlange hinzu."
+        "description": "Durchsuche unsere Eröffnungsdatenbank oder erstelle eigene Linien. Wähle die Eröffnungen aus, die du lernen möchtest, und füge sie deiner Übungswarteschlange hinzu."
       },
       "step2": {
         "title": "Interaktiv üben",
@@ -59,12 +90,12 @@
       },
       "step3": {
         "title": "Verfolgen & Verbessern",
-        "description": "Überwache deine Genauigkeit und deinen Fortschritt im Laufe der Zeit. Überprüfe Statistiken, um Schwachstellen zu identifizieren und dein Training dort zu fokussieren, wo es am wichtigsten ist."
+        "description": "Überwache deine Genauigkeit und deinen Fortschritt im Laufe der Zeit. Überprüfe Statistiken, um Schwachstellen zu identifizieren und deine Übung dort zu konzentrieren, wo es am wichtigsten ist."
       }
     },
     "cta": {
       "title": "Bereit, deine Eröffnungen zu meistern?",
-      "subtitle": "Werde Teil der Schachspieler, die ihr Eröffnungswissen mit LinePrep verbessern",
+      "subtitle": "Schließe dich Schachspielern an, die ihr Eröffnungswissen mit LinePrep verbessern",
       "button": "Heute mit dem Lernen beginnen"
     }
   },
@@ -83,28 +114,438 @@
       "errorGoogle": "Anmeldung mit Google fehlgeschlagen"
     },
     "signup": {
-      "title": "Erstelle dein Konto",
-      "subtitle": "Beginne noch heute mit dem Meistern von Schacheröffnungen",
+      "title": "Konto erstellen",
+      "subtitle": "Beginne heute mit dem Meistern von Schacheröffnungen",
       "emailPlaceholder": "deine@email.de",
-      "passwordPlaceholder": "Wähle ein Passwort",
-      "passwordHint": "Mindestens 6 Zeichen",
-      "signUpButton": "Registrieren",
+      "passwordPlaceholder": "Mindestens 6 Zeichen",
+      "confirmPasswordPlaceholder": "Bestätige dein Passwort",
+      "createAccountButton": "Konto erstellen",
       "googleButton": "Mit Google fortfahren",
       "hasAccount": "Bereits ein Konto?",
       "signInLink": "Anmelden",
+      "termsText": "Mit der Registrierung stimmst du unseren Nutzungsbedingungen und Datenschutzrichtlinien zu",
+      "checkEmail": "Überprüfe deine E-Mail",
+      "confirmationSent": "Wir haben dir einen Bestätigungslink gesendet an",
+      "clickLink": "Klicke auf den Link in der E-Mail, um dein Konto zu verifizieren und loszulegen.",
+      "backToLogin": "Zurück zur Anmeldung",
+      "errorPasswordMatch": "Passwörter stimmen nicht überein",
+      "errorPasswordLength": "Passwort muss mindestens 6 Zeichen lang sein",
       "errorSignUp": "Registrierung fehlgeschlagen",
       "errorGoogle": "Registrierung mit Google fehlgeschlagen"
     },
     "forgotPassword": {
       "title": "Passwort zurücksetzen",
-      "subtitle": "Gib deine E-Mail ein, um einen Link zum Zurücksetzen des Passworts zu erhalten",
+      "subtitle": "Gib deine E-Mail ein und wir senden dir einen Link zum Zurücksetzen",
       "emailPlaceholder": "deine@email.de",
-      "sendButton": "Zurücksetzungslink senden",
-      "successMessage": "Überprüfe deine E-Mails für einen Link zum Zurücksetzen des Passworts",
-      "errorMessage": "Fehler beim Senden des Zurücksetzungslinks",
-      "backToLogin": "Zurück zur Anmeldung"
+      "sendButton": "Link zum Zurücksetzen senden",
+      "checkEmail": "Überprüfe deine E-Mail",
+      "resetLinkSent": "Wir haben einen Link zum Zurücksetzen des Passworts gesendet an",
+      "clickLink": "Klicke auf den Link in der E-Mail, um dein Passwort zurückzusetzen.",
+      "backToLogin": "Zurück zur Anmeldung",
+      "rememberPassword": "Erinnerst du dich an dein Passwort?",
+      "errorSend": "Fehler beim Senden der E-Mail"
     },
     "tagline": "Meistere deine Schacheröffnungen"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Willkommen zurück, {name}!",
+    "subtitle": "Bereit, dein Eröffnungsrepertoire zu verbessern?",
+    "stats": {
+      "learningStacks": "Lernstapel",
+      "customOpenings": "Eigene Eröffnungen",
+      "totalAttempts": "Gesamt-Versuche",
+      "accuracy": "Genauigkeit"
+    },
+    "yourStacks": "Deine Lernstapel",
+    "yourCustomOpenings": "Deine eigenen Eröffnungen",
+    "noStacks": "Noch keine Stapel. Erstelle deinen ersten Lernstapel!",
+    "noCustomOpenings": "Noch keine eigenen Eröffnungen. Erstelle deine erste Eröffnung!",
+    "createStack": "Stapel erstellen",
+    "createOpening": "Eröffnung erstellen",
+    "quickActions": "Schnellaktionen",
+    "startPractice": "Übung starten",
+    "browseOpenings": "Eröffnungen durchsuchen",
+    "viewStatistics": "Statistiken anzeigen"
+  },
+  "practice": {
+    "title": "Üben",
+    "choosePractice": "Wähle, was du üben möchtest",
+    "stacks": "Lernstapel",
+    "standardOpenings": "Standard-Eröffnungen",
+    "customOpenings": "Eigene Eröffnungen",
+    "noStacks": "Keine Lernstapel verfügbar",
+    "noOpenings": "Keine Eröffnungen verfügbar",
+    "noCustomOpenings": "Keine eigenen Eröffnungen verfügbar",
+    "startSession": "Übungseinheit starten",
+    "yourTurn": "Du bist am Zug",
+    "correct": "Richtig!",
+    "incorrect": "Falsch",
+    "expectedMove": "Erwarteter Zug",
+    "tryAgain": "Erneut versuchen",
+    "nextPosition": "Nächste Position",
+    "finishSession": "Einheit beenden",
+    "sessionComplete": "Übungseinheit abgeschlossen!",
+    "resultsCorrect": "Richtig",
+    "resultsIncorrect": "Falsch",
+    "backToPractice": "Zurück zum Üben",
+    "landing": {
+      "subtitle": "Wähle, wie du deine Eröffnungen üben möchtest",
+      "cards": {
+        "stacks": {
+          "title": "Stapel üben",
+          "description": "Übe aus deinen organisierten Sammlungen",
+          "action": "Stapel wählen"
+        },
+        "custom": {
+          "title": "Eigene Eröffnungen",
+          "description": "Übe dein eigenes Repertoire",
+          "action": "Eröffnung wählen"
+        },
+        "openings": {
+          "title": "Eröffnungen durchsuchen",
+          "description": "Übe eine beliebige Eröffnung",
+          "action": "Durchsuchen"
+        },
+        "recent": {
+          "title": "Zuletzt fortsetzen",
+          "description": "Knüpfe dort an, wo du aufgehört hast",
+          "action": "Zuletzt ansehen"
+        }
+      },
+      "sections": {
+        "stacks": {
+          "title": "Deine Lernstapel",
+          "emptyDescription": "Du hast noch keine Lernstapel",
+          "emptyCta": "Erstelle deinen ersten Stapel",
+          "buttonEmpty": "Keine Eröffnungen",
+          "buttonStart": "Übung starten"
+        },
+        "custom": {
+          "title": "Deine eigenen Eröffnungen",
+          "emptyDescription": "Du hast noch keine eigenen Eröffnungen",
+          "emptyCta": "Erstelle deine erste eigene Eröffnung"
+        },
+        "recent": {
+          "title": "Kürzlich geübt",
+          "emptyDescription": "Du hast noch keine Eröffnungen geübt",
+          "emptyCta": "Jetzt üben"
+        }
+      }
+    },
+    "client": {
+      "breadcrumb": "Üben",
+      "stats": {
+        "correct": "Richtig",
+        "incorrect": "Falsch",
+        "total": "Gesamt",
+        "accuracy": "Genauigkeit"
+      },
+      "board": {
+        "move": "Zug {move}",
+        "noPositions": "Keine Positionen verfügbar"
+      },
+      "instructions": {
+        "title": "Anweisungen",
+        "items": {
+          "makeMove": "Führe den richtigen Zug in dieser Stellung aus",
+          "drag": "Klicke oder ziehe die Figuren",
+          "feedback": "Erhalte sofortiges Feedback",
+          "track": "Verfolge deinen Fortschritt"
+        }
+      },
+      "previousMoves": "Vorherige Züge",
+      "actions": {
+        "skip": "Überspringen / nächste Stellung",
+        "showAnswer": "Antwort anzeigen"
+      },
+      "feedback": {
+        "correct": "Richtig! {move}",
+        "incorrect": "Falsch. Der richtige Zug war {move}",
+        "answer": "Der richtige Zug ist: {move}",
+        "invalidMove": "Ungültiger Zug",
+        "loadError": "Übungsstellung konnte nicht geladen werden"
+      }
+    }
+  },
+  "openings": {
+    "title": "Eröffnungen",
+    "searchPlaceholder": "Eröffnungen suchen...",
+    "ecoCode": "ECO",
+    "variation": "Variante",
+    "moves": "Züge",
+    "practice": "Üben",
+    "addToStack": "Zu Stapel hinzufügen",
+    "details": "Eröffnungsdetails",
+    "variations": "Varianten",
+    "noVariations": "Keine Varianten für diese Eröffnung",
+    "mainLine": "Hauptvariante"
+  },
+  "customOpenings": {
+    "title": "Eigene Eröffnungen",
+    "create": "Eigene Eröffnung erstellen",
+    "edit": "Eigene Eröffnung bearbeiten",
+    "name": "Eröffnungsname",
+    "namePlaceholder": "z.B. Meine Sizilianische Verteidigung",
+    "color": "Spielen als",
+    "white": "Weiß",
+    "black": "Schwarz",
+    "moves": "Züge (SAN-Notation)",
+    "movesPlaceholder": "z.B. e4 c5 Sf3 d6",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Optionale Notizen zu dieser Eröffnung",
+    "save": "Eröffnung speichern",
+    "delete": "Eröffnung löschen",
+    "confirmDelete": "Bist du sicher, dass du diese Eröffnung löschen möchtest?",
+    "noOpenings": "Noch keine eigenen Eröffnungen",
+    "createFirst": "Erstelle deine erste eigene Eröffnung, um loszulegen!",
+    "list": {
+      "subtitle": "Erstelle und verwalte deine eigenen Eröffnungen",
+      "createButton": "Neue Eröffnung erstellen",
+      "viewDetails": "Details anzeigen",
+      "edit": "Bearbeiten",
+      "empty": {
+        "title": "Noch keine eigenen Eröffnungen",
+        "description": "Erstelle deine erste eigene Eröffnung, um dein Repertoire zu üben",
+        "cta": "Erste Eröffnung erstellen"
+      }
+    },
+    "detail": {
+      "chip": {
+        "playingAs": "Spielst als {color}",
+        "custom": "Eigene"
+      },
+      "buttons": {
+        "practice": "Diese Eröffnung üben",
+        "addToStack": "Zu Lernstapel hinzufügen",
+        "edit": "Eröffnung bearbeiten",
+        "delete": "Löschen"
+      },
+      "statistics": {
+        "title": "Deine Statistiken",
+        "totalAttempts": "Gesamtversuche",
+        "correct": "Richtig",
+        "incorrect": "Falsch",
+        "accuracy": "Genauigkeit"
+      },
+      "position": "Stellung",
+      "moves": "Züge",
+      "table": {
+        "number": "#",
+        "white": "Weiß",
+        "black": "Schwarz"
+      },
+      "controls": {
+        "first": "Erster Zug",
+        "previous": "Vorheriger Zug",
+        "autoplay": "Züge automatisch abspielen",
+        "pause": "Pause",
+        "next": "Nächster Zug",
+        "last": "Letzter Zug"
+      },
+      "addToStackModal": {
+        "title": "Zu Lernstapel hinzufügen",
+        "description": "Wähle einen Stapel, dem du diese eigene Eröffnung hinzufügen möchtest:",
+        "selectLabel": "Lernstapel",
+        "selectPlaceholder": "Stapel auswählen",
+        "empty": "Du hast noch keine Lernstapel.",
+        "emptyCta": "Erstelle deinen ersten Stapel",
+        "cancel": "Abbrechen",
+        "confirm": "Zu Stapel hinzufügen",
+        "success": "Eigene Eröffnung zum Stapel hinzugefügt!"
+      },
+      "deleteModal": {
+        "title": "Eigene Eröffnung löschen",
+        "description": "Möchtest du \"{name}\" wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.",
+        "warning": "Dadurch werden die Eröffnung und ihre Statistiken dauerhaft entfernt.",
+        "cancel": "Abbrechen",
+        "confirm": "Eröffnung löschen"
+      },
+      "alerts": {
+        "addToStackFailed": "Eröffnung konnte nicht zum Stapel hinzugefügt werden",
+        "deleteFailed": "Eröffnung konnte nicht gelöscht werden"
+      }
+    },
+    "form": {
+      "learningAs": "Lernst als",
+      "selectColor": "Farbe auswählen",
+      "board": {
+        "undo": "Letzten Zug zurücknehmen",
+        "reset": "Brett zurücksetzen"
+      }
+    },
+    "errors": {
+      "nameRequired": "Der Eröffnungsname ist erforderlich",
+      "movesRequired": "Füge mindestens einen Zug hinzu",
+      "loginRequired": "Du musst angemeldet sein",
+      "saveFailed": "Eigene Eröffnung konnte nicht gespeichert werden",
+      "loginToView": "Melde dich an, um deine eigenen Eröffnungen zu sehen",
+      "fetchFailed": "Fehler beim Laden der eigenen Eröffnungen"
+    }
+  },
+  "stacks": {
+    "title": "Lernstapel",
+    "create": "Stapel erstellen",
+    "edit": "Stapel bearbeiten",
+    "name": "Stapelname",
+    "namePlaceholder": "z.B. Turniervorbereitung",
+    "description": "Beschreibung",
+    "descriptionPlaceholder": "Optionale Beschreibung",
+    "openings": "Eröffnungen in diesem Stapel",
+    "addOpening": "Eröffnung hinzufügen",
+    "removeOpening": "Entfernen",
+    "practice": "Stapel üben",
+    "save": "Stapel speichern",
+    "delete": "Stapel löschen",
+    "confirmDelete": "Bist du sicher, dass du diesen Stapel löschen möchtest?",
+    "noStacks": "Noch keine Lernstapel",
+    "createFirst": "Erstelle deinen ersten Stapel, um deine Eröffnungen zu organisieren!",
+    "noOpeningsInStack": "Noch keine Eröffnungen in diesem Stapel",
+    "addFirst": "Füge einige Eröffnungen hinzu, um mit dem Üben zu beginnen!",
+    "list": {
+      "subtitle": "Organisiere deine Eröffnungen in thematischen Sammlungen",
+      "createButton": "Neuen Stapel erstellen",
+      "viewDetails": "Details anzeigen",
+      "practice": "Üben",
+      "empty": {
+        "title": "Noch keine Lernstapel",
+        "description": "Erstelle deinen ersten Stapel, um Eröffnungen zu organisieren und zu üben",
+        "cta": "Ersten Stapel erstellen"
+      }
+    },
+    "detail": {
+      "stats": {
+        "totalOpenings": "Eröffnungen gesamt"
+      },
+      "openings": {
+        "title": "Eröffnungen in diesem Stapel",
+        "addMore": "Weitere Eröffnungen hinzufügen",
+        "practicingSpecific": "Übt {count, plural, one {# spezifische Stellung} other {# spezifische Stellungen}}",
+        "practicingAll": "Übt alle Stellungen",
+        "view": "Ansehen",
+        "remove": "Entfernen",
+        "custom": "Eigene",
+        "unknown": "Unbekannte Eröffnung"
+      },
+      "empty": {
+        "title": "Noch keine Eröffnungen",
+        "description": "Füge Eröffnungen hinzu, um mit dem Üben zu beginnen",
+        "cta": "Eröffnungen durchsuchen"
+      },
+      "deleteModal": {
+        "title": "Stapel löschen",
+        "description": "Möchtest du \"{name}\" wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden.",
+        "warning": "Dadurch werden der Stapel und alle zugehörigen Eröffnungen entfernt.",
+        "cancel": "Abbrechen",
+        "confirm": "Stapel löschen"
+      },
+      "alerts": {
+        "removeConfirm": "Diese Eröffnung aus dem Stapel entfernen?",
+        "removeFailed": "Eröffnung konnte nicht entfernt werden",
+        "deleteFailed": "Stapel konnte nicht gelöscht werden"
+      },
+      "buttons": {
+        "practice": "Übung starten",
+        "edit": "Stapel bearbeiten",
+        "delete": "Löschen"
+      }
+    },
+    "errors": {
+      "nameRequired": "Der Stapelname ist erforderlich",
+      "loginRequired": "Du musst angemeldet sein",
+      "saveFailed": "Stapel konnte nicht gespeichert werden",
+      "fetchFailed": "Fehler beim Laden der Stapel"
+    }
+  },
+  "statistics": {
+    "title": "Statistiken",
+    "overview": "Übersicht",
+    "totalAttempts": "Gesamt-Versuche",
+    "accuracy": "Gesamtgenauigkeit",
+    "practiceStreak": "Übungsserie",
+    "days": "Tage",
+    "byOpening": "Statistiken nach Eröffnung",
+    "opening": "Eröffnung",
+    "attempts": "Versuche",
+    "successRate": "Erfolgsquote",
+    "lastPracticed": "Zuletzt geübt",
+    "never": "Nie",
+    "noData": "Noch keine Übungsdaten. Beginne zu üben, um deine Statistiken zu sehen!",
+    "subtitle": "Verfolge deinen Fortschritt und deine Leistung über alle Eröffnungen hinweg",
+    "filters": {
+      "mostPracticed": "Am häufigsten geübt",
+      "bestAccuracy": "Beste Genauigkeit",
+      "mostRecent": "Aktuellste"
+    },
+    "lastPracticedLabels": {
+      "justNow": "Gerade eben",
+      "minutesAgo": "{count, plural, one {vor # Minute} other {vor # Minuten}}",
+      "hoursAgo": "{count, plural, one {vor # Stunde} other {vor # Stunden}}",
+      "today": "Heute",
+      "yesterday": "Gestern",
+      "daysAgo": "{count, plural, one {vor # Tag} other {vor # Tagen}}"
+    },
+    "totalOpeningsPracticed": "Geübte Eröffnungen",
+    "practiceStreakLabel": "Tagesserie 🔥",
+    "empty": {
+      "title": "Noch keine Statistiken",
+      "description": "Beginne mit dem Üben von Eröffnungen, um deinen Fortschritt zu sehen",
+      "cta": "Jetzt üben"
+    },
+    "motivations": {
+      "excellent": {
+        "title": "Großartige Leistung!",
+        "description": "Du beherrschst deine Eröffnungen mit {accuracy}% Genauigkeit. Weiter so!"
+      },
+      "great": {
+        "title": "Toller Fortschritt!",
+        "description": "Du liegst mit {accuracy}% Genauigkeit gut im Rennen. Übe weiter, um dich zu verbessern!"
+      },
+      "keepGoing": {
+        "title": "Dranbleiben!",
+        "description": "Jeder Meister war einmal Anfänger. Übung macht den Meister!"
+      }
+    },
+    "attemptsCount": "{count, plural, one {# Versuch} other {# Versuche}}",
+    "correctCount": "{count, plural, one {# richtige Antwort} other {# richtige Antworten}}",
+    "incorrectCount": "{count, plural, one {# falsche Antwort} other {# falsche Antworten}}",
+    "correct": "Richtig",
+    "incorrect": "Falsch"
+  },
+  "profile": {
+    "title": "Profil",
+    "personalInfo": "Persönliche Informationen",
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "memberSince": "Mitglied seit",
+    "changePassword": "Passwort ändern",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Neues Passwort bestätigen",
+    "updatePassword": "Passwort aktualisieren",
+    "passwordUpdated": "Passwort erfolgreich aktualisiert",
+    "errorPassword": "Fehler beim Aktualisieren des Passworts",
+    "edit": "Profil bearbeiten",
+    "save": "Änderungen speichern",
+    "displayName": "Anzeigename",
+    "displayNamePlaceholder": "Gib deinen Anzeigenamen ein",
+    "bio": "Bio",
+    "bioPlaceholder": "Erzähle uns etwas über dich (optional)",
+    "bioEmpty": "Noch keine Bio hinzugefügt.",
+    "updated": "Profil erfolgreich aktualisiert!",
+    "updateError": "Profil konnte nicht aktualisiert werden",
+    "startPasswordChange": "Passwort ändern",
+    "cancel": "Abbrechen",
+    "password": {
+      "allFieldsRequired": "Alle Passwortfelder sind erforderlich",
+      "tooShort": "Das neue Passwort muss mindestens 6 Zeichen lang sein",
+      "mismatch": "Die neuen Passwörter stimmen nicht überein",
+      "sameAsCurrent": "Das neue Passwort muss sich vom aktuellen unterscheiden",
+      "incorrectCurrent": "Aktuelles Passwort ist falsch",
+      "changeFailed": "Passwort konnte nicht geändert werden"
+    },
+    "defaultName": "Nutzer",
+    "changePasswordDescription": "Aktualisiere dein Passwort, um dein Konto zu schützen."
   },
   "settings": {
     "title": "Einstellungen",
@@ -116,14 +557,160 @@
     },
     "theme": {
       "title": "Design",
-      "description": "Wähle dein bevorzugtes Design"
+      "description": "Wähle dein bevorzugtes Design",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "System",
+      "darkMode": "Dunkelmodus"
     },
-    "profile": {
-      "title": "Profil",
-      "changePassword": "Passwort ändern"
+    "notifications": {
+      "title": "Benachrichtigungen",
+      "description": "Verwalte deine Benachrichtigungseinstellungen",
+      "email": "E-Mail-Benachrichtigungen",
+      "practice": "Übungserinnerungen"
+    },
+    "practice": {
+      "title": "Übungseinstellungen",
+      "autoAdvance": {
+        "title": "Automatisch fortfahren",
+        "description": "Nach einer richtigen Antwort automatisch zur nächsten Stellung wechseln"
+      },
+      "moveHints": {
+        "title": "Zughinweise anzeigen",
+        "description": "Markiere die zu ziehende Figur nach einem falschen Versuch"
+      },
+      "soundEffects": {
+        "title": "Soundeffekte",
+        "description": "Spiele Sounds für Züge und Feedback ab"
+      }
+    },
+    "board": {
+      "title": "Bretteinstellungen",
+      "showCoordinates": {
+        "title": "Koordinaten anzeigen",
+        "description": "Zeige Rang- und Linienbezeichnungen auf dem Brett"
+      },
+      "highlightMoves": {
+        "title": "Legale Züge hervorheben",
+        "description": "Zeige verfügbare Züge beim Auswählen einer Figur"
+      },
+      "animationSpeed": {
+        "title": "Animationsgeschwindigkeit",
+        "description": "Geschwindigkeit der Figurenanimationen"
+      }
+    },
+    "spacedRepetition": {
+      "title": "Spaced Repetition",
+      "reminders": {
+        "title": "Übungserinnerungen",
+        "description": "Lass dich benachrichtigen, wenn Eröffnungen zur Wiederholung anstehen"
+      },
+      "prioritizeWeak": {
+        "title": "Schwache Stellungen priorisieren",
+        "description": "Zeige Stellungen mit niedriger Erfolgsquote häufiger"
+      },
+      "dailyGoal": {
+        "title": "Tagesziel",
+        "description": "Lege ein tägliches Übungsziel fest (Stellungen pro Tag)"
+      }
     }
   },
   "footer": {
     "copyright": "©2025 LinePrep"
+  },
+  "marketing": {
+    "about": {
+      "hero": {
+        "title": "Über LinePrep",
+        "subtitle": "Meistere Schacheröffnungen durch interaktives Training und Spaced Repetition"
+      },
+      "mission": {
+        "title": "Unsere Mission",
+        "paragraph1": "LinePrep hilft Spielern aller Spielstärken, durch effektives Training ein solides Eröffnungsrepertoire aufzubauen.",
+        "paragraph2": "Durch die Kombination aus interaktivem Training und Spaced-Repetition-Algorithmen wird das Lernen spannend, effizient und unterhaltsam."
+      },
+      "features": {
+        "title": "Wichtige Funktionen",
+        "database": {
+          "title": "Umfassende Eröffnungsdatenbank",
+          "description": "Greife auf eine kuratierte Sammlung beliebter Schacheröffnungen mit Varianten und Erklärungen zu."
+        },
+        "practice": {
+          "title": "Interaktives Training",
+          "description": "Lerne durch Praxis. Übe Stellungen deiner Eröffnungen und erhalte sofortiges Feedback."
+        },
+        "stacks": {
+          "title": "Lernstapel",
+          "description": "Organisiere Eröffnungen in thematischen Sammlungen, passend zu deinem Spielstil."
+        },
+        "progress": {
+          "title": "Fortschritt verfolgen",
+          "description": "Überwache deine Leistung mit detaillierten Statistiken und erkenne Bereiche mit Nachholbedarf."
+        },
+        "custom": {
+          "title": "Eigene Eröffnungen",
+          "description": "Erstelle und trainiere deine eigenen Varianten, um dich auf bestimmte Gegner vorzubereiten."
+        },
+        "spaced": {
+          "title": "Spaced Repetition",
+          "description": "Intelligente Planung sorgt dafür, dass du Stellungen zum optimalen Zeitpunkt wiederholst."
+        }
+      },
+      "howItWorks": {
+        "title": "So funktioniert es",
+        "steps": {
+          "choose": {
+            "title": "Wähle deine Eröffnungen",
+            "description": "Durchsuche die Datenbank oder erstelle eigene Linien und füge sie Lernstapeln hinzu."
+          },
+          "practice": {
+            "title": "Trainiere Stellungen",
+            "description": "Arbeit dich durch interaktive Stellungen und erhalte sofortiges Feedback zu jedem Zug."
+          },
+          "track": {
+            "title": "Verfolge deinen Fortschritt",
+            "description": "Analysiere detaillierte Statistiken, damit schwierige Stellungen priorisiert werden."
+          },
+          "master": {
+            "title": "Meistere dein Repertoire",
+            "description": "Regelmäßiges Training verleiht dir Sicherheit in den Eröffnungen, auf die du vertraust."
+          }
+        }
+      },
+      "technology": {
+        "title": "Mit moderner Technologie gebaut",
+        "description": "LinePrep nutzt moderne Web-Technologien für ein schnelles, zuverlässiges und schönes Trainingserlebnis.",
+        "stack": {
+          "next": {
+            "title": "Next.js",
+            "description": "React-Framework"
+          },
+          "supabase": {
+            "title": "Supabase",
+            "description": "Datenbank & Auth"
+          },
+          "heroui": {
+            "title": "HeroUI",
+            "description": "UI-Komponenten"
+          },
+          "chess": {
+            "title": "Chess.js",
+            "description": "Schach-Logik"
+          }
+        }
+      },
+      "cta": {
+        "title": "Bereit, deine Eröffnungen zu meistern?",
+        "description": "Tritt LinePrep bei und baue ein starkes Eröffnungsrepertoire auf, das dein Spiel verbessert.",
+        "primary": "Kostenlos starten",
+        "secondary": "Eröffnungen durchsuchen"
+      },
+      "contact": {
+        "title": "Kontaktiere uns",
+        "description": "Du hast Fragen oder Feedback? Wir freuen uns darauf!",
+        "creator": "Erstellt von {name}",
+        "cta": "Auf GitHub ansehen"
+      }
+    }
   }
 }

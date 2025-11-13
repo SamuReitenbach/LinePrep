@@ -19,11 +19,12 @@ import {
   SelectItem,
   useDisclosure,
 } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link as HeroUILink } from "@heroui/link"
+import { Link } from "@/lib/navigation";
 import { ChessBoard } from "@/components/ChessBoard";
 import { Chess } from "chess.js";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/lib/navigation";
 
 interface Variation {
   id: string;

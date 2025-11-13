@@ -1,7 +1,8 @@
-import { redirect } from "next/navigation";
+import { redirect } from "@/lib/navigation";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/lib/sidebar-context";
+import { getLocale } from "next-intl/server";
 
 export default async function AppLayout({
   children,
@@ -9,6 +10,7 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createServerSupabaseClient();
+  const locale = await getLocale();
 
   const {
     data: { user },
@@ -16,7 +18,7 @@ export default async function AppLayout({
 
   // Redirect to login if not authenticated
   if (!user) {
-    redirect("/login");
+    redirect({ href: "/login", locale });
   }
 
   return (

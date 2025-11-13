@@ -1,7 +1,8 @@
 "use client";
 
 import { Card, CardBody, CardHeader, Button, Chip } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link } from "@/lib/navigation";
+import { useLocale, useTranslations } from "next-intl";
 
 interface Stack {
   id: string;
@@ -17,8 +18,12 @@ interface StacksClientProps {
 }
 
 export function StacksClient({ stacks }: StacksClientProps) {
+  const locale = useLocale();
+  const tStacks = useTranslations("stacks");
+  const tCommon = useTranslations("common");
+
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString(locale, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -30,9 +35,9 @@ export function StacksClient({ stacks }: StacksClientProps) {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Learning Stacks</h1>
+          <h1 className="text-3xl font-bold mb-2">{tStacks("title")}</h1>
           <p className="text-default-500">
-            Organize your openings into themed collections
+            {tStacks("list.subtitle")}
           </p>
         </div>
         <Button
@@ -41,7 +46,7 @@ export function StacksClient({ stacks }: StacksClientProps) {
           color="primary"
           size="lg"
         >
-          Create New Stack
+          {tStacks("list.createButton")}
         </Button>
       </div>
 
@@ -54,7 +59,7 @@ export function StacksClient({ stacks }: StacksClientProps) {
                 <div className="flex justify-between items-start w-full">
                   <h3 className="text-lg font-bold line-clamp-1">{stack.name}</h3>
                   <Chip size="sm" variant="flat" color="primary">
-                    {stack.openingCount} opening{stack.openingCount !== 1 ? 's' : ''}
+                    {tCommon("openingsCount", { count: stack.openingCount })}
                   </Chip>
                 </div>
               </CardHeader>
@@ -66,7 +71,7 @@ export function StacksClient({ stacks }: StacksClientProps) {
                 )}
 
                 <div className="text-xs text-default-400">
-                  Updated {formatDate(stack.updated_at)}
+                  {tCommon("updatedAt", { date: formatDate(stack.updated_at) })}
                 </div>
 
                 <div className="flex gap-2 mt-2">
@@ -77,7 +82,7 @@ export function StacksClient({ stacks }: StacksClientProps) {
                     size="sm"
                     className="flex-1"
                   >
-                    View Details
+                    {tStacks("list.viewDetails")}
                   </Button>
                   <Button
                     as={Link}
@@ -87,7 +92,7 @@ export function StacksClient({ stacks }: StacksClientProps) {
                     className="flex-1"
                     isDisabled={stack.openingCount === 0}
                   >
-                    Practice
+                    {tStacks("list.practice")}
                   </Button>
                 </div>
               </CardBody>
@@ -98,9 +103,11 @@ export function StacksClient({ stacks }: StacksClientProps) {
         <Card>
           <CardBody className="text-center py-12">
             <div className="text-4xl mb-4">📦</div>
-            <h2 className="text-xl font-bold mb-2">No learning stacks yet</h2>
+            <h2 className="text-xl font-bold mb-2">
+              {tStacks("list.empty.title")}
+            </h2>
             <p className="text-default-500 mb-6">
-              Create your first stack to organize openings and start practicing
+              {tStacks("list.empty.description")}
             </p>
             <Button
               as={Link}
@@ -108,7 +115,7 @@ export function StacksClient({ stacks }: StacksClientProps) {
               color="primary"
               size="lg"
             >
-              Create Your First Stack
+              {tStacks("list.empty.cta")}
             </Button>
           </CardBody>
         </Card>

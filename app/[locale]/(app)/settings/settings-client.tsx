@@ -5,7 +5,7 @@ import { User } from "@supabase/supabase-js";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname } from "@/lib/navigation";
 
 interface SettingsClientProps {
   user: User;
@@ -25,15 +25,31 @@ export function SettingsClient({ user }: SettingsClientProps) {
   }, []);
 
   const handleLanguageChange = (newLocale: string) => {
-    // Remove current locale from pathname
-    const pathWithoutLocale = pathname.replace(`/${locale}`, "");
-    // Navigate to the new locale
-    router.push(`/${newLocale}${pathWithoutLocale}`);
+    // The router from next-intl navigation automatically handles locale switching
+    router.push(pathname, { locale: newLocale });
   };
 
   if (!mounted) {
     return null;
   }
+
+  const practiceToggles = [
+    { key: "autoAdvance", defaultSelected: true },
+    { key: "moveHints", defaultSelected: false },
+    { key: "soundEffects", defaultSelected: true },
+  ] as const;
+
+  const boardToggles = [
+    { key: "showCoordinates", defaultSelected: true },
+    { key: "highlightMoves", defaultSelected: true },
+    { key: "animationSpeed", defaultSelected: true },
+  ] as const;
+
+  const spacedToggles = [
+    { key: "reminders", defaultSelected: false },
+    { key: "prioritizeWeak", defaultSelected: true },
+    { key: "dailyGoal", defaultSelected: false },
+  ] as const;
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
@@ -56,10 +72,10 @@ export function SettingsClient({ user }: SettingsClientProps) {
               onChange={(e) => handleLanguageChange(e.target.value)}
               className="max-w-xs"
             >
-              <SelectItem key="en" value="en">
+              <SelectItem key="en">
                 {t("language.english")}
               </SelectItem>
-              <SelectItem key="de" value="de">
+              <SelectItem key="de">
                 {t("language.german")}
               </SelectItem>
             </Select>
@@ -77,7 +93,7 @@ export function SettingsClient({ user }: SettingsClientProps) {
         <CardBody className="p-6 space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Dark Mode</h3>
+              <h3 className="text-sm font-semibold">{t("theme.darkMode")}</h3>
               <p className="text-sm text-default-500">
                 {t("theme.description")}
               </p>
@@ -93,145 +109,73 @@ export function SettingsClient({ user }: SettingsClientProps) {
 
       <Card>
         <CardHeader className="p-6">
-          <h2 className="text-xl font-semibold">Practice Settings</h2>
+          <h2 className="text-xl font-semibold">{t("practice.title")}</h2>
         </CardHeader>
 
         <Divider />
 
         <CardBody className="p-6 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Auto-advance</h3>
-              <p className="text-sm text-default-500">
-                Automatically move to next position after correct answer
-              </p>
+          {practiceToggles.map((item) => (
+            <div key={item.key} className="flex items-center justify-between">
+              <div className="flex flex-col gap-1">
+                <h3 className="text-sm font-semibold">
+                  {t(`practice.${item.key}.title`)}
+                </h3>
+                <p className="text-sm text-default-500">
+                  {t(`practice.${item.key}.description`)}
+                </p>
+              </div>
+              <Switch defaultSelected={item.defaultSelected} size="lg" />
             </div>
-            <Switch
-              defaultSelected
-              size="lg"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Show Move Hints</h3>
-              <p className="text-sm text-default-500">
-                Highlight the piece to move after an incorrect attempt
-              </p>
-            </div>
-            <Switch
-              size="lg"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Sound Effects</h3>
-              <p className="text-sm text-default-500">
-                Play sounds for moves and feedback
-              </p>
-            </div>
-            <Switch
-              defaultSelected
-              size="lg"
-            />
-          </div>
+          ))}
         </CardBody>
       </Card>
 
       <Card>
         <CardHeader className="p-6">
-          <h2 className="text-xl font-semibold">Board Settings</h2>
+          <h2 className="text-xl font-semibold">{t("board.title")}</h2>
         </CardHeader>
 
         <Divider />
 
         <CardBody className="p-6 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Show Coordinates</h3>
-              <p className="text-sm text-default-500">
-                Display rank and file labels on the board
-              </p>
+          {boardToggles.map((item) => (
+            <div key={item.key} className="flex items-center justify-between">
+              <div className="flex flex-col gap-1">
+                <h3 className="text-sm font-semibold">
+                  {t(`board.${item.key}.title`)}
+                </h3>
+                <p className="text-sm text-default-500">
+                  {t(`board.${item.key}.description`)}
+                </p>
+              </div>
+              <Switch defaultSelected={item.defaultSelected} size="lg" />
             </div>
-            <Switch
-              defaultSelected
-              size="lg"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Highlight Legal Moves</h3>
-              <p className="text-sm text-default-500">
-                Show available moves when selecting a piece
-              </p>
-            </div>
-            <Switch
-              defaultSelected
-              size="lg"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Animation Speed</h3>
-              <p className="text-sm text-default-500">
-                Speed of piece movement animations
-              </p>
-            </div>
-            <Switch
-              defaultSelected
-              size="lg"
-            />
-          </div>
+          ))}
         </CardBody>
       </Card>
 
       <Card>
         <CardHeader className="p-6">
-          <h2 className="text-xl font-semibold">Spaced Repetition</h2>
+          <h2 className="text-xl font-semibold">{t("spacedRepetition.title")}</h2>
         </CardHeader>
 
         <Divider />
 
         <CardBody className="p-6 space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Practice Reminders</h3>
-              <p className="text-sm text-default-500">
-                Get notified when openings are due for review
-              </p>
+          {spacedToggles.map((item) => (
+            <div key={item.key} className="flex items-center justify-between">
+              <div className="flex flex-col gap-1">
+                <h3 className="text-sm font-semibold">
+                  {t(`spacedRepetition.${item.key}.title`)}
+                </h3>
+                <p className="text-sm text-default-500">
+                  {t(`spacedRepetition.${item.key}.description`)}
+                </p>
+              </div>
+              <Switch defaultSelected={item.defaultSelected} size="lg" />
             </div>
-            <Switch
-              size="lg"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Prioritize Weak Positions</h3>
-              <p className="text-sm text-default-500">
-                Show positions with lower success rates more frequently
-              </p>
-            </div>
-            <Switch
-              defaultSelected
-              size="lg"
-            />
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col gap-1">
-              <h3 className="text-sm font-semibold">Daily Goal</h3>
-              <p className="text-sm text-default-500">
-                Set a daily practice target (positions per day)
-              </p>
-            </div>
-            <Switch
-              size="lg"
-            />
-          </div>
+          ))}
         </CardBody>
       </Card>
     </div>

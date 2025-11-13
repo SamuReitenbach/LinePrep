@@ -1,17 +1,19 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { PracticeLandingClient } from "./practice-landing-client";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = 'force-dynamic';
 
 export default async function PracticePage() {
   const supabase = await createServerSupabaseClient();
+  const tCommon = await getTranslations("common");
   
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <div>Please log in</div>;
+    return <div>{tCommon("loginRequired")}</div>;
   }
 
   // Fetch user's stacks

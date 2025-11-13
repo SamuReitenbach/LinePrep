@@ -1,6 +1,7 @@
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import { PracticeClient } from "../../practice-client";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = 'force-dynamic';
 
@@ -14,13 +15,14 @@ export default async function PracticeOpeningPage({
   const { openingId } = await params;
   const { variationId } = await searchParams;
   const supabase = await createServerSupabaseClient();
+  const tCommon = await getTranslations("common");
   
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <div>Please log in</div>;
+    return <div>{tCommon("loginRequired")}</div>;
   }
 
   // Fetch the opening

@@ -1,8 +1,8 @@
 "use client";
 
-import { Link } from "@heroui/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { Link } from "@/lib/navigation";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeSwitch } from "@/components/theme-switch";
 

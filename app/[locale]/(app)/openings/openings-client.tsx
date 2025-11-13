@@ -2,7 +2,8 @@
 
 import { useState, useMemo } from "react";
 import { Card, CardBody, CardHeader, Input, Select, SelectItem, Button, Chip } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link as HeroUILink } from "@heroui/link"
+import { Link } from "@/lib/navigation";
 
 interface Variation {
   id: string;

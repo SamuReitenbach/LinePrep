@@ -1,7 +1,9 @@
 "use client";
 
 import { Card, CardBody, CardHeader, Button } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link as HeroUILink } from "@heroui/link"
+import { Link } from "@/lib/navigation";
+import { useTranslations } from "next-intl";
 
 interface DashboardData {
   stacks: any[];
@@ -18,15 +20,18 @@ interface DashboardClientProps {
 }
 
 export function DashboardClient({ data, username }: DashboardClientProps) {
+  const t = useTranslations("dashboard");
+  const tCommon = useTranslations("common");
+
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
       <div>
         <h1 className="text-3xl font-bold mb-2">
-          Welcome back, {username}! ♟️
+          {t("welcome", { name: username })} ♟️
         </h1>
         <p className="text-default-500">
-          Ready to improve your opening repertoire?
+          {t("subtitle")}
         </p>
       </div>
 
@@ -37,7 +42,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
             <p className="text-4xl font-bold text-primary mb-2">
               {data.stacksCount}
             </p>
-            <p className="text-sm text-default-500">Learning Stacks</p>
+            <p className="text-sm text-default-500">{t("stats.learningStacks")}</p>
           </CardBody>
         </Card>
 
@@ -46,7 +51,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
             <p className="text-4xl font-bold text-secondary mb-2">
               {data.customOpeningsCount}
             </p>
-            <p className="text-sm text-default-500">Custom Openings</p>
+            <p className="text-sm text-default-500">{t("stats.customOpenings")}</p>
           </CardBody>
         </Card>
 
@@ -55,7 +60,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
             <p className="text-4xl font-bold text-success mb-2">
               {data.totalAttempts}
             </p>
-            <p className="text-sm text-default-500">Total Attempts</p>
+            <p className="text-sm text-default-500">{t("stats.totalAttempts")}</p>
           </CardBody>
         </Card>
 
@@ -64,7 +69,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
             <p className="text-4xl font-bold text-warning mb-2">
               {data.accuracy}%
             </p>
-            <p className="text-sm text-default-500">Accuracy</p>
+            <p className="text-sm text-default-500">{t("stats.accuracy")}</p>
           </CardBody>
         </Card>
       </div>
@@ -74,7 +79,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
         {/* Learning Stacks */}
         <Card>
           <CardHeader className="flex justify-between">
-            <h2 className="text-xl font-bold">Your Learning Stacks</h2>
+            <h2 className="text-xl font-bold">{t("yourStacks")}</h2>
             <Button
               as={Link}
               href="/stacks"
@@ -82,7 +87,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
               variant="light"
               color="primary"
             >
-              View All
+              {tCommon("viewAll")}
             </Button>
           </CardHeader>
           <CardBody>
@@ -105,7 +110,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
               </div>
             ) : (
               <div className="text-center py-8 text-default-400">
-                <p className="mb-3">No learning stacks yet</p>
+                <p className="mb-3">{t("noStacks")}</p>
                 <Button
                   as={Link}
                   href="/stacks/new"
@@ -113,7 +118,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
                   variant="flat"
                   size="sm"
                 >
-                  Create Your First Stack
+                  {t("createStack")}
                 </Button>
               </div>
             )}
@@ -123,7 +128,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
         {/* Custom Openings */}
         <Card>
           <CardHeader className="flex justify-between">
-            <h2 className="text-xl font-bold">Custom Openings</h2>
+            <h2 className="text-xl font-bold">{t("yourCustomOpenings")}</h2>
             <Button
               as={Link}
               href="/custom-openings"
@@ -131,7 +136,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
               variant="light"
               color="primary"
             >
-              View All
+              {tCommon("viewAll")}
             </Button>
           </CardHeader>
           <CardBody>
@@ -152,7 +157,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
               </div>
             ) : (
               <div className="text-center py-8 text-default-400">
-                <p className="mb-3">No custom openings yet</p>
+                <p className="mb-3">{t("noCustomOpenings")}</p>
                 <Button
                   as={Link}
                   href="/custom-openings/new"
@@ -160,7 +165,7 @@ export function DashboardClient({ data, username }: DashboardClientProps) {
                   variant="flat"
                   size="sm"
                 >
-                  Create Your First Opening
+                  {t("createOpening")}
                 </Button>
               </div>
             )}

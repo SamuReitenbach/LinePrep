@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import { Card, CardBody, CardHeader, Input, Button } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export function ForgotPasswordForm() {
@@ -10,6 +11,9 @@ export function ForgotPasswordForm() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const locale = useLocale();
+  const t = useTranslations("auth.forgotPassword");
+  const tCommon = useTranslations("common");
   const supabase = createClient();
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -20,14 +24,14 @@ export function ForgotPasswordForm() {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+        redirectTo: `${window.location.origin}/${locale}/auth/reset-password`,
       });
 
       if (error) throw error;
 
       setSuccess(true);
     } catch (error: any) {
-      setError(error.message || "Failed to send reset email");
+      setError(error.message || t("errorSend"));
     } finally {
       setLoading(false);
     }
@@ -38,12 +42,12 @@ export function ForgotPasswordForm() {
       <Card className="w-full">
         <CardBody className="text-center py-8 gap-4">
           <div className="text-4xl">✉️</div>
-          <h2 className="text-2xl font-bold">Check your email</h2>
+          <h2 className="text-2xl font-bold">{t("checkEmail")}</h2>
           <p className="text-default-500">
-            We've sent a password reset link to <strong>{email}</strong>
+            {t("resetLinkSent")} <strong>{email}</strong>
           </p>
           <p className="text-sm text-default-400">
-            Click the link in the email to reset your password.
+            {t("clickLink")}
           </p>
           <Button
             as={Link}
@@ -51,7 +55,7 @@ export function ForgotPasswordForm() {
             variant="flat"
             className="mt-4"
           >
-            Back to Login
+            {t("backToLogin")}
           </Button>
         </CardBody>
       </Card>
@@ -61,17 +65,17 @@ export function ForgotPasswordForm() {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-col gap-1 items-center pb-4 pt-6">
-        <h1 className="text-2xl font-bold">Reset your password</h1>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
         <p className="text-sm text-default-500">
-          Enter your email and we'll send you a reset link
+          {t("subtitle")}
         </p>
       </CardHeader>
       <CardBody className="gap-4">
         <form onSubmit={handleResetPassword} className="flex flex-col gap-4">
           <Input
-            label="Email"
+            label={tCommon("email")}
             type="email"
-            placeholder="your@email.com"
+            placeholder={t("emailPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             isRequired
@@ -91,14 +95,14 @@ export function ForgotPasswordForm() {
             isLoading={loading}
             className="w-full"
           >
-            Send Reset Link
+            {t("sendButton")}
           </Button>
         </form>
 
         <div className="text-center text-sm">
-          Remember your password?{" "}
+          {t("rememberPassword")}{" "}
           <Link href="/login" className="text-primary font-semibold">
-            Sign in
+            {tCommon("signIn")}
           </Link>
         </div>
       </CardBody>

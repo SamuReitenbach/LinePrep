@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useLocale, useTranslations } from "next-intl";
 import { Card, CardBody, CardHeader, Input, Button, Divider } from "@heroui/react";
-import { Link } from "@heroui/link";
+import { Link, useRouter } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export function SignupForm() {
@@ -14,6 +14,9 @@ export function SignupForm() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const locale = useLocale();
+  const t = useTranslations("auth.signup");
+  const tCommon = useTranslations("common");
   const supabase = createClient();
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -23,12 +26,12 @@ export function SignupForm() {
 
     // Validation
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("errorPasswordMatch"));
       return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError(t("errorPasswordLength"));
       return;
     }
 
@@ -39,7 +42,7 @@ export function SignupForm() {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: `${window.location.origin}/${locale}/auth/callback`,
         },
       });
 
@@ -54,7 +57,7 @@ export function SignupForm() {
         }
       }
     } catch (error: any) {
-      setError(error.message || "Failed to sign up");
+      setError(error.message || t("errorSignUp"));
     } finally {
       setLoading(false);
     }
@@ -68,13 +71,13 @@ export function SignupForm() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/${locale}/auth/callback`,
         },
       });
 
       if (error) throw error;
     } catch (error: any) {
-      setError(error.message || "Failed to sign up with Google");
+      setError(error.message || t("errorGoogle"));
       setLoading(false);
     }
   };
@@ -84,12 +87,12 @@ export function SignupForm() {
       <Card className="w-full">
         <CardBody className="text-center py-8 gap-4">
           <div className="text-4xl">✉️</div>
-          <h2 className="text-2xl font-bold">Check your email</h2>
+          <h2 className="text-2xl font-bold">{t("checkEmail")}</h2>
           <p className="text-default-500">
-            We've sent you a confirmation link to <strong>{email}</strong>
+            {t("confirmationSent")} <strong>{email}</strong>
           </p>
           <p className="text-sm text-default-400">
-            Click the link in the email to verify your account and get started.
+            {t("clickLink")}
           </p>
           <Button
             as={Link}
@@ -97,7 +100,7 @@ export function SignupForm() {
             variant="flat"
             className="mt-4"
           >
-            Back to Login
+            {t("backToLogin")}
           </Button>
         </CardBody>
       </Card>
@@ -107,33 +110,33 @@ export function SignupForm() {
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-col gap-1 items-center pb-4 pt-6">
-        <h1 className="text-2xl font-bold">Create an account</h1>
-        <p className="text-sm text-default-500">Start mastering chess openings</p>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
+        <p className="text-sm text-default-500">{t("subtitle")}</p>
       </CardHeader>
       <CardBody className="gap-4">
         <form onSubmit={handleSignup} className="flex flex-col gap-4">
           <Input
-            label="Email"
+            label={tCommon("email")}
             type="email"
-            placeholder="your@email.com"
+            placeholder={t("emailPlaceholder")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             isRequired
             autoComplete="email"
           />
           <Input
-            label="Password"
+            label={tCommon("password")}
             type="password"
-            placeholder="At least 6 characters"
+            placeholder={t("passwordPlaceholder")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             isRequired
             autoComplete="new-password"
           />
           <Input
-            label="Confirm Password"
+            label={tCommon("confirmPassword")}
             type="password"
-            placeholder="Confirm your password"
+            placeholder={t("confirmPasswordPlaceholder")}
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             isRequired
@@ -153,13 +156,13 @@ export function SignupForm() {
             isLoading={loading}
             className="w-full"
           >
-            Create Account
+            {t("createAccountButton")}
           </Button>
         </form>
 
         <div className="flex items-center gap-2">
           <Divider className="flex-1" />
-          <span className="text-sm text-default-400">OR</span>
+          <span className="text-sm text-default-400">{tCommon("or")}</span>
           <Divider className="flex-1" />
         </div>
 
@@ -188,19 +191,19 @@ export function SignupForm() {
               d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
             />
           </svg>
-          Continue with Google
+          {t("googleButton")}
         </Button>
 
         <div className="text-center text-sm text-default-500">
-          By signing up, you agree to our Terms of Service and Privacy Policy
+          {t("termsText")}
         </div>
 
         <Divider />
 
         <div className="text-center text-sm">
-          Already have an account?{" "}
+          {t("hasAccount")}{" "}
           <Link href="/login" className="text-primary font-semibold">
-            Sign in
+            {t("signInLink")}
           </Link>
         </div>
       </CardBody>

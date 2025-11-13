@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Card, CardBody, CardHeader, Input, Button, Divider } from "@heroui/react";
-import { Link } from "@heroui/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
+import { Link, useRouter } from "@/lib/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export function LoginForm() {
@@ -13,6 +12,7 @@ export function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const locale = useLocale();
   const supabase = createClient();
   const t = useTranslations("auth.login");
   const tCommon = useTranslations("common");
@@ -49,7 +49,7 @@ export function LoginForm() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${window.location.origin}/${locale}/auth/callback`,
         },
       });
 

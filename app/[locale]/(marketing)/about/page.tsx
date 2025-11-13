@@ -3,233 +3,116 @@
 import { Link } from "@heroui/link";
 import { Button, Card, CardBody } from "@heroui/react";
 import { title } from "@/components/primitives";
+import { useTranslations } from "next-intl";
+
+const featureItems = [
+  { icon: "📚", titleKey: "features.database.title", descriptionKey: "features.database.description" },
+  { icon: "♟️", titleKey: "features.practice.title", descriptionKey: "features.practice.description" },
+  { icon: "📦", titleKey: "features.stacks.title", descriptionKey: "features.stacks.description" },
+  { icon: "📈", titleKey: "features.progress.title", descriptionKey: "features.progress.description" },
+  { icon: "✨", titleKey: "features.custom.title", descriptionKey: "features.custom.description" },
+  { icon: "🎯", titleKey: "features.spaced.title", descriptionKey: "features.spaced.description" },
+];
+
+const steps = [
+  { number: "1", titleKey: "howItWorks.steps.choose.title", descriptionKey: "howItWorks.steps.choose.description" },
+  { number: "2", titleKey: "howItWorks.steps.practice.title", descriptionKey: "howItWorks.steps.practice.description" },
+  { number: "3", titleKey: "howItWorks.steps.track.title", descriptionKey: "howItWorks.steps.track.description" },
+  { number: "4", titleKey: "howItWorks.steps.master.title", descriptionKey: "howItWorks.steps.master.description" },
+];
+
+const technologyStack = ["next", "supabase", "heroui", "chess"] as const;
 
 export default function AboutPage() {
+  const t = useTranslations("marketing.about");
+
   return (
     <div className="space-y-12 py-8">
       {/* Hero Section */}
       <section className="text-center space-y-4">
-        <h1 className={title()}>About LinePrep</h1>
+        <h1 className={title()}>{t("hero.title")}</h1>
         <p className="text-xl text-default-600 max-w-2xl mx-auto">
-          Master chess openings through interactive practice and spaced repetition
+          {t("hero.subtitle")}
         </p>
       </section>
 
       {/* Mission Section */}
       <section className="max-w-4xl mx-auto space-y-6">
-        <h2 className="text-3xl font-bold">Our Mission</h2>
-        <p className="text-lg text-default-600">
-          LinePrep was created to help chess players of all levels build a solid opening
-          repertoire through effective practice. We believe that mastering openings doesn't
-          have to be tedious or overwhelming.
-        </p>
-        <p className="text-lg text-default-600">
-          By combining interactive practice with spaced repetition algorithms, we make
-          learning chess openings engaging, efficient, and fun.
-        </p>
+        <h2 className="text-3xl font-bold">{t("mission.title")}</h2>
+        <p className="text-lg text-default-600">{t("mission.paragraph1")}</p>
+        <p className="text-lg text-default-600">{t("mission.paragraph2")}</p>
       </section>
 
       {/* Features Section */}
       <section className="max-w-4xl mx-auto space-y-6">
-        <h2 className="text-3xl font-bold">Key Features</h2>
+        <h2 className="text-3xl font-bold">{t("features.title")}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardBody className="space-y-2">
-              <div className="text-3xl">📚</div>
-              <h3 className="text-xl font-bold">Comprehensive Opening Database</h3>
-              <p className="text-default-600">
-                Access a curated collection of popular chess openings with detailed
-                variations and explanations.
-              </p>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardBody className="space-y-2">
-              <div className="text-3xl">♟️</div>
-              <h3 className="text-xl font-bold">Interactive Practice</h3>
-              <p className="text-default-600">
-                Learn by doing. Practice positions from your chosen openings with
-                instant feedback on every move.
-              </p>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardBody className="space-y-2">
-              <div className="text-3xl">📦</div>
-              <h3 className="text-xl font-bold">Learning Stacks</h3>
-              <p className="text-default-600">
-                Organize openings into themed collections. Build your own repertoire
-                tailored to your playing style.
-              </p>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardBody className="space-y-2">
-              <div className="text-3xl">📈</div>
-              <h3 className="text-xl font-bold">Progress Tracking</h3>
-              <p className="text-default-600">
-                Monitor your performance with detailed statistics. See which openings
-                need more work and track your improvement.
-              </p>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardBody className="space-y-2">
-              <div className="text-3xl">✨</div>
-              <h3 className="text-xl font-bold">Custom Openings</h3>
-              <p className="text-default-600">
-                Create and practice your own opening lines. Perfect for studying
-                specific variations or preparing for opponents.
-              </p>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardBody className="space-y-2">
-              <div className="text-3xl">🎯</div>
-              <h3 className="text-xl font-bold">Spaced Repetition</h3>
-              <p className="text-default-600">
-                Smart algorithms ensure you review positions at optimal intervals
-                for maximum retention.
-              </p>
-            </CardBody>
-          </Card>
+          {featureItems.map((feature) => (
+            <Card key={feature.titleKey}>
+              <CardBody className="space-y-2">
+                <div className="text-3xl">{feature.icon}</div>
+                <h3 className="text-xl font-bold">{t(feature.titleKey)}</h3>
+                <p className="text-default-600">{t(feature.descriptionKey)}</p>
+              </CardBody>
+            </Card>
+          ))}
         </div>
       </section>
 
       {/* How It Works Section */}
       <section className="max-w-4xl mx-auto space-y-6">
-        <h2 className="text-3xl font-bold">How It Works</h2>
+        <h2 className="text-3xl font-bold">{t("howItWorks.title")}</h2>
         <div className="space-y-8">
-          <div className="flex gap-6 items-start">
-            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold">
-              1
+          {steps.map((step) => (
+            <div key={step.number} className="flex gap-6 items-start">
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold">
+                {step.number}
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">{t(step.titleKey)}</h3>
+                <p className="text-default-600">{t(step.descriptionKey)}</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2">Choose Your Openings</h3>
-              <p className="text-default-600">
-                Browse our opening database or create your own. Select openings that
-                match your playing style and add them to learning stacks.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-6 items-start">
-            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold">
-              2
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2">Practice Positions</h3>
-              <p className="text-default-600">
-                The app presents you with positions from your chosen openings. Make
-                the correct move and receive instant feedback.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-6 items-start">
-            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold">
-              3
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2">Track Your Progress</h3>
-              <p className="text-default-600">
-                View detailed statistics on your performance. The spaced repetition
-                system ensures you review difficult positions more frequently.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-6 items-start">
-            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold">
-              4
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-2">Master Your Repertoire</h3>
-              <p className="text-default-600">
-                With consistent practice, you'll build deep knowledge of your chosen
-                openings and play them confidently over the board.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* Technology Section */}
       <section className="max-w-4xl mx-auto space-y-6">
-        <h2 className="text-3xl font-bold">Built With Modern Technology</h2>
-        <p className="text-lg text-default-600">
-          LinePrep is built with cutting-edge web technologies to provide a fast,
-          reliable, and beautiful user experience:
-        </p>
+        <h2 className="text-3xl font-bold">{t("technology.title")}</h2>
+        <p className="text-lg text-default-600">{t("technology.description")}</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card>
-            <CardBody className="text-center py-6">
-              <p className="font-bold">Next.js</p>
-              <p className="text-sm text-default-500">React Framework</p>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody className="text-center py-6">
-              <p className="font-bold">Supabase</p>
-              <p className="text-sm text-default-500">Database & Auth</p>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody className="text-center py-6">
-              <p className="font-bold">HeroUI</p>
-              <p className="text-sm text-default-500">UI Components</p>
-            </CardBody>
-          </Card>
-          <Card>
-            <CardBody className="text-center py-6">
-              <p className="font-bold">Chess.js</p>
-              <p className="text-sm text-default-500">Chess Logic</p>
-            </CardBody>
-          </Card>
+          {technologyStack.map((item) => (
+            <Card key={item}>
+              <CardBody className="text-center py-6">
+                <p className="font-bold">{t(`technology.stack.${item}.title`)}</p>
+                <p className="text-sm text-default-500">{t(`technology.stack.${item}.description`)}</p>
+              </CardBody>
+            </Card>
+          ))}
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="text-center space-y-6 py-8">
-        <h2 className="text-3xl font-bold">Ready to Master Your Openings?</h2>
-        <p className="text-lg text-default-600 max-w-2xl mx-auto">
-          Join LinePrep today and start building a solid opening repertoire
-          that will improve your chess game.
-        </p>
+        <h2 className="text-3xl font-bold">{t("cta.title")}</h2>
+        <p className="text-lg text-default-600 max-w-2xl mx-auto">{t("cta.description")}</p>
         <div className="flex gap-4 justify-center">
-          <Button
-            as={Link}
-            href="/signup"
-            color="primary"
-            size="lg"
-            className="font-semibold"
-          >
-            Get Started Free
+          <Button as={Link} href="/signup" color="primary" size="lg" className="font-semibold">
+            {t("cta.primary")}
           </Button>
-          <Button
-            as={Link}
-            href="/openings"
-            variant="bordered"
-            size="lg"
-          >
-            Browse Openings
+          <Button as={Link} href="/openings" variant="bordered" size="lg">
+            {t("cta.secondary")}
           </Button>
         </div>
       </section>
 
       {/* Contact Section */}
       <section className="max-w-4xl mx-auto space-y-6 text-center">
-        <h2 className="text-3xl font-bold">Get In Touch</h2>
-        <p className="text-lg text-default-600">
-          Have questions or feedback? We'd love to hear from you!
-        </p>
+        <h2 className="text-3xl font-bold">{t("contact.title")}</h2>
+        <p className="text-lg text-default-600">{t("contact.description")}</p>
         <p className="text-default-600">
-          Created by <span className="font-semibold">Samuel Reitenbach</span>
+          {t("contact.creator", { name: "Samuel Reitenbach" })}
         </p>
         <div className="flex gap-4 justify-center">
           <Button
@@ -238,7 +121,7 @@ export default function AboutPage() {
             isExternal
             variant="flat"
           >
-            View on GitHub
+            {t("contact.cta")}
           </Button>
         </div>
       </section>
