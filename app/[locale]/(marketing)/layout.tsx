@@ -1,5 +1,5 @@
-import { useTranslations, useLocale } from "next-intl";
-import { Link } from "@heroui/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import { Navbar } from "@/components/navbar";
 
 export default function MarketingLayout({
@@ -8,7 +8,6 @@ export default function MarketingLayout({
   children: React.ReactNode;
 }) {
   const t = useTranslations("footer");
-  const locale = useLocale();
 
   return (
     <div className="relative flex flex-col h-screen">
@@ -19,17 +18,15 @@ export default function MarketingLayout({
       <footer className="w-full flex flex-col items-center justify-center py-4 gap-2">
         <div className="flex items-center gap-4 text-sm">
           <Link
-            href={`/${locale}/impressum`}
-            className="text-default-600 hover:text-default-900"
-            size="sm"
+            href="/imprint"
+            className="text-default-600 hover:text-default-900 text-sm"
           >
             {t("imprint")}
           </Link>
           <span className="text-default-400">•</span>
           <Link
-            href={`/${locale}/privacy`}
-            className="text-default-600 hover:text-default-900"
-            size="sm"
+            href="/privacy"
+            className="text-default-600 hover:text-default-900 text-sm"
           >
             {t("privacy")}
           </Link>
