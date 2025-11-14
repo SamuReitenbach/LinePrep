@@ -50,6 +50,7 @@ export function PracticeClient({
     message: string;
   }>({ type: null, message: "" });
   const [showAnswer, setShowAnswer] = useState(false);
+  const [awaitingNext, setAwaitingNext] = useState(false);
   const [stats, setStats] = useState({
     correct: 0,
     incorrect: 0,
@@ -65,6 +66,7 @@ export function PracticeClient({
     setLoading(true);
     setFeedback({ type: null, message: "" });
     setShowAnswer(false);
+    setAwaitingNext(false);
 
     try {
       let endpoint = "";
@@ -153,10 +155,7 @@ export function PracticeClient({
           move: position.correctMove,
         }),
       });
-      // Auto-advance after 1.5 seconds
-      setTimeout(() => {
-        fetchPosition();
-      }, 1500);
+      setAwaitingNext(true);
     } else {
       setFeedback({
         type: "error",
@@ -325,9 +324,43 @@ export function PracticeClient({
 
           {/* Feedback */}
           {feedback.message && (
-            <Card className={feedback.type === "success" ? "bg-success-50" : feedback.type === "error" ? "bg-danger-50" : ""}>
-              <CardBody>
-                <p className={`font-semibold ${feedback.type === "success" ? "text-success" : feedback.type === "error" ? "text-danger" : ""}`}>
+            <Card
+              className={`
+                ${feedback.type === "success"
+                  ? "bg-gradient-to-br from-success-50 to-success-100 border-2 border-success"
+                  : feedback.type === "error"
+                  ? "bg-gradient-to-br from-danger-50 to-danger-100 border-2 border-danger"
+                  : ""}
+                animate-in fade-in slide-in-from-top-2 duration-300
+              `}
+            >
+              <CardBody className="text-center py-6">
+                {feedback.type === "success" && (
+                  <div className="mb-3 animate-in zoom-in duration-500">
+                    <span className="text-6xl">🎉</span>
+                  </div>
+                )}
+                {feedback.type === "error" && (
+                  <div className="mb-3">
+                    <span className="text-5xl">💭</span>
+                  </div>
+                )}
+                <p className={`text-lg font-bold mb-2 ${
+                  feedback.type === "success"
+                    ? "text-success-700"
+                    : feedback.type === "error"
+                    ? "text-danger-700"
+                    : ""
+                }`}>
+                  {feedback.type === "success" ? tPractice("correct") : feedback.type === "error" ? tPractice("incorrect") : ""}
+                </p>
+                <p className={`font-semibold ${
+                  feedback.type === "success"
+                    ? "text-success-600"
+                    : feedback.type === "error"
+                    ? "text-danger-600"
+                    : ""
+                }`}>
                   {feedback.message}
                 </p>
               </CardBody>
@@ -361,22 +394,37 @@ export function PracticeClient({
 
           {/* Actions */}
           <div className="space-y-2">
-            <Button
-              color="primary"
-              className="w-full"
-              onPress={fetchPosition}
-              isDisabled={loading}
-            >
-              {tPractice("client.actions.skip")}
-            </Button>
-            <Button
-              variant="flat"
-              className="w-full"
-              onPress={handleShowAnswer}
-              isDisabled={loading || showAnswer}
-            >
-              {tPractice("client.actions.showAnswer")}
-            </Button>
+            {awaitingNext ? (
+              <Button
+                color="success"
+                size="lg"
+                className="w-full font-bold animate-in fade-in zoom-in duration-300"
+                onPress={fetchPosition}
+                isDisabled={loading}
+              >
+                {tPractice("nextPosition")} →
+              </Button>
+            ) : (
+              <>
+                <Button
+                  color="primary"
+                  variant="flat"
+                  className="w-full"
+                  onPress={fetchPosition}
+                  isDisabled={loading}
+                >
+                  {tPractice("client.actions.skip")}
+                </Button>
+                <Button
+                  variant="bordered"
+                  className="w-full"
+                  onPress={handleShowAnswer}
+                  isDisabled={loading || showAnswer}
+                >
+                  {tPractice("client.actions.showAnswer")}
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
