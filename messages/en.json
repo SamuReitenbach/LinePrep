@@ -616,7 +616,181 @@
     }
   },
   "footer": {
-    "copyright": "©2025 LinePrep"
+    "copyright": "©2025 LinePrep",
+    "imprint": "Imprint",
+    "privacy": "Privacy Policy"
+  },
+  "legal": {
+    "impressum": {
+      "title": "Imprint",
+      "sections": {
+        "contact": {
+          "title": "Information according to § 5 TMG",
+          "name": "Name",
+          "address": "Address",
+          "country": "Germany"
+        },
+        "contactDetails": {
+          "title": "Contact",
+          "email": "Email",
+          "phone": "Phone"
+        },
+        "responsible": {
+          "title": "Responsible for content according to § 55 Abs. 2 RStV",
+          "content": "Responsible person"
+        },
+        "euDispute": {
+          "title": "EU Dispute Resolution",
+          "content": "The European Commission provides a platform for online dispute resolution (ODR):",
+          "link": "Link to ODR platform",
+          "email": "Our email address"
+        },
+        "consumerDispute": {
+          "title": "Consumer Dispute Resolution",
+          "content": "We are not willing or obliged to participate in dispute resolution proceedings before a consumer arbitration board."
+        },
+        "liability": {
+          "title": "Liability for Content and Links",
+          "content": {
+            "title": "Liability for Content",
+            "paragraph": "As a service provider, we are responsible for our own content on these pages in accordance with general law pursuant to Section 7 (1) TMG. However, according to §§ 8 to 10 TMG, we are not obligated to monitor transmitted or stored third-party information or to investigate circumstances that indicate illegal activity. Obligations to remove or block the use of information under general law remain unaffected. However, liability in this regard is only possible from the time of knowledge of a specific infringement. Upon becoming aware of such violations, we will remove this content immediately."
+          },
+          "links": {
+            "title": "Liability for Links",
+            "paragraph1": "Our offer contains links to external websites of third parties, on whose contents we have no influence. Therefore, we cannot assume any liability for these external contents. The respective provider or operator of the pages is always responsible for the contents of the linked pages.",
+            "paragraph2": "The linked pages were checked for possible legal violations at the time of linking. Illegal contents were not recognizable at the time of linking. However, permanent monitoring of the content of the linked pages is not reasonable without concrete evidence of an infringement. Upon becoming aware of violations, we will remove such links immediately."
+          }
+        },
+        "copyright": {
+          "title": "Copyright",
+          "paragraph1": "The content and works created by the site operators on these pages are subject to German copyright law. Duplication, processing, distribution, or any form of commercialization of such material beyond the scope of the copyright law shall require the prior written consent of its respective author or creator.",
+          "paragraph2": "Downloads and copies of this site are only permitted for private, non-commercial use. Insofar as the content on this site was not created by the operator, the copyrights of third parties are respected. In particular, third-party content is marked as such. Should you nevertheless become aware of a copyright infringement, please inform us accordingly. Upon becoming aware of violations, we will remove such content immediately."
+        }
+      }
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated",
+      "sections": {
+        "overview": {
+          "title": "1. Data Protection at a Glance",
+          "paragraph1": "The following notices provide a simple overview of what happens to your personal data when you visit this website. Personal data is any data by which you can be personally identified.",
+          "paragraph2": "For detailed information on data protection, please refer to our privacy policy listed below this text."
+        },
+        "controller": {
+          "title": "2. Data Controller",
+          "name": "Name",
+          "address": "Address",
+          "email": "Email",
+          "phone": "Phone",
+          "note": "The controller is the natural or legal person who alone or jointly with others determines the purposes and means of the processing of personal data."
+        },
+        "dataCollection": {
+          "title": "3. Data Collection on This Website",
+          "personal": {
+            "title": "What personal data do we collect?",
+            "intro": "We collect the following personal data when you register and use our service:",
+            "items": {
+              "email": "Email address (for account creation and authentication)",
+              "username": "Display name (optional)",
+              "practice": "Practice data and progress statistics (to provide the spaced repetition functionality)"
+            }
+          },
+          "technical": {
+            "title": "What technical data do we collect?",
+            "intro": "When you visit our website, our web server automatically collects:",
+            "items": {
+              "ip": "IP address",
+              "browser": "Browser type and version",
+              "time": "Time of access"
+            }
+          }
+        },
+        "legalBasis": {
+          "title": "4. Legal Basis for Data Processing",
+          "intro": "We process your personal data based on the following legal grounds:",
+          "items": {
+            "consent": {
+              "title": "Art. 6(1)(a) GDPR (Consent)",
+              "content": "When you create an account, you consent to the processing of your data"
+            },
+            "contract": {
+              "title": "Art. 6(1)(b) GDPR (Contract)",
+              "content": "Processing is necessary to provide our chess practice service"
+            },
+            "legitimate": {
+              "title": "Art. 6(1)(f) GDPR (Legitimate Interests)",
+              "content": "We have a legitimate interest in improving our service and preventing abuse"
+            }
+          }
+        },
+        "thirdParty": {
+          "title": "5. Third-Party Services",
+          "supabase": {
+            "title": "Supabase (Database & Authentication)",
+            "content": "We use Supabase for user authentication and data storage. Your data is stored on servers in the EU. Supabase is GDPR compliant.",
+            "privacy": "Privacy Policy"
+          },
+          "google": {
+            "title": "Google OAuth (Optional Authentication)",
+            "content": "If you choose to sign in with Google, we receive your email address and basic profile information from Google. This is processed according to Google's privacy policy.",
+            "privacy": "Privacy Policy"
+          }
+        },
+        "cookies": {
+          "title": "6. Cookies and Session Data",
+          "paragraph1": "Our website uses cookies to maintain your login session. These are essential cookies required for the website to function properly.",
+          "paragraph2": "You can configure your browser to inform you about the use of cookies so that you can decide on a case-by-case basis whether to accept or reject a cookie. Alternatively, your browser can be configured to automatically accept cookies under certain conditions or to always reject them."
+        },
+        "rights": {
+          "title": "7. Your Rights",
+          "intro": "You have the following rights regarding your personal data:",
+          "items": {
+            "access": {
+              "title": "Right of access",
+              "content": "You have the right to obtain confirmation as to whether personal data concerning you is being processed and to access this data"
+            },
+            "rectification": {
+              "title": "Right to rectification",
+              "content": "You have the right to have inaccurate personal data corrected"
+            },
+            "erasure": {
+              "title": "Right to erasure",
+              "content": "You have the right to have your personal data deleted"
+            },
+            "restriction": {
+              "title": "Right to restriction of processing",
+              "content": "You have the right to request restriction of processing of your personal data"
+            },
+            "portability": {
+              "title": "Right to data portability",
+              "content": "You have the right to receive your personal data in a structured, commonly used format"
+            },
+            "objection": {
+              "title": "Right to object",
+              "content": "You have the right to object to processing of your personal data"
+            },
+            "withdraw": {
+              "title": "Right to withdraw consent",
+              "content": "If processing is based on your consent, you have the right to withdraw consent at any time"
+            }
+          },
+          "complaint": "You also have the right to lodge a complaint with a supervisory authority if you believe that processing of your personal data violates the GDPR."
+        },
+        "retention": {
+          "title": "8. Data Retention",
+          "content": "We retain your personal data only for as long as necessary to provide our services and comply with legal obligations. When you delete your account, all associated personal data will be permanently deleted within 30 days."
+        },
+        "security": {
+          "title": "9. Data Security",
+          "content": "We use appropriate technical and organizational measures to protect your personal data against unauthorized access, loss, or alteration. All data transmissions are encrypted using SSL/TLS technology."
+        },
+        "changes": {
+          "title": "10. Changes to This Privacy Policy",
+          "content": "We reserve the right to update this privacy policy to reflect changes in our practices or for legal, operational, or regulatory reasons. We will notify you of any material changes by posting the new privacy policy on this page."
+        }
+      }
+    }
   },
   "marketing": {
     "about": {
